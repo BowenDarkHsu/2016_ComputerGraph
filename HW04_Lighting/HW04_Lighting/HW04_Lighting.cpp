@@ -1,6 +1,4 @@
-// HW03_RobotArm.cpp : 定義主控台應用程式的進入點。
-//
-// HW02_Ellipse_Manipulation.cpp : 定義主控台應用程式的進入點。
+// HW04_Lighting.cpp : 定義主控台應用程式的進入點。
 //
 
 #include "stdafx.h"
@@ -9,30 +7,25 @@
 #include <windows.h>
 /* OpenGL library */
 #include "glut.h"
+/* Robot_Arm library */
 #include "Robot_Arm.h"
-/*
-Function Define
-*/
+
+
 void myInit();
 void myDisplay();
 void myMouse(int button, int state, int x, int y);
 void myKeyboard(unsigned char key, int x, int y);
-/* Menu Function */
 void myMenuInit();
 void myMenu(int id);
-/* End of Menu Function */
-
 void OpenGL_Init(int argc, char** argv);
-
-/*
-Program Start
-*/
-int main(int argc, char** argv) {
-
+RobotParameter Robot_Arm;
+RobotParameter Robot_Initial;
+glOrtho_Parameter My_Ortho;
+RobotArmPosition Robot_Position;
+int main(int argc, char** argv){
 	DrawPosition();
 	OpenGL_Init(argc, argv);
-
-	return 0;
+    return 0;
 }
 
 void OpenGL_Init(int argc, char** argv) {
@@ -108,14 +101,15 @@ void myMenuInit() {
 
 void myMenu(int id) {
 	switch (id) {
-	case 1:	
+	case 1:
 		Robot_Arm = Robot_Initial;
-		DrawPosition(); 
-		glutPostRedisplay(); 
+		DrawPosition();
+		glutPostRedisplay();
 		break;
 	case 2: exit(0);
 	}/* End of switch */
 }
+
 
 void myMouse(int button, int state, int x, int y) {
 	if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)) {
@@ -126,38 +120,38 @@ void myMouse(int button, int state, int x, int y) {
 void myKeyboard(unsigned char key, int x, int y) {
 
 	switch (key) {
-		case 'w':
-			Y_DirectionMenuFunc(1);
-			break;
-		case 's':
-			Y_DirectionMenuFunc(2);
-			break;
-		case 'a':
-			X_DirectionMenuFunc(2);
-			break;
-		case 'd':
-			X_DirectionMenuFunc(1);
-			break;
-		case '1':
-			ArmRotationMenuFunc(1);
-			break;
-		case '2':
-			ArmRotationMenuFunc(2);
-			break;
-		case '4':
-			GripperHeightMenuFunc(1);
-			break;
-		case '5':
-			GripperHeightMenuFunc(2);
-			break;
-		case '7':
-			GripperControlMenuFunc(1);
-			break;
-		case '8':
-			GripperControlMenuFunc(2);
-			break;
+	case 'w':
+		Y_DirectionMenuFunc(1);
+		break;
+	case 's':
+		Y_DirectionMenuFunc(2);
+		break;
+	case 'a':
+		X_DirectionMenuFunc(2);
+		break;
+	case 'd':
+		X_DirectionMenuFunc(1);
+		break;
+	case '1':
+		ArmRotationMenuFunc(1);
+		break;
+	case '2':
+		ArmRotationMenuFunc(2);
+		break;
+	case '4':
+		GripperHeightMenuFunc(1);
+		break;
+	case '5':
+		GripperHeightMenuFunc(2);
+		break;
+	case '7':
+		GripperControlMenuFunc(1);
+		break;
+	case '8':
+		GripperControlMenuFunc(2);
+		break;
 	}
-	
+
 }
 
 void myDisplay() {
@@ -171,8 +165,8 @@ void myDisplay() {
 	glColor3f(0.0, 1.0, 1.0);
 	glTranslated(0, -(Robot_Arm.BaseHeight / My_Ortho.Value), 0);
 	glBegin(GL_LINE_LOOP);
-		glVertex3f(My_Ortho.X1 , 0, 0);
-		glVertex3f(My_Ortho.X2 , 0, 0);
+	glVertex3f(My_Ortho.X1, 0, 0);
+	glVertex3f(My_Ortho.X2, 0, 0);
 	glEnd();
 	// Draw Robot - Arm
 	DrawRobotArm();
@@ -182,6 +176,3 @@ void myDisplay() {
 	glFlush();
 	glutSwapBuffers();
 }/* End of myDisplay */
-
-
-
