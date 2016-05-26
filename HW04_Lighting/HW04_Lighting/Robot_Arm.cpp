@@ -31,6 +31,8 @@ void DrawRobotArm(void) {
 	// glTranslated 、 glRotatef ..等，每呼叫一次函式 都會累加
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	
 	// Draw Base G
 	glColor3f(0.0, 1.0, 0.0);
 	glTranslated(Robot_Position.Base_DP_X1, Robot_Position.Base_DP_Y1, 0);
@@ -71,29 +73,55 @@ void DrawRobotArm(void) {
 }
 
 void DrawCube(float Length, float Height, float Width) {
-
-	glBegin(GL_LINE_LOOP);
-		glVertex3f(Length, Height, Width);
-		glVertex3f(Length, Height, -Width);
-		glVertex3f(-Length, Height, -Width);
-		glVertex3f(-Length, Height, Width);
-		glVertex3f(Length, Height, Width);
-		glVertex3f(Length, -Height, Width);
-		glVertex3f(Length, -Height, -Width);
-		glVertex3f(-Length, -Height, -Width);
-		glVertex3f(-Length, -Height, Width);
-		glVertex3f(Length, -Height, Width);
-		glVertex3f(Length, -Height, -Width);
-		glVertex3f(Length, Height, -Width);
-		glVertex3f(-Length, Height, -Width);
-		glVertex3f(-Length, -Height, -Width);
-		glVertex3f(-Length, -Height, Width);
-		glVertex3f(-Length, Height, Width);
-	glEnd();
+	//glBegin(GL_LINE_LOOP);
+	GLfloat DrawRange[16][3] = { 
+		{ Length,Height,Width },{ Length,Height,-Width },{ -Length,Height,-Width },
+		{ -Length,Height,Width },{ Length,Height,Width },{ Length,-Height,Width },
+		{ Length,-Height,-Width },{ -Length,-Height,-Width },{ -Length,-Height,Width },
+		{ Length,-Height,Width },{ Length,-Height,-Width },{ Length,Height,-Width },
+		{ -Length,Height,-Width },{ -Length,-Height,-Width },{ -Length,-Height,Width },{ -Length,Height,Width } };
+	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };	
+	glBegin(GL_POLYGON);
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 3; j++) {
+				DrawPoint[j] = DrawRange[i][j];
+			}			
+			glNormal3fv(DrawPoint);
+			glVertex3fv(DrawPoint);
+		}
+	glEnd();	
+	// glBegin(GL_POLYGON);
+		// glVertex3f(Length, Height, Width);
+		// glVertex3f(Length, Height, -Width);
+		// glVertex3f(-Length, Height, -Width);
+		
+		// glVertex3f(-Length, Height, Width);
+		// glVertex3f(Length, Height, Width);
+		// glVertex3f(Length, -Height, Width);
+		
+		// glVertex3f(Length, -Height, -Width);
+		// glVertex3f(-Length, -Height, -Width);
+		// glVertex3f(-Length, -Height, Width);
+		
+		// glVertex3f(Length, -Height, Width);
+		// glVertex3f(Length, -Height, -Width);
+		// glVertex3f(Length, Height, -Width);
+		
+		// glVertex3f(-Length, Height, -Width);
+		// glVertex3f(-Length, -Height, -Width);
+		// glVertex3f(-Length, -Height, Width);
+		
+		// glVertex3f(-Length, Height, Width);
+	// glEnd();
 	
 }
 
-
+void DrawCube_Lib(float scaleX, float scaleY, float scaleZ) {
+	glPushMatrix();
+	glScalef(scaleX, scaleY, scaleZ);
+	glutWireCube(1.0);
+	glPopMatrix();
+}
 
 
 void X_DirectionMenuFunc(int id) {

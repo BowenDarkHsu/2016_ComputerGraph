@@ -10,6 +10,7 @@
 /* Robot_Arm library */
 #include "Robot_Arm.h"
 
+void DrawCube2(float scaleX, float scaleY, float scaleZ);
 
 void myInit();
 void myDisplay();
@@ -18,10 +19,12 @@ void myKeyboard(unsigned char key, int x, int y);
 void myMenuInit();
 void myMenu(int id);
 void OpenGL_Init(int argc, char** argv);
+void LightSource(void);
 RobotParameter Robot_Arm;
 RobotParameter Robot_Initial;
 glOrtho_Parameter My_Ortho;
 RobotArmPosition Robot_Position;
+glLookAt_Parameter My_LookAt;
 int main(int argc, char** argv){
 	DrawPosition();
 	OpenGL_Init(argc, argv);
@@ -43,7 +46,7 @@ void OpenGL_Init(int argc, char** argv) {
 	glutInitWindowPosition(500, 0);
 
 	// OpenGL - creates a window with an OpenGL context.
-	glutCreateWindow(" Homework -3- RobotArm ");
+	glutCreateWindow(" Homework -4- RobotArm Light ");
 
 	glutDisplayFunc(myDisplay);
 	glutMouseFunc(myMouse);
@@ -150,29 +153,137 @@ void myKeyboard(unsigned char key, int x, int y) {
 	case '8':
 		GripperControlMenuFunc(2);
 		break;
+	case 'z':
+		My_LookAt.X = My_LookAt.X + 0.1;
+		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
+		glutPostRedisplay();
+		break;
+	case 'x':
+		My_LookAt.X = My_LookAt.X - 0.1;
+		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
+		glutPostRedisplay();
+		break;
+	case 'c':
+		My_LookAt.Y = My_LookAt.Y + 0.1;
+		printf(" My_LookAt.Y = %f  \r\n", My_LookAt.Y);
+		glutPostRedisplay();
+		break;
+	case 'v':
+		My_LookAt.Y = My_LookAt.Y - 0.1;
+		printf(" My_LookAt.Y = %f  \r\n", My_LookAt.Y);
+		glutPostRedisplay();
+		break;
+	case 'b':
+		My_LookAt.Z = My_LookAt.Z + 0.1;
+		printf(" My_LookAt.Z = %f  \r\n", My_LookAt.Z);
+		glutPostRedisplay();
+		break;
+	case 'n':
+		My_LookAt.Z = My_LookAt.Z - 0.1;
+		printf(" My_LookAt.Z = %f  \r\n", My_LookAt.Z);
+		glutPostRedisplay();
+		break;
+	case 'f':
+		My_LookAt.Forward_X = My_LookAt.Forward_X + 0.1;
+		printf(" My_LookAt.Forward_X = %f  \r\n", My_LookAt.Forward_X);
+		glutPostRedisplay();
+		break;
+	case 'g':
+		My_LookAt.Forward_X = My_LookAt.Forward_X - 0.1;
+		printf(" My_LookAt.Forward_X = %f  \r\n", My_LookAt.Forward_X);
+		glutPostRedisplay();
+		break;
+	case 'h':
+		My_LookAt.Forward_Y = My_LookAt.Forward_Y + 0.1;
+		printf(" My_LookAt.Forward_Y = %f  \r\n", My_LookAt.Forward_Y);
+		glutPostRedisplay();
+		break;
+	case 'j':
+		My_LookAt.Forward_Y = My_LookAt.Forward_Y - 0.1;
+		printf(" My_LookAt.Forward_Y = %f  \r\n", My_LookAt.Forward_Y);
+		glutPostRedisplay();
+		break;
+	case 'k':
+		My_LookAt.Forward_Z = My_LookAt.Forward_Z + 0.1;
+		printf(" My_LookAt.Forward_Z = %f  \r\n", My_LookAt.Forward_Z);
+		glutPostRedisplay();
+		break;
+	case 'l':
+		My_LookAt.Forward_Z = My_LookAt.Forward_Z - 0.1;
+		printf(" My_LookAt.Forward_Z = %f  \r\n", My_LookAt.Forward_Z);
+		glutPostRedisplay();
+		break;
+	
+	default:
+		break;
 	}
 
 }
 
 void myDisplay() {
-
+	
 	/* clear the display */
-	glClear(GL_COLOR_BUFFER_BIT);
-
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	LightSource();
 	// Draw Horizontal
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	
 	glColor3f(0.0, 1.0, 1.0);
 	glTranslated(0, -(Robot_Arm.BaseHeight / My_Ortho.Value), 0);
+
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(My_Ortho.X1, 0, 0);
-	glVertex3f(My_Ortho.X2, 0, 0);
+		glVertex3f(My_Ortho.X1, 0, 0);
+		glVertex3f(My_Ortho.X2, 0, 0);
 	glEnd();
 	// Draw Robot - Arm
+	/*glColor3f(1.0, 0.0, 0.0);
+	DrawCube_Lib(0.4,0.4,0.4);
+	glColor3f(0.0, 1.0, 0.0);
+	glTranslated(0.1, 0.5, 0);
+	DrawCube_Lib(0.2, 0.6, 0.2);
+	glTranslated(0.5, 0.2, 0);
+	DrawCube_Lib(0.2, 1, 0.2);*/
+
+
+
 	DrawRobotArm();
+	//glTranslatef(1000, 100, -5);	
+	
+	printf("In Display \r\n");
+	
+	
+	
 
-
+	
 	// OpenGL -  ensures that the drawing command are actually executed.
 	glFlush();
 	glutSwapBuffers();
 }/* End of myDisplay */
+
+void LightSource(void) {
+	/* preprocesing define variable */
+	GLfloat mat_spec[] = { 1,1,1,1.0 };
+	GLfloat mat_shine[] = { 100.0 };
+	GLfloat light_ambient[] = { 0.0,1.0,0.0,1.0 };
+	GLfloat light_diffuse[] = { 1,1,1,1.0 };
+	GLfloat light_specular[] = { 1,1,1.0,1.0 };
+	GLfloat light_position[] = { 1.0,0.0,0.0,0.0 };
+	/* Step2 Create Light Source , Select model , decide position */
+	glShadeModel(GL_SMOOTH);
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_spec);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shine);
+
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
+}
+
