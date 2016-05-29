@@ -146,7 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawFunctions.h" />
-    <ClInclude Include="House.h" />
     <ClInclude Include="myDataStruct.h" />
     <ClInclude Include="myGL_Init.h" />
     <ClInclude Include="myLight.h" />
@@ -156,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawFunctions.cpp" />
-    <ClCompile Include="House.cpp" />
     <ClCompile Include="myGL_Init.cpp" />
     <ClCompile Include="myLight.cpp" />
     <ClCompile Include="Robot_Arm.cpp" />

@@ -9,6 +9,8 @@ void MovePosition(float x, float y, float z);
 void DrawCubeF(float Length, float Height, float Width);
 void DrawRoof(float Length, float Height, float Width);
 void DrawDoor(float Length, float Height, float Width, float door_L, float door_H);
+void DrawWindows(float Length, float Height, float Width, float door_L, float door_H, float W_L, float W_H);
+void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H);
 #ifdef __cplusplus
 }
 #endif

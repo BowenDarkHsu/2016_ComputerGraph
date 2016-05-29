@@ -5,6 +5,16 @@ void MovePosition(float x , float y , float z) {
 	glTranslated((x / My_Ortho.Value), (y / My_Ortho.Value), (z / My_Ortho.Value));
 }
 
+void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H) {
+	DrawCubeF(Length, Height, Width);
+
+	DrawDoor(Length, Height, Width, door_L, door_H);
+
+	DrawWindows(Length, Height, Width, door_L, door_H, Windows_L, Windows_H);
+
+	MovePosition(0, Height, 0);
+	DrawRoof(Length, Height, Width);
+}
 void DrawRoof (float Length, float Height, float Width) {
 	//glBegin(GL_LINE_LOOP);
 	GLfloat DrawRange[5][3] = {
@@ -78,7 +88,6 @@ void DrawRoof (float Length, float Height, float Width) {
 	}
 	glEnd();
 }
-
 void DrawCubeF(float Length, float Height, float Width) {
 	//glBegin(GL_LINE_LOOP);
 	GLfloat DrawRange[16][3] = {
@@ -135,6 +144,47 @@ void DrawDoor(float Length, float Height, float Width, float door_L , float door
 		DrawPoint[0] = DrawRange[i][0];
 		DrawPoint[1] = DrawRange[i][1];
 		DrawPoint[2] = DrawRange[i][2];
+		glNormal3fv(DrawPoint);
+		glVertex3fv(DrawPoint);
+	}
+	glEnd();
+}
+void DrawWindows(float Length, float Height, float Width, float door_L, float door_H , float W_L , float W_H) {
+
+	float Point_A[3] = { -Length + (Length - door_L / 2),-Height ,Width };								// A
+	float Point_B[3] = { -Length + (Length - door_L / 2),(-Height + Height) - door_H / 3  ,Width };		// B
+	float Point_C[3] = { -Length + (Length + door_L / 2),(-Height + Height) - door_H / 3 ,Width };		// C
+	float Point_D[3] = { -Length + (Length + door_L / 2),-Height  ,Width };								// D
+
+	GLfloat DrawRange0[5][3] = {
+		{ Point_C[0],Point_C[1] + door_H,Point_C[2] },										// Right Windows - Left-Down Corner  
+		{ Point_C[0] + W_L,Point_C[1] + door_H,Point_C[2] },										
+		{ Point_C[0] + W_L,Point_C[1] + door_H + W_H,Point_C[2] },										
+		{ Point_C[0] ,Point_C[1] + door_H + W_H,Point_C[2] },										
+		{ Point_C[0],Point_C[1] + door_H,Point_C[2] }										
+	};
+	GLfloat DrawRange1[5][3] = {		
+		{ Point_B[0],Point_B[1] + door_H,Point_B[2] },										// Left Windows - Right-Down Corner 
+		{ Point_B[0] - W_L ,Point_B[1] + door_H,Point_B[2] },										
+		{ Point_B[0] - W_L ,Point_B[1] + door_H + W_H ,Point_B[2] },										
+		{ Point_B[0]  ,Point_B[1] + door_H + W_H ,Point_B[2] },										
+		{ Point_B[0],Point_B[1] + door_H,Point_B[2] }										
+	};
+	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 5; i++) {
+		DrawPoint[0] = DrawRange0[i][0];
+		DrawPoint[1] = DrawRange0[i][1];
+		DrawPoint[2] = DrawRange0[i][2];
+		glNormal3fv(DrawPoint);
+		glVertex3fv(DrawPoint);
+	}
+	glEnd();
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 5; i++) {
+		DrawPoint[0] = DrawRange1[i][0];
+		DrawPoint[1] = DrawRange1[i][1];
+		DrawPoint[2] = DrawRange1[i][2];
 		glNormal3fv(DrawPoint);
 		glVertex3fv(DrawPoint);
 	}

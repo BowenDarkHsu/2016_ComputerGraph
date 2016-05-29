@@ -11,7 +11,6 @@
 #include "Robot_Arm.h"
 #include "myGL_Init.h"
 #include "myLight.h"
-#include "House.h"
 #include "myDataStruct.h"
 #include "DrawFunctions.h"
 void myDisplay();
@@ -71,11 +70,7 @@ void myDisplay() {
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		glColor3f(0.0, 1.0, 0.0);
 
-		DrawCubeF(1.4,2,1);
-		glColor3f(0.0, 0.0, 1.0);
-		DrawDoor(1.4, 2, 1 , 0.8 , 0.6);
-		MovePosition(0, 2, 0);
-		DrawRoof(1.4,2,1);
+		DrawHouse(1.4,1.4,1,0.6,0.5,0.7,0.7);
 		
 	glPopMatrix();
 
