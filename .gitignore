@@ -255,3 +255,10 @@ paket-files/
 .idea/
 *.sln.iml
 
+# pdf and ppt and zip
+*.pdf
+*.ppt
+*.pptx
+*.zip
+*.7z
+*.rar
