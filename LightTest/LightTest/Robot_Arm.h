@@ -7,9 +7,9 @@ extern "C" {
 
 
 typedef struct glLookAt_Parameter {
-	float X = 0.1;
-	float Y = -0.2;
-	float Z = 0.3;
+	float X = 0.3;
+	float Y = 0.3;
+	float Z = 0.5;
 	float Watch_X = 0.0;
 	float Watch_Y = 0.0;
 	float Watch_Z = 0.0;
@@ -91,7 +91,6 @@ extern RobotParameter Robot_Initial;
 extern glOrtho_Parameter My_Ortho;
 extern RobotArmPosition Robot_Position;
 extern glLookAt_Parameter My_LookAt;
-extern glLookAt_Parameter Initial_LookAt;
 void DrawPosition(void);
 void DrawRobotArm(void);
 void DrawCube(float Length, float Height, float Width);

@@ -7,224 +7,34 @@
 #include <windows.h>
 /* OpenGL library */
 #include "glut.h"
-/* Robot_Arm library */
+/* my library */
 #include "Robot_Arm.h"
+#include "myGL_Init.h"
+#include "myLight.h"
 
-void DrawCube2(float scaleX, float scaleY, float scaleZ);
-
-void myInit();
 void myDisplay();
-void myMouse(int button, int state, int x, int y);
-void myKeyboard(unsigned char key, int x, int y);
-void myMenuInit();
-void myMenu(int id);
-void OpenGL_Init(int argc, char** argv);
 void LightSource(void);
+void LightSource2(void);
+glLight_Parameter mySource_1;
+glMaterial_Parameter myMaterial_1;
 RobotParameter Robot_Arm;
 RobotParameter Robot_Initial;
 glOrtho_Parameter My_Ortho;
 RobotArmPosition Robot_Position;
 glLookAt_Parameter My_LookAt;
+glLookAt_Parameter Initial_LookAt;
 int main(int argc, char** argv){
 	DrawPosition();
 	OpenGL_Init(argc, argv);
     return 0;
 }
 
-void OpenGL_Init(int argc, char** argv) {
-
-	// OpenGL - initializes GLUT and should be called before any other GLUT routine.
-	glutInit(&argc, (char **)argv);
-
-	// OpenGL - specifies the color model (RGB or color-index color model)
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-
-	// OpenGL - specifies the size, in pixels, of your window.
-	glutInitWindowSize(1024, 768);
-
-	// OpenGL - specifies the screen location for the upper - left corner
-	glutInitWindowPosition(500, 0);
-
-	// OpenGL - creates a window with an OpenGL context.
-	glutCreateWindow(" Homework -4- RobotArm Light ");
-
-	glutDisplayFunc(myDisplay);
-	glutMouseFunc(myMouse);
-	glutKeyboardFunc(myKeyboard);
-	myInit();
-
-	glutMainLoop();
-}/* End of OpenGL_Init */
-
-void myInit() {
-	/* set color */
-	// OpenGL -  establishes what color the window will be cleared to.
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	// OpenGL -  establishes what color to use for drawing objects.
-	glColor3f(1.0, 1.0, 1.0);
-
-	myMenuInit();
-	glOrtho(My_Ortho.X1, My_Ortho.X2, My_Ortho.Y1, My_Ortho.Y2, My_Ortho.Z1, My_Ortho.Z2);
-
-	myDisplay();
-}/* End of myInit */
-
-void myMenuInit() {
-	int X_Direction_menu = glutCreateMenu(X_DirectionMenuFunc);
-	glutAddMenuEntry("Increase X (ß÷±∂¡‰ D)", 1);
-	glutAddMenuEntry("Decrease X (ß÷±∂¡‰ A)", 2);
-
-	int Y_Direction_menu = glutCreateMenu(Y_DirectionMenuFunc);
-	glutAddMenuEntry("Increase Y (ß÷±∂¡‰ W)", 1);
-	glutAddMenuEntry("Decrease Y (ß÷±∂¡‰ S)", 2);
-
-	int ArmRotation_menu = glutCreateMenu(ArmRotationMenuFunc);
-	glutAddMenuEntry("Clockwise (ß÷±∂¡‰ 1)", 1);
-	glutAddMenuEntry("CounterClockwise (ß÷±∂¡‰ 2)", 2);
-
-	int GripperHeight_menu = glutCreateMenu(GripperHeightMenuFunc);
-	glutAddMenuEntry("Up (ß÷±∂¡‰ 4)", 1);
-	glutAddMenuEntry("Down (ß÷±∂¡‰ 5)", 2);
-
-	int GripperControl_menu = glutCreateMenu(GripperControlMenuFunc);
-	glutAddMenuEntry("Open (ß÷±∂¡‰ 7)", 1);
-	glutAddMenuEntry("Close (ß÷±∂¡‰ 8)", 2);
-
-
-	glutCreateMenu(myMenu);
-	glutAddSubMenu("X Direction", X_Direction_menu);
-	glutAddSubMenu("Y Direction", Y_Direction_menu);
-	glutAddSubMenu("Arm-Rotation", ArmRotation_menu);
-	glutAddSubMenu("Gripper Height", GripperHeight_menu);
-	glutAddSubMenu("Gripper Control", GripperControl_menu);
-	glutAddMenuEntry("Home", 1);
-	glutAddMenuEntry("Quit", 2);
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
-}
-
-void myMenu(int id) {
-	switch (id) {
-	case 1:
-		Robot_Arm = Robot_Initial;
-		DrawPosition();
-		glutPostRedisplay();
-		break;
-	case 2: exit(0);
-	}/* End of switch */
-}
-
-
-void myMouse(int button, int state, int x, int y) {
-	if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)) {
-		glutPostRedisplay();
-	}/* End of if*/
-}
-
-void myKeyboard(unsigned char key, int x, int y) {
-
-	switch (key) {
-	case 'w':
-		Y_DirectionMenuFunc(1);
-		break;
-	case 's':
-		Y_DirectionMenuFunc(2);
-		break;
-	case 'a':
-		X_DirectionMenuFunc(2);
-		break;
-	case 'd':
-		X_DirectionMenuFunc(1);
-		break;
-	case '1':
-		ArmRotationMenuFunc(1);
-		break;
-	case '2':
-		ArmRotationMenuFunc(2);
-		break;
-	case '4':
-		GripperHeightMenuFunc(1);
-		break;
-	case '5':
-		GripperHeightMenuFunc(2);
-		break;
-	case '7':
-		GripperControlMenuFunc(1);
-		break;
-	case '8':
-		GripperControlMenuFunc(2);
-		break;
-	case 'z':
-		My_LookAt.X = My_LookAt.X + 0.1;
-		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
-		glutPostRedisplay();
-		break;
-	case 'x':
-		My_LookAt.X = My_LookAt.X - 0.1;
-		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
-		glutPostRedisplay();
-		break;
-	case 'c':
-		My_LookAt.Y = My_LookAt.Y + 0.1;
-		printf(" My_LookAt.Y = %f  \r\n", My_LookAt.Y);
-		glutPostRedisplay();
-		break;
-	case 'v':
-		My_LookAt.Y = My_LookAt.Y - 0.1;
-		printf(" My_LookAt.Y = %f  \r\n", My_LookAt.Y);
-		glutPostRedisplay();
-		break;
-	case 'b':
-		My_LookAt.Z = My_LookAt.Z + 0.1;
-		printf(" My_LookAt.Z = %f  \r\n", My_LookAt.Z);
-		glutPostRedisplay();
-		break;
-	case 'n':
-		My_LookAt.Z = My_LookAt.Z - 0.1;
-		printf(" My_LookAt.Z = %f  \r\n", My_LookAt.Z);
-		glutPostRedisplay();
-		break;
-	case 'f':
-		My_LookAt.Forward_X = My_LookAt.Forward_X + 0.1;
-		printf(" My_LookAt.Forward_X = %f  \r\n", My_LookAt.Forward_X);
-		glutPostRedisplay();
-		break;
-	case 'g':
-		My_LookAt.Forward_X = My_LookAt.Forward_X - 0.1;
-		printf(" My_LookAt.Forward_X = %f  \r\n", My_LookAt.Forward_X);
-		glutPostRedisplay();
-		break;
-	case 'h':
-		My_LookAt.Forward_Y = My_LookAt.Forward_Y + 0.1;
-		printf(" My_LookAt.Forward_Y = %f  \r\n", My_LookAt.Forward_Y);
-		glutPostRedisplay();
-		break;
-	case 'j':
-		My_LookAt.Forward_Y = My_LookAt.Forward_Y - 0.1;
-		printf(" My_LookAt.Forward_Y = %f  \r\n", My_LookAt.Forward_Y);
-		glutPostRedisplay();
-		break;
-	case 'k':
-		My_LookAt.Forward_Z = My_LookAt.Forward_Z + 0.1;
-		printf(" My_LookAt.Forward_Z = %f  \r\n", My_LookAt.Forward_Z);
-		glutPostRedisplay();
-		break;
-	case 'l':
-		My_LookAt.Forward_Z = My_LookAt.Forward_Z - 0.1;
-		printf(" My_LookAt.Forward_Z = %f  \r\n", My_LookAt.Forward_Z);
-		glutPostRedisplay();
-		break;
-	
-	default:
-		break;
-	}
-
-}
-
 void myDisplay() {
 	
 	/* clear the display */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	LightSource();
+	
+	
 	// Draw Horizontal
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -233,9 +43,16 @@ void myDisplay() {
 	glColor3f(0.0, 1.0, 1.0);
 	glTranslated(0, -(Robot_Arm.BaseHeight / My_Ortho.Value), 0);
 
-	glBegin(GL_LINE_LOOP);
+	/*glBegin(GL_LINE_LOOP);
 		glVertex3f(My_Ortho.X1, 0, 0);
 		glVertex3f(My_Ortho.X2, 0, 0);
+	glEnd();*/
+	glBegin(GL_POLYGON);
+	glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1);
+	glVertex3f(-My_Ortho.X1, 0, My_Ortho.Z1);
+	glVertex3f(-My_Ortho.X1, 0, -My_Ortho.Z1);
+	glVertex3f(My_Ortho.X1, 0, -My_Ortho.Z1);
+	glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1);
 	glEnd();
 	// Draw Robot - Arm
 	/*glColor3f(1.0, 0.0, 0.0);
@@ -245,45 +62,17 @@ void myDisplay() {
 	DrawCube_Lib(0.2, 0.6, 0.2);
 	glTranslated(0.5, 0.2, 0);
 	DrawCube_Lib(0.2, 1, 0.2);*/
-
-
-
+	
 	DrawRobotArm();
 	//glTranslatef(1000, 100, -5);	
 	
 	printf("In Display \r\n");
 	
-	
-	
-
+	LightSource();
+	LightSource2();
+	//LightSource3();
 	
 	// OpenGL -  ensures that the drawing command are actually executed.
 	glFlush();
 	glutSwapBuffers();
 }/* End of myDisplay */
-
-void LightSource(void) {
-	/* preprocesing define variable */
-	GLfloat mat_spec[] = { 1,1,1,1.0 };
-	GLfloat mat_shine[] = { 100.0 };
-	GLfloat light_ambient[] = { 0.0,1.0,0.0,1.0 };
-	GLfloat light_diffuse[] = { 1,1,1,1.0 };
-	GLfloat light_specular[] = { 1,1,1.0,1.0 };
-	GLfloat light_position[] = { 1.0,0.0,0.0,0.0 };
-	/* Step2 Create Light Source , Select model , decide position */
-	glShadeModel(GL_SMOOTH);
-
-	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_spec);
-	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shine);
-
-
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_DEPTH_TEST);
-}
-

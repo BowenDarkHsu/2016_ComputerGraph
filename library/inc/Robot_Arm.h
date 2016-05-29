@@ -3,8 +3,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "glut.h"
-
+#include "C:\Users\BowenHsu\Documents\ComputerGraph\library\opengl\glut.h"
 
 typedef struct glLookAt_Parameter {
 	float X = 0.1;
@@ -91,7 +90,6 @@ extern RobotParameter Robot_Initial;
 extern glOrtho_Parameter My_Ortho;
 extern RobotArmPosition Robot_Position;
 extern glLookAt_Parameter My_LookAt;
-extern glLookAt_Parameter Initial_LookAt;
 void DrawPosition(void);
 void DrawRobotArm(void);
 void DrawCube(float Length, float Height, float Width);

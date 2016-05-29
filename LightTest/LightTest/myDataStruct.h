@@ -1,5 +1,5 @@
-#ifndef __ROBOT_ARM_H
-#define __ROBOT_ARM_H
+#ifndef __MYDATASTRUCT_H
+#define __MYDATASTRUCT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -7,9 +7,9 @@ extern "C" {
 
 
 typedef struct glLookAt_Parameter {
-	float X = 0.1;
-	float Y = -0.2;
-	float Z = 0.3;
+	float X = 0.3;
+	float Y = 0.3;
+	float Z = 0.5;
 	float Watch_X = 0.0;
 	float Watch_Y = 0.0;
 	float Watch_Z = 0.0;
@@ -86,22 +86,12 @@ typedef struct RobotArmPosition {
 	float Link6_DP_Y1;
 
 };
+
 extern RobotParameter Robot_Arm;
 extern RobotParameter Robot_Initial;
 extern glOrtho_Parameter My_Ortho;
 extern RobotArmPosition Robot_Position;
 extern glLookAt_Parameter My_LookAt;
-extern glLookAt_Parameter Initial_LookAt;
-void DrawPosition(void);
-void DrawRobotArm(void);
-void DrawCube(float Length, float Height, float Width);
-void DrawCube_Lib(float scaleX, float scaleY, float scaleZ);
-
-void X_DirectionMenuFunc(int id);
-void Y_DirectionMenuFunc(int id);
-void ArmRotationMenuFunc(int id);
-void GripperHeightMenuFunc(int id);
-void GripperControlMenuFunc(int id);
 #ifdef __cplusplus
 }
 #endif
