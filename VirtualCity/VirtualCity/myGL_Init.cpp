@@ -17,7 +17,7 @@ void OpenGL_Init(int argc, char** argv) {
 	glutInitWindowPosition(500, 0);
 
 	// OpenGL - creates a window with an OpenGL context.
-	glutCreateWindow(" Homework -4- RobotArm Light ");
+	glutCreateWindow(" Final Project - Virtual City ");
 
 	glutDisplayFunc(myDisplay);
 	glutMouseFunc(myMouse);
@@ -35,7 +35,7 @@ void myInit() {
 	glColor3f(1.0, 1.0, 1.0);
 
 	myMenuInit();
-	glOrtho(My_Ortho.X1, My_Ortho.X2, My_Ortho.Y1, My_Ortho.Y2, My_Ortho.Z1, My_Ortho.Z2);
+	glOrtho(My_Ortho.X1 , My_Ortho.X2  , My_Ortho.Y1, My_Ortho.Y2, My_Ortho.Z1, My_Ortho.Z2);
 
 	/* Init Light Value*/
 	//InitLight_Ambient(mySource_1);
@@ -191,6 +191,36 @@ void myKeyboard(unsigned char key, int x, int y) {
 	case 'l':
 		My_LookAt.Forward_Z = My_LookAt.Forward_Z - 0.1;
 		printf(" My_LookAt.Forward_Z = %f  \r\n", My_LookAt.Forward_Z);
+		glutPostRedisplay();
+		break;
+	case 'r':
+		My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		glutPostRedisplay();
+		break;
+	case 't':
+		My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		glutPostRedisplay();
+		break;
+	case 'y':
+		My_LookAt.Watch_Y = My_LookAt.Watch_Y + 0.1;
+		printf(" My_LookAt.Watch_Y = %f  \r\n", My_LookAt.Watch_Y);
+		glutPostRedisplay();
+		break;
+	case 'u':
+		My_LookAt.Watch_Y = My_LookAt.Watch_Y - 0.1;
+		printf(" My_LookAt.Watch_Y = %f  \r\n", My_LookAt.Watch_Y);
+		glutPostRedisplay();
+		break;
+	case 'i':
+		My_LookAt.Watch_Z = My_LookAt.Watch_Z + 0.1;
+		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
+		glutPostRedisplay();
+		break;
+	case 'o':
+		My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1;
+		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		glutPostRedisplay();
 		break;
 	//	/* Light Source Diffuse */

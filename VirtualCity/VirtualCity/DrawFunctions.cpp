@@ -190,3 +190,38 @@ void DrawWindows(float Length, float Height, float Width, float door_L, float do
 	}
 	glEnd();
 }
+void DrawFixWindows(void) {
+	GLfloat DrawRange[5][3] = {
+		{ 0,0,0 },{ -20,0,0 },{ -20,20,0 },{ 0,20,0 },{ 0,0,0 }
+	};
+
+	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
+	MovePosition(10, 9, 0);
+	glColor3f(1.0, 1.0, 1.0);
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 5; i++) {
+		DrawPoint[0] = DrawRange[i][0];
+		DrawPoint[1] = DrawRange[i][1];
+		DrawPoint[2] = DrawRange[i][2];
+		glNormal3fv(DrawPoint);
+		glVertex3fv(DrawPoint);
+	}
+	glEnd();
+}
+void DrawFixPlane(void) {
+	GLfloat DrawRange[5][3] = {
+		{ -10,0,0 },{ 10,0,0 }, { -10,5,0 },{ -10,-5,0 }
+		//{ 100,100,0 },{ -100,100,0 },{ -100,-100,0 },{ 100,-100,0 },{ 100,100,0 }
+	};
+	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
+	glColor3f(0.0, 1.0, 0.0);
+	glBegin(GL_LINE);
+	for (int i = 0; i < 4; i++) {
+		DrawPoint[0] = DrawRange[i][0];
+		DrawPoint[1] = DrawRange[i][1];
+		DrawPoint[2] = DrawRange[i][2];
+		glNormal3fv(DrawPoint);
+		glVertex3fv(DrawPoint);
+	}
+	glEnd();
+}

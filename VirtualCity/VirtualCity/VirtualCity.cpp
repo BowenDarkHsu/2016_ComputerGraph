@@ -49,13 +49,17 @@ void myDisplay() {
 		glVertex3f(My_Ortho.X2, 0, 0);
 		glEnd();
 	glPopMatrix();
-	/*glBegin(GL_POLYGON);
-	glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1);
-	glVertex3f(-My_Ortho.X1, 0, My_Ortho.Z1);
-	glVertex3f(-My_Ortho.X1, 0, -My_Ortho.Z1);
-	glVertex3f(My_Ortho.X1, 0, -My_Ortho.Z1);
-	glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1);
-	glEnd();*/
+	/*glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		glColor3f(0.0, 1.0, 0.0);
+		glBegin(GL_POLYGON);
+		glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1);
+		glVertex3f(-My_Ortho.X1, 0, My_Ortho.Z1);
+		glVertex3f(-My_Ortho.X1, 0, -My_Ortho.Z1);
+		glVertex3f(My_Ortho.X1, 0, -My_Ortho.Z1);
+		glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1);
+	glEnd();
+	glPopMatrix();*/
 	// Draw Robot - Arm
 	/*glColor3f(1.0, 0.0, 0.0);
 	DrawCube_Lib(0.4,0.4,0.4);
@@ -69,11 +73,35 @@ void myDisplay() {
 	glPushMatrix();
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		glColor3f(0.0, 1.0, 0.0);
-
 		DrawHouse(1.4,1.4,1,0.6,0.5,0.7,0.7);
-		
+
 	glPopMatrix();
 
+	glPushMatrix();
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		MovePosition(4, 0, 0);
+		glColor3f(1.0, 0.0, 0.0);
+		DrawHouse(1, 1, 1, 0.4, 0.3, 0.5, 0.5);
+	glPopMatrix();
+
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		MovePosition(-4, 0, 0);
+		glColor3f(0.0, 0.0, 1.0);
+		DrawHouse(1, 1, 1, 0.4, 0.3, 0.5, 0.5);
+	glPopMatrix();
+
+	/*glPushMatrix();
+		MovePosition(-10, -10, 0);
+		glColor3f(0.0, 0.0, 1.0);
+		DrawHouse(1, 1, 1, 0.4, 0.3, 0.5, 0.5);
+	glPopMatrix();*/
+	glPushMatrix();
+		DrawFixWindows();		
+	glPopMatrix();
+
+	
+	
 	/*glPushMatrix();
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		glColor3f(0.0, 0.0, 1.0);

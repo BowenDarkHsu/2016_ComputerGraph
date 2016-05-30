@@ -18,13 +18,13 @@ typedef struct glLookAt_Parameter {
 	float Forward_Z = 0.0;
 };
 typedef struct glOrtho_Parameter {
-	float X1 = -5;
-	float X2 = 5;
-	float Y1 = -5;
-	float Y2 = 5;
-	float Z1 = -5;
-	float Z2 = 5;
-	float Value = 5;
+	float X1 = -10;
+	float X2 = 10;
+	float Y1 = -10;
+	float Y2 = 10;
+	float Z1 = -10;
+	float Z2 = 10;
+	float Value = 10;
 };
 
 /* Light Source Data Struct */
