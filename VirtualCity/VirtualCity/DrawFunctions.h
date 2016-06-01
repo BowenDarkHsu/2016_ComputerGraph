@@ -10,6 +10,8 @@ void MovePosition(float x, float y, float z);
 void CreateNode(void);
 void PreorderTravesal(TreeNode *root);
 void DrawTorso(void);
+void DrawHead(void);
+void DrawLUA(void);
 /* End of Modeling Function */
 void DrawCubeF(float Length, float Height, float Width);
 void DrawRoof(float Length, float Height, float Width);

@@ -72,22 +72,22 @@ typedef struct glMaterial_Parameter {
 /* Object Data Structure */
 typedef struct TreeNode{
 	GLfloat m[16];
-	void(*f);
-	TreeNode* Child;
-	TreeNode* Sibling;
+	void (*f)();
+	struct TreeNode* Child;
+	struct TreeNode* Sibling;
 }TreeNode;
 
 typedef struct HumanObject {
-	TreeNode* Torso;
-	TreeNode* Head;
-	TreeNode* LeftUpperArm;
-	TreeNode* LeftLowerArm;
-	TreeNode* RightUpperArm;
-	TreeNode* RightLowerArm;
-	TreeNode* LeftUpperLeg;
-	TreeNode* LeftLowerLeg;
-	TreeNode* RightUpperLeg;
-	TreeNode* RightLowerLeg;
+	TreeNode Torso;
+	TreeNode Head;
+	TreeNode LeftUpperArm;
+	TreeNode LeftLowerArm;
+	TreeNode RightUpperArm;
+	TreeNode RightLowerArm;
+	TreeNode LeftUpperLeg;
+	TreeNode LeftLowerLeg;
+	TreeNode RightUpperLeg;
+	TreeNode RightLowerLeg;
 }HumanObject;
 
 extern HumanObject MajorRole;

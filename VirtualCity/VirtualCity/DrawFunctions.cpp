@@ -8,17 +8,31 @@ void MovePosition(float x , float y , float z) {
 /* Modeling Function */
 void CreateNode(void) {
 	glLoadIdentity();
-	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Torso->m);
-	MajorRole.Torso->f = DrawTorso;
-	MajorRole.Torso->Child = NULL;
-	MajorRole.Torso->Sibling = MajorRole.Head;
+	MovePosition(0, 0, 9);
+	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Torso.m);
+	MajorRole.Torso.f = DrawTorso;
+	MajorRole.Torso.Child = &MajorRole.Head;
+	MajorRole.Torso.Sibling = NULL;
+	glLoadIdentity();
+	MovePosition(10, 10, 0);
+	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Head.m);
+	MajorRole.Head.f = DrawHead;
+	MajorRole.Head.Child = NULL;
+	MajorRole.Head.Sibling = &MajorRole.LeftUpperArm;
+	glLoadIdentity();
+	MovePosition(-10, 0, 5);
+	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.LeftUpperArm.m);
+	MajorRole.LeftUpperArm.f = DrawLUA;
+	MajorRole.LeftUpperArm.Child = NULL;
+	MajorRole.LeftUpperArm.Sibling = NULL;
 
 }
 void PreorderTravesal(TreeNode *root) {
+
 	if (root == NULL) return;
 	glPushMatrix();
-		glMultMatrixf(root->m);
-		root->f;
+		//glMultMatrixf(root->m);
+		root->f();
 		if (root->Child != NULL)
 			PreorderTravesal(root->Child);
 	glPopMatrix();
@@ -27,13 +41,26 @@ void PreorderTravesal(TreeNode *root) {
 }
 /* End of Modeling Function */
 void DrawTorso() {
-	glPushMatrix();
-	glColor3f(1.0f, 1.0f, 0.0f);
-	glRasterPos3f(My_Ortho.X1 + 2, My_Ortho.Y2 - 2, 0);
-	drawString(string1);
-	glPopMatrix();
-}
 
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		glColor3f(0.0f, 1.0f, 0.0f);
+		DrawCubeF(1,1,1);
+
+}
+void DrawHead() {
+
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		DrawCubeF(4, 4, 4);
+	
+}
+void DrawLUA() {
+
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	DrawCubeF(8, 8, 8);
+	
+}
 void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H) {
 	DrawCubeF(Length, Height, Width);
 

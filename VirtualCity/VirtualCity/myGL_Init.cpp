@@ -93,7 +93,8 @@ void myMenuInit() {
 	glutAddSubMenu("Camera Position Y", LookAt_Y_menu);
 	glutAddSubMenu("Camera Position Z", LookAt_Z_menu);
 	glutAddMenuEntry("Home", 1);
-	glutAddMenuEntry("Quit", 2);
+	glutAddMenuEntry("Viewer0", 2);
+	glutAddMenuEntry("Quit", 3);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
@@ -105,7 +106,13 @@ void myMenu(int id) {
 		My_LookAt = Initial_LookAt;
 		glutPostRedisplay();
 		break;
-	case 2: exit(0);
+	case 2:
+		My_LookAt.X = 0.2;
+		My_LookAt.Y = -0.3;
+		My_LookAt.Z = 0.1;
+		glutPostRedisplay();
+		break;
+	case 3: exit(0);
 	}/* End of switch */
 }
 

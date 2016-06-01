@@ -30,7 +30,7 @@ glOrtho_Parameter My_Ortho;
 RobotArmPosition Robot_Position;
 glLookAt_Parameter My_LookAt;
 glLookAt_Parameter Initial_LookAt;
-HumanObject MajorRole;
+HumanObject MajorRole ;
 
 float v0[3], v1[3];
 float mo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
@@ -46,7 +46,7 @@ void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD 
 }
 int main(int argc, char** argv) {	
 	// set Vitality Call Back Fun Timer : 3 sec
-	SetTimer(NULL, 0, 3000, VitalityTimeCallBack);
+	//SetTimer(NULL, 0, 3000, VitalityTimeCallBack);
 	
 	//KillTimer(NULL, 1);
 	DrawPosition();
@@ -110,7 +110,8 @@ void myDisplay() {
 	/*glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();*/
 	DrawVitality();
-	
+	CreateNode();
+	PreorderTravesal(&MajorRole.Torso);
 	/*glPushMatrix();
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		glColor3f(0.0, 0.0, 1.0);
