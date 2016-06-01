@@ -4,8 +4,10 @@
 extern "C" {
 #endif
 #include "glut.h"
+/* __ Data Structure */
+/* End of __ Data Structure */
 
-
+/* Original Data Struct */
 typedef struct glLookAt_Parameter {
 	float X = 0.1;
 	float Y = -0.2;
@@ -18,14 +20,15 @@ typedef struct glLookAt_Parameter {
 	float Forward_Z = 0.0;
 };
 typedef struct glOrtho_Parameter {
-	float X1 = -10;
-	float X2 = 10;
-	float Y1 = -10;
-	float Y2 = 10;
-	float Z1 = -10;
-	float Z2 = 10;
-	float Value = 10;
+	float X1 = -20;
+	float X2 = 20;
+	float Y1 = -20;
+	float Y2 = 20;
+	float Z1 = -20;
+	float Z2 = 20;
+	float Value = 20;
 };
+/* End of Original Data Struct */
 
 /* Light Source Data Struct */
 typedef struct Ambient_Parameter {
@@ -65,6 +68,30 @@ typedef struct glMaterial_Parameter {
 	GLfloat Shininess;
 };
 /* End of Light Source Data Struct */
+
+/* Object Data Structure */
+typedef struct TreeNode{
+	GLfloat m[16];
+	void(*f);
+	TreeNode* Child;
+	TreeNode* Sibling;
+}TreeNode;
+
+typedef struct HumanObject {
+	TreeNode* Torso;
+	TreeNode* Head;
+	TreeNode* LeftUpperArm;
+	TreeNode* LeftLowerArm;
+	TreeNode* RightUpperArm;
+	TreeNode* RightLowerArm;
+	TreeNode* LeftUpperLeg;
+	TreeNode* LeftLowerLeg;
+	TreeNode* RightUpperLeg;
+	TreeNode* RightLowerLeg;
+}HumanObject;
+
+extern HumanObject MajorRole;
+/* End of Object Data Structure */
 
 extern glOrtho_Parameter My_Ortho;
 extern glLookAt_Parameter My_LookAt;

@@ -1,8 +1,37 @@
 #include "stdafx.h"
 #include "DrawFunctions.h"
-
+#include "glFunctions.h"
 void MovePosition(float x , float y , float z) {
-	glTranslated((x / My_Ortho.Value), (y / My_Ortho.Value), (z / My_Ortho.Value));
+	glTranslated((x / My_Ortho.X2), (y / My_Ortho.Y2), (z / My_Ortho.Z2));
+}
+
+/* Modeling Function */
+void CreateNode(void) {
+	glLoadIdentity();
+	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Torso->m);
+	MajorRole.Torso->f = DrawTorso;
+	MajorRole.Torso->Child = NULL;
+	MajorRole.Torso->Sibling = MajorRole.Head;
+
+}
+void PreorderTravesal(TreeNode *root) {
+	if (root == NULL) return;
+	glPushMatrix();
+		glMultMatrixf(root->m);
+		root->f;
+		if (root->Child != NULL)
+			PreorderTravesal(root->Child);
+	glPopMatrix();
+	if (root->Sibling != NULL)
+		PreorderTravesal(root->Sibling);
+}
+/* End of Modeling Function */
+void DrawTorso() {
+	glPushMatrix();
+	glColor3f(1.0f, 1.0f, 0.0f);
+	glRasterPos3f(My_Ortho.X1 + 2, My_Ortho.Y2 - 2, 0);
+	drawString(string1);
+	glPopMatrix();
 }
 
 void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H) {
@@ -24,17 +53,17 @@ void DrawRoof (float Length, float Height, float Width) {
 	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
 
 	GLfloat Draw_Triangle[12][3] = {
-		{ Length , 0 , Width } ,{ -Length , 0 , Width } ,{ ((-Length) / 4 / My_Ortho.Value) , Height , ((-Width) / 2 / My_Ortho.Value) } , // ABM
-		{ Length , 0 , Width } ,{ Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.Value) , Height , ((-Width) / 2 / My_Ortho.Value) } , // ADM
-		{ -Length , 0 , Width } ,{ -Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.Value) , Height , ((-Width) / 2 / My_Ortho.Value) } , // BCM
-		{ -Length , 0 , -Width } ,{ Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.Value) , Height , ((-Width) / 2 / My_Ortho.Value) } , // CDM
+		{ Length , 0 , Width } ,{ -Length , 0 , Width } ,{ ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) } , // ABM
+		{ Length , 0 , Width } ,{ Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) } , // ADM
+		{ -Length , 0 , Width } ,{ -Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) } , // BCM
+		{ -Length , 0 , -Width } ,{ Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) } , // CDM
 	};
 
 	GLfloat Draw_A[3] = { Length , 0 , Width };
 	GLfloat Draw_B[3] = { -Length , 0 , Width };
 	GLfloat Draw_C[3] = { -Length , 0 , -Width };
 	GLfloat Draw_D[3] = { Length , 0 , -Width };
-	GLfloat Draw_M[3] = { ((-Length)/4 / My_Ortho.Value) , Height , ((-Width)/2/ My_Ortho.Value) };
+	GLfloat Draw_M[3] = { ((-Length)/4 / My_Ortho.X2) , Height , ((-Width)/2/ My_Ortho.Z2) };
 
 
 	glBegin(GL_POLYGON);
@@ -209,19 +238,26 @@ void DrawFixWindows(void) {
 	glEnd();
 }
 void DrawFixPlane(void) {
-	GLfloat DrawRange[5][3] = {
-		{ -10,0,0 },{ 10,0,0 }, { -10,5,0 },{ -10,-5,0 }
-		//{ 100,100,0 },{ -100,100,0 },{ -100,-100,0 },{ 100,-100,0 },{ 100,100,0 }
-	};
-	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
-	glColor3f(0.0, 1.0, 0.0);
-	glBegin(GL_LINE);
-	for (int i = 0; i < 4; i++) {
-		DrawPoint[0] = DrawRange[i][0];
-		DrawPoint[1] = DrawRange[i][1];
-		DrawPoint[2] = DrawRange[i][2];
-		glNormal3fv(DrawPoint);
-		glVertex3fv(DrawPoint);
-	}
-	glEnd();
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		glColor3f(0.4, 0.4, 0.4);
+		glBegin(GL_POLYGON);
+			glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1); //--
+			glVertex3f(My_Ortho.X2, 0, My_Ortho.Z1); //+-
+			glVertex3f(My_Ortho.X2, 0, My_Ortho.Z2); //++ 
+			glVertex3f(My_Ortho.X1, 0, My_Ortho.Z2); //-+ 
+		glEnd();
+	glPopMatrix();
+}
+void DrawVitality(void) {
+	glPushMatrix();
+		glColor3f(1.0f, 1.0f, 0.0f);
+		glRasterPos3f(My_Ortho.X1+2, My_Ortho.Y2-2, 0);
+		drawString(string1);
+	glPopMatrix();
+	glPushMatrix();
+		glColor3f(1.0f, 1.0f, 0.0f);
+		glRasterPos3f(My_Ortho.X1+4, My_Ortho.Y2-2, 0);
+		drawString(string2);
+	glPopMatrix();
 }

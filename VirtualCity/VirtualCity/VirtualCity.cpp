@@ -2,9 +2,13 @@
 //
 
 #include "stdafx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <iostream>
 #include <math.h>
 #include <windows.h>
+#include <time.h>
 /* OpenGL library */
 #include "glut.h"
 /* my library */
@@ -13,6 +17,8 @@
 #include "myLight.h"
 #include "myDataStruct.h"
 #include "DrawFunctions.h"
+#include "glFunctions.h"
+
 void myDisplay();
 void LightSource(void);
 void LightSource2(void);
@@ -24,61 +30,39 @@ glOrtho_Parameter My_Ortho;
 RobotArmPosition Robot_Position;
 glLookAt_Parameter My_LookAt;
 glLookAt_Parameter Initial_LookAt;
-int main(int argc, char** argv) {
+HumanObject MajorRole;
+
+float v0[3], v1[3];
+float mo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
+int VitalityNum = 100.0;
+char string1[10] = "breath : ";
+char string2[10];
+
+void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
+	VitalityNum = VitalityNum - 1;
+	sprintf(string2, " %d ", VitalityNum);
+	printf("%s\n", string2);
+	glutPostRedisplay();
+}
+int main(int argc, char** argv) {	
+	// set Vitality Call Back Fun Timer : 3 sec
+	SetTimer(NULL, 0, 3000, VitalityTimeCallBack);
+	
+	//KillTimer(NULL, 1);
 	DrawPosition();
 	OpenGL_Init(argc, argv);
 	return 0;
 }
 
-void myDisplay() {
-
-	/* clear the display */
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Draw Horizontal
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glPushMatrix();
-		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-
-		glColor3f(0.0, 1.0, 1.0);
-		glTranslated(0, -(Robot_Arm.BaseHeight / My_Ortho.Value), 0);
-
-		glBegin(GL_LINE_LOOP);
-		glVertex3f(My_Ortho.X1, 0, 0);
-		glVertex3f(My_Ortho.X2, 0, 0);
-		glEnd();
-	glPopMatrix();
-	/*glPushMatrix();
-		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-		glColor3f(0.0, 1.0, 0.0);
-		glBegin(GL_POLYGON);
-		glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1);
-		glVertex3f(-My_Ortho.X1, 0, My_Ortho.Z1);
-		glVertex3f(-My_Ortho.X1, 0, -My_Ortho.Z1);
-		glVertex3f(My_Ortho.X1, 0, -My_Ortho.Z1);
-		glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1);
-	glEnd();
-	glPopMatrix();*/
-	// Draw Robot - Arm
-	/*glColor3f(1.0, 0.0, 0.0);
-	DrawCube_Lib(0.4,0.4,0.4);
-	glColor3f(0.0, 1.0, 0.0);
-	glTranslated(0.1, 0.5, 0);
-	DrawCube_Lib(0.2, 0.6, 0.2);
-	glTranslated(0.5, 0.2, 0);
-	DrawCube_Lib(0.2, 1, 0.2);*/
-	/*glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();*/
+void BuildNormalCity(void) {
 	glPushMatrix();
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		glColor3f(0.0, 1.0, 0.0);
-		DrawHouse(1.4,1.4,1,0.6,0.5,0.7,0.7);
-
+		DrawHouse(1.4, 1.4, 1, 0.6, 0.5, 0.7, 0.7);
 	glPopMatrix();
 
 	glPushMatrix();
-	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		MovePosition(4, 0, 0);
 		glColor3f(1.0, 0.0, 0.0);
 		DrawHouse(1, 1, 1, 0.4, 0.3, 0.5, 0.5);
@@ -91,16 +75,41 @@ void myDisplay() {
 		DrawHouse(1, 1, 1, 0.4, 0.3, 0.5, 0.5);
 	glPopMatrix();
 
-	/*glPushMatrix();
-		MovePosition(-10, -10, 0);
-		glColor3f(0.0, 0.0, 1.0);
-		DrawHouse(1, 1, 1, 0.4, 0.3, 0.5, 0.5);
-	glPopMatrix();*/
 	glPushMatrix();
-		DrawFixWindows();		
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		MovePosition(8, 0, 0);
+		glColor3f(1.0, 0.0, 1.0);
+		DrawHouse(1, 2, 1, 0.4, 0.3, 0.5, 0.5);
 	glPopMatrix();
 
-	
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		MovePosition(-8, 0, 0);
+		glColor3f(0.0, 1.0, 1.0);
+		DrawHouse(2, 1.5, 2, 0.6, 0.8, 0.7, 0.7);
+	glPopMatrix();
+}
+
+void myDisplay() {
+	/* clear the display */
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Draw Horizontal
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	DrawFixPlane();
+	BuildNormalCity();
+	// Draw Robot - Arm
+	/*glColor3f(1.0, 0.0, 0.0);
+	DrawCube_Lib(0.4,0.4,0.4);
+	glColor3f(0.0, 1.0, 0.0);
+	glTranslated(0.1, 0.5, 0);
+	DrawCube_Lib(0.2, 0.6, 0.2);
+	glTranslated(0.5, 0.2, 0);
+	DrawCube_Lib(0.2, 1, 0.2);*/
+	/*glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();*/
+	DrawVitality();
 	
 	/*glPushMatrix();
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);

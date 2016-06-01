@@ -2,6 +2,7 @@
 #include "myGL_Init.h"
 #include "Robot_Arm.h"
 #include "myLight.h"
+#include "glFunctions.h"
 void OpenGL_Init(int argc, char** argv) {
 
 	// OpenGL - initializes GLUT and should be called before any other GLUT routine.
@@ -20,9 +21,12 @@ void OpenGL_Init(int argc, char** argv) {
 	glutCreateWindow(" Final Project - Virtual City ");
 
 	glutDisplayFunc(myDisplay);
-	glutMouseFunc(myMouse);
+	//glutMouseFunc(myMouse);
 	glutKeyboardFunc(myKeyboard);
 	myInit();
+
+	glutMouseFunc(mousebutton);
+	glutMotionFunc(mousemove);
 
 	glutMainLoop();
 }/* End of OpenGL_Init */

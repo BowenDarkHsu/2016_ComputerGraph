@@ -30,13 +30,19 @@
     <ClInclude Include="myLight.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="Robot_Arm.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
     <ClInclude Include="DrawFunctions.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="myDataStruct.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="glFunctions.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Robot_Arm.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualCity.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,10 +59,13 @@
     <ClCompile Include="myLight.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
-    <ClCompile Include="Robot_Arm.cpp">
+    <ClCompile Include="DrawFunctions.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
-    <ClCompile Include="DrawFunctions.cpp">
+    <ClCompile Include="glFunctions.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Robot_Arm.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>
