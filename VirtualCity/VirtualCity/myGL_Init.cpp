@@ -127,34 +127,64 @@ void myKeyboard(unsigned char key, int x, int y) {
 
 	switch (key) {
 	case 'w':
-		Y_DirectionMenuFunc(1);
+		MoveZ = MoveZ + 0.1;
+		//My_LookAt.Z = My_LookAt.Z + 0.1 / My_Ortho.Value;
+		//printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
+		printf(" MoveZ = %f  \r\n", MoveZ);
+		glutPostRedisplay();
 		break;
 	case 's':
-		Y_DirectionMenuFunc(2);
+		MoveZ = MoveZ - 0.1 ;
+		//My_LookAt.Z = My_LookAt.Z - 0.1 / My_Ortho.Value;
+		//printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
+		printf(" MoveZ = %f  \r\n", MoveZ);
+		glutPostRedisplay();
 		break;
+	
 	case 'a':
-		X_DirectionMenuFunc(2);
+		MoveX = MoveX - 0.1 ;
+		My_LookAt.Watch_X = My_LookAt.Watch_X - 0.01 / My_Ortho.Value;
+		
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		printf(" MoveX = %f  \r\n", MoveX);
+		glutPostRedisplay();
 		break;
 	case 'd':
-		X_DirectionMenuFunc(1);
+		MoveX = MoveX + 0.1 ;
+		My_LookAt.Watch_X = My_LookAt.Watch_X + 0.01 / My_Ortho.Value;
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		printf(" MoveX = %f  \r\n", MoveX);
+		glutPostRedisplay();
 		break;
 	case '1':
-		ArmRotationMenuFunc(1);
+		My_Ortho.X1 = My_Ortho.X1 + 0.1;
+		printf(" My_Ortho.X1 = %f  \r\n", My_Ortho.X1);
+		glutPostRedisplay();
 		break;
 	case '2':
-		ArmRotationMenuFunc(2);
+		My_Ortho.X1 = My_Ortho.X1 - 0.1;
+		printf(" My_Ortho.X1 = %f  \r\n", My_Ortho.X1);
+		glutPostRedisplay();
 		break;
 	case '4':
-		GripperHeightMenuFunc(1);
+		My_Ortho.Y1 = My_Ortho.Y1 + 0.1;
+		printf(" My_Ortho.Y1 = %f  \r\n", My_Ortho.Y1);
+		glutPostRedisplay();
 		break;
 	case '5':
-		GripperHeightMenuFunc(2);
+		My_Ortho.Y1 = My_Ortho.Y1 - 0.1;
+		printf(" My_Ortho.Y1 = %f  \r\n", My_Ortho.Y1);
+		glutPostRedisplay();
 		break;
 	case '7':
-		GripperControlMenuFunc(1);
+		My_Ortho.Z1 = My_Ortho.Z1 + 0.1;
+		printf(" My_Ortho.Z1 = %f  \r\n", My_Ortho.Z1);
+		glutPostRedisplay();
 		break;
 	case '8':
-		GripperControlMenuFunc(2);
+		My_Ortho.Z1 = My_Ortho.Z1 - 0.1;
+		printf(" My_Ortho.Z1 = %f  \r\n", My_Ortho.Z1);
+		glutPostRedisplay();
 		break;
 	case 'z':
 		LookAt_X_MenuFunc(1);
@@ -234,6 +264,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		glutPostRedisplay();
 		break;
+
 	//	/* Light Source Diffuse */
 	//case 'z':
 	//	mySource_1.Diffuse.Red = mySource_1.Diffuse.Red + 0.1;

@@ -12,7 +12,11 @@ void PreorderTravesal(TreeNode *root);
 void DrawTorso(void);
 void DrawHead(void);
 void DrawLUA(void);
+void DrawRUA(void);
+void DrawLUL(void);
+void DrawRUL(void);
 /* End of Modeling Function */
+void DrawCubeI(float L, float H, float W);
 void DrawCubeF(float Length, float Height, float Width);
 void DrawRoof(float Length, float Height, float Width);
 void DrawDoor(float Length, float Height, float Width, float door_L, float door_H);

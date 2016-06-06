@@ -31,7 +31,9 @@ RobotArmPosition Robot_Position;
 glLookAt_Parameter My_LookAt;
 glLookAt_Parameter Initial_LookAt;
 HumanObject MajorRole ;
-
+float MoveX = 0.0;
+float MoveY = 0.0;
+float MoveZ = 0.0;
 float v0[3], v1[3];
 float mo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 int VitalityNum = 100.0;
@@ -88,9 +90,18 @@ void BuildNormalCity(void) {
 		glColor3f(0.0, 1.0, 1.0);
 		DrawHouse(2, 1.5, 2, 0.6, 0.8, 0.7, 0.7);
 	glPopMatrix();
+
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		MovePosition(MoveX, MoveY, MoveZ);
+		MovePosition(-8, 0, 10);
+		glColor3f(1.0, 1.0, 0.0);
+		DrawHouse(2, 1.5, 2, 0.6, 0.8, 0.7, 0.7);
+	glPopMatrix();
 }
 
 void myDisplay() {
+	
 	/* clear the display */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -98,6 +109,7 @@ void myDisplay() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	DrawFixPlane();
+	
 	BuildNormalCity();
 	// Draw Robot - Arm
 	/*glColor3f(1.0, 0.0, 0.0);
@@ -112,6 +124,7 @@ void myDisplay() {
 	DrawVitality();
 	CreateNode();
 	PreorderTravesal(&MajorRole.Torso);
+	//DrawTorso();
 	/*glPushMatrix();
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		glColor3f(0.0, 0.0, 1.0);
@@ -120,6 +133,12 @@ void myDisplay() {
 		DrawCubeF(1, 1, 0.5);
 		MovePosition(0, 0.5, 0);
 		DrawRoof(1, 1, 1);
+		MovePosition(0, 0, -15);
+		glColor3f(1.0, 1.0, 0.0);
+		DrawCubeF(2, 2, 1.5);
+		MovePosition(0, 0, 30);
+		glColor3f(1.0, 0.0, 0.0);
+		DrawCubeF(4, 4, 1.5);
 	glPopMatrix();*/
 
 

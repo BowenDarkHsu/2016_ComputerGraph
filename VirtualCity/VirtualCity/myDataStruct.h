@@ -24,8 +24,8 @@ typedef struct glOrtho_Parameter {
 	float X2 = 20;
 	float Y1 = -20;
 	float Y2 = 20;
-	float Z1 = -20;
-	float Z2 = 20;
+	float Z1 = -10;
+	float Z2 = 10;
 	float Value = 20;
 };
 /* End of Original Data Struct */
@@ -89,6 +89,10 @@ typedef struct HumanObject {
 	TreeNode RightUpperLeg;
 	TreeNode RightLowerLeg;
 }HumanObject;
+
+extern float MoveX;
+extern float MoveY;
+extern float MoveZ;
 
 extern HumanObject MajorRole;
 /* End of Object Data Structure */

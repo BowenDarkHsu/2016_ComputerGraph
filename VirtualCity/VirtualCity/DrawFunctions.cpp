@@ -7,31 +7,60 @@ void MovePosition(float x , float y , float z) {
 
 /* Modeling Function */
 void CreateNode(void) {
+	// Torso
 	glLoadIdentity();
-	MovePosition(0, 0, 9);
-	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Torso.m);
+	MovePosition(MoveX, MoveY, MoveZ);
+	MovePosition(8-8, 0, 5);
+	glGetFloatv(GL_PROJECTION_MATRIX, MajorRole.Torso.m);
 	MajorRole.Torso.f = DrawTorso;
-	MajorRole.Torso.Child = &MajorRole.Head;
 	MajorRole.Torso.Sibling = NULL;
-	glLoadIdentity();
-	MovePosition(10, 10, 0);
-	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Head.m);
+	MajorRole.Torso.Child = &MajorRole.Head;
+	// Head
+	glLoadIdentity();	
+	MovePosition(MoveX, MoveY, MoveZ);
+	MovePosition(8-8, 1.3, 0);
+	glGetFloatv(GL_PROJECTION_MATRIX, MajorRole.Head.m);
 	MajorRole.Head.f = DrawHead;
+	MajorRole.Head.Sibling = NULL;
+	//MajorRole.Head.Child = &MajorRole.LeftUpperArm;
 	MajorRole.Head.Child = NULL;
-	MajorRole.Head.Sibling = &MajorRole.LeftUpperArm;
-	glLoadIdentity();
-	MovePosition(-10, 0, 5);
-	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.LeftUpperArm.m);
-	MajorRole.LeftUpperArm.f = DrawLUA;
-	MajorRole.LeftUpperArm.Child = NULL;
-	MajorRole.LeftUpperArm.Sibling = NULL;
+	//// Arm
+	//glLoadIdentity();
+	//MovePosition(MoveX, MoveY, MoveZ);
+	//MovePosition(7.35-8, 0.65, 5);
+	//glGetFloatv(GL_PROJECTION_MATRIX, MajorRole.LeftUpperArm.m);
+	//MajorRole.LeftUpperArm.f = DrawLUA;
+	//MajorRole.LeftUpperArm.Sibling = NULL;
+	//MajorRole.LeftUpperArm.Child = &MajorRole.RightUpperArm;
+	//glLoadIdentity();
+	//MovePosition(MoveX, MoveY, MoveZ);
+	//MovePosition(8.65-8, 0.65, 5);
+	//glGetFloatv(GL_PROJECTION_MATRIX, MajorRole.RightUpperArm.m);
+	//MajorRole.RightUpperArm.f = DrawRUA;
+	//MajorRole.RightUpperArm.Sibling = NULL;
+	//MajorRole.RightUpperArm.Child = &MajorRole.LeftUpperLeg;
+	//// Leg
+	//glLoadIdentity();
+	//MovePosition(MoveX, MoveY, MoveZ);
+	//MovePosition(7.75-8, -1.8, 5);
+	//glGetFloatv(GL_PROJECTION_MATRIX, MajorRole.LeftUpperLeg.m);
+	//MajorRole.LeftUpperLeg.f = DrawLUL;
+	//MajorRole.LeftUpperLeg.Sibling = NULL;
+	//MajorRole.LeftUpperLeg.Child = &MajorRole.RightUpperLeg;
 
+	//glLoadIdentity();
+	//MovePosition(MoveX, MoveY, MoveZ);
+	//MovePosition(8.25-8, -1.8, 5);
+	//glGetFloatv(GL_PROJECTION_MATRIX, MajorRole.RightUpperLeg.m);
+	//MajorRole.RightUpperLeg.f = DrawRUL;
+	//MajorRole.RightUpperLeg.Sibling = NULL;
+	//MajorRole.RightUpperLeg.Child = NULL;
 }
 void PreorderTravesal(TreeNode *root) {
 
 	if (root == NULL) return;
 	glPushMatrix();
-		//glMultMatrixf(root->m);
+		glMultMatrixf(root->m);
 		root->f();
 		if (root->Child != NULL)
 			PreorderTravesal(root->Child);
@@ -41,26 +70,63 @@ void PreorderTravesal(TreeNode *root) {
 }
 /* End of Modeling Function */
 void DrawTorso() {
-
+	//glPushMatrix();
 	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-		glColor3f(0.0f, 1.0f, 0.0f);
-		DrawCubeF(1,1,1);
-
+	glColor3f(0.0f, 1.0f, 0.0f);
+	DrawCubeI(1,2,0.5);
+	//glPopMatrix();
 }
 void DrawHead() {
-
-		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		DrawCubeF(4, 4, 4);
-	
+	//glPushMatrix();
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	glColor3f(1.0f, 0.0f, 0.0f);	
+	DrawCubeI(0.5, 0.6, 0.5);
+	//glPopMatrix();
 }
 void DrawLUA() {
-
 	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-	glColor3f(0.0f, 0.0f, 1.0f);
-	DrawCubeF(8, 8, 8);
-	
+	glColor3f(1.0f, 0.0f, 1.0f);
+	DrawCubeI(0.3, 0.8, 0.5);
 }
+void DrawRUA() {
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	glColor3f(1.0f, 0.0f, 1.0f);
+	DrawCubeI(0.3, 0.8, 0.5);
+}
+void DrawLUL() {
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	glColor3f(1.0f, 0.0f, 1.0f);
+	DrawCubeI(0.3, 1.6, 0.5);
+}
+void DrawRUL() {
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	glColor3f(1.0f, 0.0f, 1.0f);
+	DrawCubeI(0.3, 1.6, 0.5);
+}
+void DrawCubeI(float L, float H, float W) {
+	//glBegin(GL_LINE_LOOP);
+	GLfloat Length, Height, Width;
+	Length = L / 2;
+	Height = H / 2;
+	Width = W / 2;
+	GLfloat DrawRange[16][3] = {
+		{ Length,Height,Width },{ Length,Height,-Width },{ -Length,Height,-Width },
+		{ -Length,Height,Width },{ Length,Height,Width },{ Length,-Height,Width },
+		{ Length,-Height,-Width },{ -Length,-Height,-Width },{ -Length,-Height,Width },
+		{ Length,-Height,Width },{ Length,-Height,-Width },{ Length,Height,-Width },
+		{ -Length,Height,-Width },{ -Length,-Height,-Width },{ -Length,-Height,Width },{ -Length,Height,Width } };
+	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < 16; i++) {
+		DrawPoint[0] = DrawRange[i][0];
+		DrawPoint[1] = DrawRange[i][1];
+		DrawPoint[2] = DrawRange[i][2];
+		glNormal3fv(DrawPoint);
+		glVertex3fv(DrawPoint);
+	}
+	glEnd();
+}
+
 void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H) {
 	DrawCubeF(Length, Height, Width);
 
@@ -288,3 +354,4 @@ void DrawVitality(void) {
 		drawString(string2);
 	glPopMatrix();
 }
+
