@@ -12,6 +12,8 @@ void PreorderTravesal(TreeNode *root);
 void DrawTorso(void);
 void DrawHead(void);
 void DrawLUA(void);
+void DrawLLA(void);
+
 void DrawRUA(void);
 void DrawLUL(void);
 void DrawRUL(void);
@@ -27,6 +29,8 @@ void DrawFixPlane(void);
 void DrawVitality(void);
 extern char string1[10];
 extern char string2[10];
+
+extern int id_texture;
 #ifdef __cplusplus
 }
 #endif

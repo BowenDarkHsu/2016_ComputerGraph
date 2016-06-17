@@ -10,11 +10,12 @@ void myMenuInit();
 void myMenu(int id);
 void OpenGL_Init(int argc, char** argv);
 void myInit();
-
+void myTexture();
 void LookAt_X_MenuFunc(int id);
 void LookAt_Y_MenuFunc(int id);
 void LookAt_Z_MenuFunc(int id);
 extern void myDisplay();
+
 #ifdef __cplusplus
 }
 #endif

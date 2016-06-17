@@ -3,6 +3,8 @@
 #include "Robot_Arm.h"
 #include "myLight.h"
 #include "glFunctions.h"
+#include "texture.h"
+//#include "3dsloader.h"
 void OpenGL_Init(int argc, char** argv) {
 
 	// OpenGL - initializes GLUT and should be called before any other GLUT routine.
@@ -21,6 +23,7 @@ void OpenGL_Init(int argc, char** argv) {
 	glutCreateWindow(" Final Project - Virtual City ");
 
 	glutDisplayFunc(myDisplay);
+	//glutDisplayFunc(display);
 	//glutMouseFunc(myMouse);
 	glutKeyboardFunc(myKeyboard);
 	myInit();
@@ -43,13 +46,22 @@ void myInit() {
 
 	/* Init Light Value*/
 	//InitLight_Ambient(mySource_1);
-
+	myTexture();	
+	//glEnable(GL_TEXTURE_2D);
 	myDisplay();
+	//display();
 	/* Fix Camera Orig Position */
 	My_LookAt.X = 0.0;
 	My_LookAt.Y = 0.0;
 	glutPostRedisplay();
 }/* End of myInit */
+void myTexture() {
+	//glGenTextures(2, texName);
+	//glBindTexture(GL_TEXTURE_2D, texName[0]);
+	id_texture = LoadBitmap2("texture/back.bmp");
+	
+}
+
 
 void myMenuInit() {
 	int X_Direction_menu = glutCreateMenu(X_DirectionMenuFunc);
@@ -351,13 +363,13 @@ void myKeyboard(unsigned char key, int x, int y) {
 void LookAt_X_MenuFunc(int id) {
 	switch (id) {
 	case 1:		// Increase
-		if (My_LookAt.X < 1.0)
+		if (My_LookAt.X < 10.0)
 			My_LookAt.X = My_LookAt.X + 0.1;
 		else
 			My_LookAt.X = My_LookAt.X;
 		break;
 	case 2:		// decrease
-		if (My_LookAt.X > -1.0)
+		if (My_LookAt.X > -10.0)
 			My_LookAt.X = My_LookAt.X - 0.1;
 		else
 			My_LookAt.X = My_LookAt.X;
@@ -370,13 +382,13 @@ void LookAt_X_MenuFunc(int id) {
 void LookAt_Y_MenuFunc(int id) {
 	switch (id) {
 	case 1:		// Increase
-		if (My_LookAt.Y < 1.0)
+		if (My_LookAt.Y < 10.0)
 			My_LookAt.Y = My_LookAt.Y + 0.1;
 		else
 			My_LookAt.Y = My_LookAt.Y;
 		break;
 	case 2:		// decrease
-		if (My_LookAt.Y > -1.0)
+		if (My_LookAt.Y > -10.0)
 			My_LookAt.Y = My_LookAt.Y - 0.1;
 		else
 			My_LookAt.Y = My_LookAt.Y;
@@ -389,13 +401,13 @@ void LookAt_Y_MenuFunc(int id) {
 void LookAt_Z_MenuFunc(int id) {
 	switch (id) {
 	case 1:		// Increase
-		if (My_LookAt.Z < 1.0)
+		if (My_LookAt.Z < 10.0)
 			My_LookAt.Z = My_LookAt.Z + 0.1;
 		else
 			My_LookAt.Z = My_LookAt.Z;
 		break;
 	case 2:		// decrease
-		if (My_LookAt.Z > -1.0)
+		if (My_LookAt.Z > -10.0)
 			My_LookAt.Z = My_LookAt.Z - 0.1;
 		else
 			My_LookAt.Z = My_LookAt.Z;

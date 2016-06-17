@@ -39,7 +39,8 @@ float mo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 int VitalityNum = 100.0;
 char string1[10] = "breath : ";
 char string2[10];
-
+int id_texture = 0;
+int num_texture = -1;
 void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
 	VitalityNum = VitalityNum - 1;
 	sprintf(string2, " %d ", VitalityNum);
@@ -101,29 +102,51 @@ void BuildNormalCity(void) {
 }
 
 void myDisplay() {
-	
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
 	/* clear the display */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Draw Horizontal
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	DrawFixPlane();
-	
-	BuildNormalCity();
-	// Draw Robot - Arm
-	/*glColor3f(1.0, 0.0, 0.0);
-	DrawCube_Lib(0.4,0.4,0.4);
-	glColor3f(0.0, 1.0, 0.0);
-	glTranslated(0.1, 0.5, 0);
-	DrawCube_Lib(0.2, 0.6, 0.2);
-	glTranslated(0.5, 0.2, 0);
-	DrawCube_Lib(0.2, 1, 0.2);*/
+
 	/*glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();*/
-	DrawVitality();
-	CreateNode();
-	PreorderTravesal(&MajorRole.Torso);
+	glLoadIdentity();
+	gluPerspective(50.0, 1.0, 3.0, 7.0);
+	glutWireCube(2);
+	glutWireCube(1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	glutWireCube(0.7);
+	glutWireCube(0.5);*/
+		// Draw Horizontal
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluPerspective(100.0, double(viewport[2]) / viewport[3], 0.1, 100.0);
+		printf("viewport[2] = %d , viewport[3] = %d , 2/3 = %f \r\n", viewport[2], viewport[3], double(viewport[2]) / viewport[3]);
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		
+		
+		DrawFixPlane();
+		//glutSolidTeapot(1);
+		
+		
+		//BuildNormalCity();
+		// Draw Robot - Arm
+		/*glColor3f(1.0, 0.0, 0.0);
+		DrawCube_Lib(0.4,0.4,0.4);
+		glColor3f(0.0, 1.0, 0.0);
+		glTranslated(0.1, 0.5, 0);
+		DrawCube_Lib(0.2, 0.6, 0.2);
+		glTranslated(0.5, 0.2, 0);
+		DrawCube_Lib(0.2, 1, 0.2);*/
+		/*glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();*/
+
+		CreateNode();
+		PreorderTravesal(&MajorRole.Torso);
+
 	//DrawTorso();
 	/*glPushMatrix();
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
@@ -150,6 +173,8 @@ void myDisplay() {
 	//LightSource3();
 
 	// OpenGL -  ensures that the drawing command are actually executed.
+	
+	DrawVitality();
 	glFlush();
 	glutSwapBuffers();
 }/* End of myDisplay */

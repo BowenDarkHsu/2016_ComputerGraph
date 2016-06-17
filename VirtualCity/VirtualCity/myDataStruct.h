@@ -9,9 +9,12 @@ extern "C" {
 
 /* Original Data Struct */
 typedef struct glLookAt_Parameter {
-	float X = 0.1;
+	/*float X = 0.1;
 	float Y = -0.2;
-	float Z = 0.3;
+	float Z = 0.3;*/
+	float X = 0;
+	float Y = 0.0;
+	float Z = 3.0;
 	float Watch_X = 0.0;
 	float Watch_Y = 0.0;
 	float Watch_Z = 0.0;
@@ -24,8 +27,8 @@ typedef struct glOrtho_Parameter {
 	float X2 = 20;
 	float Y1 = -20;
 	float Y2 = 20;
-	float Z1 = -10;
-	float Z2 = 10;
+	float Z1 = -20;
+	float Z2 = 20;
 	float Value = 20;
 };
 /* End of Original Data Struct */

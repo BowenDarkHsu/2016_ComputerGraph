@@ -43,7 +43,7 @@ void display()
 	printf("viewport[2] = %d , viewport[3] = %d , 2/3 = %f \r\n", viewport[2], viewport[3], double(viewport[2]) / viewport[3]);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0, 0, 3, 0, 0, 0, 0, 1, 0);
+	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
 	glMultMatrixf(mo);
 
 	glutSolidTeapot(1);
