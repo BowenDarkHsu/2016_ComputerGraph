@@ -171,9 +171,44 @@ void myDisplay() {
 	//LightSource();
 	//LightSource2();
 	//LightSource3();
+	//
+	glLoadIdentity();
+	glPushMatrix();
+		MovePosition(MoveX, MoveY, MoveZ);
 
-	// OpenGL -  ensures that the drawing command are actually executed.
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		
+		glColor3f(0.0f, 0.0f, 1.0f);
+		DrawCubeI(0.4, 0.4, 0.4);
+	glPopMatrix();
 	
+	glLoadIdentity();
+	glPushMatrix();
+
+		glColor3f(1.0f, 0.0f, 1.0f);
+		gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+		// h
+		glBegin(GL_LINE_LOOP);
+			glVertex3f(-7, 1.5, 1); //--
+			glVertex3f(7, 1.5, 1); //--
+		glEnd();
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glBegin(GL_LINE_LOOP);
+			glVertex3f(-7, -2.5, 1); //--
+			glVertex3f(7, -2.5, 1); //--
+		glEnd();
+		// v
+		glBegin(GL_LINE_LOOP);
+			glVertex3f(1.5, 7, 1); //--
+			glVertex3f(1.5, -7, 1); //--
+		glEnd();
+		glColor3f(1.0f, 1.0f, 0.0f);
+		glBegin(GL_LINE_LOOP);
+			glVertex3f(-1, -7, 1); //--
+			glVertex3f(-1, 7, 1); //--
+		glEnd();
+	glPopMatrix();
+	// OpenGL -  ensures that the drawing command are actually executed.
 	DrawVitality();
 	glFlush();
 	glutSwapBuffers();

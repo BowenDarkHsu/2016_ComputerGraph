@@ -106,7 +106,8 @@ void myMenuInit() {
 	glutAddSubMenu("Camera Position Z", LookAt_Z_menu);
 	glutAddMenuEntry("Home", 1);
 	glutAddMenuEntry("Viewer0", 2);
-	glutAddMenuEntry("Quit", 3);
+	glutAddMenuEntry("Viewer1", 3);
+	glutAddMenuEntry("Quit", 4);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
@@ -116,15 +117,24 @@ void myMenu(int id) {
 		Robot_Arm = Robot_Initial;
 		DrawPosition();
 		My_LookAt = Initial_LookAt;
+		MoveX = 0.0;
+		MoveY = 0.0;
+		MoveZ = 0.0;
 		glutPostRedisplay();
 		break;
 	case 2:
-		My_LookAt.X = 0.2;
-		My_LookAt.Y = -0.3;
-		My_LookAt.Z = 0.1;
+		My_LookAt.X = 0;
+		My_LookAt.Y = 1.5;
+		My_LookAt.Z = 3.5;
 		glutPostRedisplay();
 		break;
-	case 3: exit(0);
+	case 3:
+		My_LookAt.X = -1.5;
+		My_LookAt.Y = 2;
+		My_LookAt.Z = 3.5;
+		glutPostRedisplay();
+		break;
+	case 4: exit(0);
 	}/* End of switch */
 }
 
@@ -139,32 +149,35 @@ void myKeyboard(unsigned char key, int x, int y) {
 
 	switch (key) {
 	case 'w':
-		MoveZ = MoveZ + 0.1;
-		//My_LookAt.Z = My_LookAt.Z + 0.1 / My_Ortho.Value;
+		MoveZ = MoveZ + 0.5;
+		//My_LookAt.Z = My_LookAt.Z + 0.25 / My_Ortho.Value;
 		//printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		printf(" MoveZ = %f  \r\n", MoveZ);
 		glutPostRedisplay();
 		break;
 	case 's':
-		MoveZ = MoveZ - 0.1 ;
-		//My_LookAt.Z = My_LookAt.Z - 0.1 / My_Ortho.Value;
+		MoveZ = MoveZ - 0.5 ;
+		//My_LookAt.Z = My_LookAt.Z - 0.25 / My_Ortho.Value;
 		//printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		printf(" MoveZ = %f  \r\n", MoveZ);
 		glutPostRedisplay();
 		break;
 	
 	case 'a':
-		MoveX = MoveX - 0.1 ;
-		My_LookAt.Watch_X = My_LookAt.Watch_X - 0.01 / My_Ortho.Value;
-		
-		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		MoveX = MoveX - 0.5 ;
+		/*My_LookAt.Watch_X = My_LookAt.Watch_X - 0.01 / My_Ortho.Value;
+		My_LookAt.X = My_LookAt.X + 0.5 / My_Ortho.Value;
+		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);	*/	
 		printf(" MoveX = %f  \r\n", MoveX);
 		glutPostRedisplay();
 		break;
 	case 'd':
-		MoveX = MoveX + 0.1 ;
-		My_LookAt.Watch_X = My_LookAt.Watch_X + 0.01 / My_Ortho.Value;
-		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		MoveX = MoveX + 0.5 ;
+		/*My_LookAt.Watch_X = My_LookAt.Watch_X + 0.01 / My_Ortho.Value;
+		My_LookAt.X = My_LookAt.X - 0.5 / My_Ortho.Value;
+		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);*/
 		printf(" MoveX = %f  \r\n", MoveX);
 		glutPostRedisplay();
 		break;
