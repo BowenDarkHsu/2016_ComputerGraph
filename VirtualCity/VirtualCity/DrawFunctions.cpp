@@ -12,8 +12,9 @@ void CreateNode(void) {
 	
 	// Torso
 	glLoadIdentity();
-	MovePosition(MoveX, MoveY, MoveZ);
-	MovePosition(0, 20, 0);
+	//glRotated(45, MoveX, MoveY, MoveZ);
+	MovePosition(MoveX +0 , MoveY + 20, MoveZ + 0);
+	//MovePosition(0, 20, 0);
 	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Torso.m);
 	MajorRole.Torso.f = DrawTorso;
 	MajorRole.Torso.Sibling = NULL;
@@ -89,6 +90,7 @@ void PreorderTravesal(TreeNode *root) {
 void DrawTorso() {	
 	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 	glColor3f(0.0f, 1.0f, 0.0f);
+	
 	DrawCubeI(1,2,0.5);
 }
 void DrawHead() {
@@ -126,7 +128,8 @@ void DrawCubeI(float L, float H, float W) {
 		{ Length,-Height,Width },{ Length,-Height,-Width },{ Length,Height,-Width },
 		{ -Length,Height,-Width },{ -Length,-Height,-Width },{ -Length,-Height,Width },{ -Length,Height,Width } };
 	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
-	glBegin(GL_LINE_LOOP);
+	//glBegin(GL_LINE_LOOP);
+	glBegin(GL_POLYGON);
 	for (int i = 0; i < 16; i++) {
 		DrawPoint[0] = DrawRange[i][0];
 		DrawPoint[1] = DrawRange[i][1];

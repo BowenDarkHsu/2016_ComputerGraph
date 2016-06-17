@@ -73,12 +73,12 @@ void myMenuInit() {
 	glutAddMenuEntry("Decrease Y (key S)", 2);
 
 	int ArmRotation_menu = glutCreateMenu(ArmRotationMenuFunc);
-	glutAddMenuEntry("Clockwise (key 1)", 1);
-	glutAddMenuEntry("CounterClockwise (key 2)", 2);
+	glutAddMenuEntry("往前", 1);
+	glutAddMenuEntry("往後", 2);
 
 	int GripperHeight_menu = glutCreateMenu(GripperHeightMenuFunc);
-	glutAddMenuEntry("Up (key 4)", 1);
-	glutAddMenuEntry("Down (key 5)", 2);
+	glutAddMenuEntry("抬頭", 1);
+	glutAddMenuEntry("低頭", 2);
 
 	int GripperControl_menu = glutCreateMenu(GripperControlMenuFunc);
 	glutAddMenuEntry("Open (key 7)", 1);
@@ -149,14 +149,14 @@ void myKeyboard(unsigned char key, int x, int y) {
 
 	switch (key) {
 	case 'w':
-		MoveZ = MoveZ + 0.5;
+		MoveZ = MoveZ + 5;
 		//My_LookAt.Z = My_LookAt.Z + 0.25 / My_Ortho.Value;
 		//printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		printf(" MoveZ = %f  \r\n", MoveZ);
 		glutPostRedisplay();
 		break;
 	case 's':
-		MoveZ = MoveZ - 0.5 ;
+		MoveZ = MoveZ - 5 ;
 		//My_LookAt.Z = My_LookAt.Z - 0.25 / My_Ortho.Value;
 		//printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		printf(" MoveZ = %f  \r\n", MoveZ);
@@ -164,7 +164,12 @@ void myKeyboard(unsigned char key, int x, int y) {
 		break;
 	
 	case 'a':
-		MoveX = MoveX - 0.5 ;
+		MoveX = MoveX - 5 ;
+		/*if (4 == ++tempX1) {
+			My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;
+			printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+			tempX1 = 0;
+		}*/
 		/*My_LookAt.Watch_X = My_LookAt.Watch_X - 0.01 / My_Ortho.Value;
 		My_LookAt.X = My_LookAt.X + 0.5 / My_Ortho.Value;
 		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
@@ -173,7 +178,12 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case 'd':
-		MoveX = MoveX + 0.5 ;
+		MoveX = MoveX + 5 ;
+		/*if (4 == ++tempX2) {
+			My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;
+			printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+			tempX2 = 0;
+		}*/
 		/*My_LookAt.Watch_X = My_LookAt.Watch_X + 0.01 / My_Ortho.Value;
 		My_LookAt.X = My_LookAt.X - 0.5 / My_Ortho.Value;
 		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
@@ -181,34 +191,40 @@ void myKeyboard(unsigned char key, int x, int y) {
 		printf(" MoveX = %f  \r\n", MoveX);
 		glutPostRedisplay();
 		break;
-	case '1':
-		My_Ortho.X1 = My_Ortho.X1 + 0.1;
-		printf(" My_Ortho.X1 = %f  \r\n", My_Ortho.X1);
+	case '1': // 前進
+		My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1;
+		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
+		LookAt_Z_MenuFunc(2);
 		glutPostRedisplay();
 		break;
-	case '2':
-		My_Ortho.X1 = My_Ortho.X1 - 0.1;
-		printf(" My_Ortho.X1 = %f  \r\n", My_Ortho.X1);
+	case '2': // 後退
+		My_LookAt.Watch_Z = My_LookAt.Watch_Z + 0.1;
+		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
+		LookAt_Z_MenuFunc(1);
 		glutPostRedisplay();
 		break;
-	case '4':
-		My_Ortho.Y1 = My_Ortho.Y1 + 0.1;
-		printf(" My_Ortho.Y1 = %f  \r\n", My_Ortho.Y1);
+	case '4': // 低頭
+		LookAt_Y_MenuFunc(1);
+		My_LookAt.Watch_Y = My_LookAt.Watch_Y - 0.1;
+		printf(" My_LookAt.Watch_Y = %f  \r\n", My_LookAt.Watch_Y);
 		glutPostRedisplay();
 		break;
-	case '5':
-		My_Ortho.Y1 = My_Ortho.Y1 - 0.1;
-		printf(" My_Ortho.Y1 = %f  \r\n", My_Ortho.Y1);
+	case '5': // 抬頭
+		LookAt_Y_MenuFunc(2);
+		My_LookAt.Watch_Y = My_LookAt.Watch_Y + 0.1;
+		printf(" My_LookAt.Watch_Y = %f  \r\n", My_LookAt.Watch_Y);
 		glutPostRedisplay();
 		break;
-	case '7':
-		My_Ortho.Z1 = My_Ortho.Z1 + 0.1;
-		printf(" My_Ortho.Z1 = %f  \r\n", My_Ortho.Z1);
+	case '7': // 左轉
+		LookAt_X_MenuFunc(2);
+		My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
 		glutPostRedisplay();
 		break;
-	case '8':
-		My_Ortho.Z1 = My_Ortho.Z1 - 0.1;
-		printf(" My_Ortho.Z1 = %f  \r\n", My_Ortho.Z1);
+	case '8': // 右轉
+		LookAt_X_MenuFunc(1);
+		My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
 		glutPostRedisplay();
 		break;
 	case 'z':
@@ -376,13 +392,13 @@ void myKeyboard(unsigned char key, int x, int y) {
 void LookAt_X_MenuFunc(int id) {
 	switch (id) {
 	case 1:		// Increase
-		if (My_LookAt.X < 10.0)
+		if (My_LookAt.X < 100.0)
 			My_LookAt.X = My_LookAt.X + 0.1;
 		else
 			My_LookAt.X = My_LookAt.X;
 		break;
 	case 2:		// decrease
-		if (My_LookAt.X > -10.0)
+		if (My_LookAt.X > -100.0)
 			My_LookAt.X = My_LookAt.X - 0.1;
 		else
 			My_LookAt.X = My_LookAt.X;
@@ -395,13 +411,13 @@ void LookAt_X_MenuFunc(int id) {
 void LookAt_Y_MenuFunc(int id) {
 	switch (id) {
 	case 1:		// Increase
-		if (My_LookAt.Y < 10.0)
+		if (My_LookAt.Y < 100.0)
 			My_LookAt.Y = My_LookAt.Y + 0.1;
 		else
 			My_LookAt.Y = My_LookAt.Y;
 		break;
 	case 2:		// decrease
-		if (My_LookAt.Y > -10.0)
+		if (My_LookAt.Y > -100.0)
 			My_LookAt.Y = My_LookAt.Y - 0.1;
 		else
 			My_LookAt.Y = My_LookAt.Y;
@@ -414,13 +430,13 @@ void LookAt_Y_MenuFunc(int id) {
 void LookAt_Z_MenuFunc(int id) {
 	switch (id) {
 	case 1:		// Increase
-		if (My_LookAt.Z < 10.0)
+		if (My_LookAt.Z < 100.0)
 			My_LookAt.Z = My_LookAt.Z + 0.1;
 		else
 			My_LookAt.Z = My_LookAt.Z;
 		break;
 	case 2:		// decrease
-		if (My_LookAt.Z > -10.0)
+		if (My_LookAt.Z > -100.0)
 			My_LookAt.Z = My_LookAt.Z - 0.1;
 		else
 			My_LookAt.Z = My_LookAt.Z;

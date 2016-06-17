@@ -41,6 +41,11 @@ char string1[10] = "breath : ";
 char string2[10];
 int id_texture = 0;
 int num_texture = -1;
+
+int tempX1 = 0;
+int tempX2 = 0;
+
+
 void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
 	VitalityNum = VitalityNum - 1;
 	sprintf(string2, " %d ", VitalityNum);
@@ -130,7 +135,13 @@ void myDisplay() {
 		
 		DrawFixPlane();
 		//glutSolidTeapot(1);
-		
+		glLoadIdentity();
+		glPushMatrix();
+		glColor3f(0.0f, 0.0f, 1.0f);
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		gluLookAt(0, 1.5, 3.5, 0, 0, 0, 0, 1, 0);
+		DrawCubeI(0.4, 0.4, 0.4);
+		glPopMatrix();
 		
 		//BuildNormalCity();
 		// Draw Robot - Arm
@@ -172,15 +183,7 @@ void myDisplay() {
 	//LightSource2();
 	//LightSource3();
 	//
-	glLoadIdentity();
-	glPushMatrix();
-		MovePosition(MoveX, MoveY, MoveZ);
-
-		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-		
-		glColor3f(0.0f, 0.0f, 1.0f);
-		DrawCubeI(0.4, 0.4, 0.4);
-	glPopMatrix();
+	
 	
 	glLoadIdentity();
 	glPushMatrix();

@@ -15,7 +15,8 @@ void LookAt_X_MenuFunc(int id);
 void LookAt_Y_MenuFunc(int id);
 void LookAt_Z_MenuFunc(int id);
 extern void myDisplay();
-
+extern int tempX1;
+extern int tempX2;
 #ifdef __cplusplus
 }
 #endif
