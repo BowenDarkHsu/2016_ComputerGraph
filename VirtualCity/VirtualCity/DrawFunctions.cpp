@@ -8,13 +8,59 @@ void MovePosition(float x , float y , float z) {
 
 /* Modeling Function */
 void CreateNode(void) {
+	//// MyWorldObject.Fix.Tree_0
+	//// Right   : Tree
+	//// Left	 : Show
+	//glLoadIdentity();
+	//glGetFloatv(GL_MODELVIEW_MATRIX, .m);
+	//.f = DrawHouse_0;
+	//.Sibling = &MajorRole.LeftUpperArm;
+	//.Child = NULL;
 
-	
-	// Torso
+	//// create plane
+	//glLoadIdentity();
+	//gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	//glGetFloatv(GL_MODELVIEW_MATRIX, MyWorldObject.Fix.Plane.m);
+	//MyWorldObject.Fix.Plane.f = DrawFixPlane;
+	//MyWorldObject.Fix.Plane.Sibling = &MyWorldObject.Fix.House_0;
+	//MyWorldObject.Fix.Plane.Child = NULL;
+	//	// MyWorldObject.Fix.House_0
+	//	// Right : Tree
+	//	// Left	 : Show -->null ====> Robot
+	//	glLoadIdentity();
+	//	//gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	//	MovePosition(-100, 0, -50);
+	//	glGetFloatv(GL_MODELVIEW_MATRIX, MyWorldObject.Fix.House_0.m);
+	//	MyWorldObject.Fix.House_0.f = DrawHouse_0;
+	//	MyWorldObject.Fix.House_0.Sibling = &MajorRole.Torso;
+	//	MyWorldObject.Fix.House_0.Child = &MyWorldObject.Fix.Tree_0;
+	//	// MyWorldObject.Fix.Tree_0
+	//	// Right : Tree
+	//	// Left	 : Side
+	//	glLoadIdentity();
+	//	//gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	//	MovePosition(100, 0, -50);
+	//	glGetFloatv(GL_MODELVIEW_MATRIX, MyWorldObject.Fix.Tree_0.m);
+	//	MyWorldObject.Fix.Tree_0.f = DrawTree_0;
+	//	MyWorldObject.Fix.Tree_0.Sibling = &MyWorldObject.Fix.Side_0;
+	//	MyWorldObject.Fix.Tree_0.Child = NULL;
+	//	// MyWorldObject.Fix.Side_0
+	//	// Right   : NULL
+	//	// Left	 : NULL
+	//	glLoadIdentity();
+	//	MovePosition(-120, 0, -50);
+	//	//gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);		
+	//	glGetFloatv(GL_MODELVIEW_MATRIX, MyWorldObject.Fix.Side_0.m);
+	//	MyWorldObject.Fix.Side_0.f = DrawSide_0;
+	//	MyWorldObject.Fix.Side_0.Sibling = NULL;
+	//	MyWorldObject.Fix.Side_0.Child = NULL;
+
+	// MajorRole.Torso
 	glLoadIdentity();
-	//glRotated(45, MoveX, MoveY, MoveZ);
 	MovePosition(MoveX +0 , MoveY + 20, MoveZ + 0);
+	glRotated(Rotated_theta, Rotated_X, Rotated_Y, Rotated_Z);
 	//MovePosition(0, 20, 0);
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Torso.m);
 	MajorRole.Torso.f = DrawTorso;
 	MajorRole.Torso.Sibling = NULL;
@@ -88,7 +134,7 @@ void PreorderTravesal(TreeNode *root) {
 }
 /* End of Modeling Function */
 void DrawTorso() {	
-	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	
 	glColor3f(0.0f, 1.0f, 0.0f);
 	
 	DrawCubeI(1,2,0.5);
@@ -128,8 +174,8 @@ void DrawCubeI(float L, float H, float W) {
 		{ Length,-Height,Width },{ Length,-Height,-Width },{ Length,Height,-Width },
 		{ -Length,Height,-Width },{ -Length,-Height,-Width },{ -Length,-Height,Width },{ -Length,Height,Width } };
 	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
-	//glBegin(GL_LINE_LOOP);
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINE_LOOP);
+	//glBegin(GL_POLYGON);
 	for (int i = 0; i < 16; i++) {
 		DrawPoint[0] = DrawRange[i][0];
 		DrawPoint[1] = DrawRange[i][1];
@@ -350,29 +396,66 @@ void DrawFixPlane(void) {
 		//glBegin(GL_POLYGON);			
 		glBindTexture(GL_TEXTURE_2D, id_texture);
 		glBegin(GL_QUADS);
-			glTexCoord2f(0.0, 0.0);
-			glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1); //--
-			glTexCoord2f(1.0, 0.0);
-			glVertex3f(My_Ortho.X2, 0, My_Ortho.Z1); //+-
-			glTexCoord2f(1.0, 1.0);
-			glVertex3f(My_Ortho.X2, 0, My_Ortho.Z2); //++ 
-			glTexCoord2f(0.0, 1.0);
-			glVertex3f(My_Ortho.X1, 0, My_Ortho.Z2); //-+ 
+			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1); //--
+			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X2, 0, My_Ortho.Z1); //+-
+			glTexCoord2f(1.0, 1.0);glVertex3f(My_Ortho.X2, 0, My_Ortho.Z2); //++ 
+			glTexCoord2f(0.0, 1.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z2); //-+ 
+		glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		glColor3f(0.3, 0.3, 0.4);
+		//glBegin(GL_POLYGON);			
+		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X1, My_Ortho.Y2, My_Ortho.Z2); //--
+		glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X2, My_Ortho.Y2, My_Ortho.Z2); //+-
+		glTexCoord2f(1.0, 1.0);glVertex3f(My_Ortho.X2, 0, My_Ortho.Z2); //++ 
+		glTexCoord2f(0.0, 1.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z2); //-+ 
 		glEnd();
 	glPopMatrix();
 }
 void DrawVitality(void) {
-	glLoadIdentity();
-	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+	//glLoadIdentity();
+	/*gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 0.0f);
-		glRasterPos3f(-5, 5, 0);
+		glRasterPos3f(-7, 6, 0);
 		drawString(string1);
 	glPopMatrix();
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 0.0f);
 		glRasterPos3f(-4, 5, 0);
 		drawString(string2);
+	glPopMatrix();*/
+	glPushMatrix();
+		glColor3f(1.0f, 1.0f, 0.0f);
+		gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+		MovePosition(-150, 100, 0);
+		glBindTexture(GL_TEXTURE_2D, id_texture2);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0, 0.0);glVertex3f(0, 0, 0); //--
+			glTexCoord2f(1.0, 0.0);glVertex3f(0.8, 0, 0); //+-
+			glTexCoord2f(1.0, 1.0);glVertex3f(0.8, 0.8, 0); //++ 
+			glTexCoord2f(0.0, 1.0);glVertex3f(0, 0.8, 0); //-+ 
+		glEnd();
 	glPopMatrix();
+
 }
 
+void DrawHouse_0(void) {
+	glColor3f(1.0f, 1.0f, 1.0f);
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	DrawCubeI(4, 4, 4);
+}
+void DrawTree_0(void) {
+	glColor3f(0.0f, 1.0f, 0.0f);
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	DrawCubeI(10, 15, 10);
+}
+void DrawSide_0(void) {
+	glColor3f(1.0f, 0.0f, 1.0f);
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	DrawCubeI(1, 5, 1);
+}

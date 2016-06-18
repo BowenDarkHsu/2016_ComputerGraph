@@ -4,6 +4,7 @@
 #include "myLight.h"
 #include "glFunctions.h"
 #include "texture.h"
+
 //#include "3dsloader.h"
 void OpenGL_Init(int argc, char** argv) {
 
@@ -21,9 +22,16 @@ void OpenGL_Init(int argc, char** argv) {
 
 	// OpenGL - creates a window with an OpenGL context.
 	glutCreateWindow(" Final Project - Virtual City ");
-
-	glutDisplayFunc(myDisplay);
+	
+	#if DisplayMode == 0
+		glutDisplayFunc(myDisplay);
+	#elif DisplayMode == 1
+		glutDisplayFunc(display);
+	#else
+		glutDisplayFunc(parDisplay);
+	#endif
 	//glutDisplayFunc(display);
+	//glutDisplayFunc(myDisplay);
 	//glutMouseFunc(myMouse);
 	glutKeyboardFunc(myKeyboard);
 	myInit();
@@ -46,20 +54,26 @@ void myInit() {
 
 	/* Init Light Value*/
 	//InitLight_Ambient(mySource_1);
-	myTexture();	
-	//glEnable(GL_TEXTURE_2D);
+
+	#if OpenTexture == 1
+		myTexture();
+		glEnable(GL_TEXTURE_2D);
+	#endif
+		My_LookAt.X = 0.0;
+		My_LookAt.Y = 0.2;
+		My_LookAt.Watch_Y = -0.2;
 	myDisplay();
 	//display();
 	/* Fix Camera Orig Position */
-	My_LookAt.X = 0.0;
-	My_LookAt.Y = 0.0;
+	//My_LookAt.X = 0.0;
+	//My_LookAt.Y = 0.0;
 	glutPostRedisplay();
 }/* End of myInit */
 void myTexture() {
 	//glGenTextures(2, texName);
 	//glBindTexture(GL_TEXTURE_2D, texName[0]);
 	id_texture = LoadBitmap2("texture/back.bmp");
-	
+	id_texture2 = LoadBitmap2("texture/heart.bmp");
 }
 
 
@@ -135,6 +149,8 @@ void myMenu(int id) {
 		glutPostRedisplay();
 		break;
 	case 4: exit(0);
+		break;
+
 	}/* End of switch */
 }
 
@@ -146,7 +162,16 @@ void myMouse(int button, int state, int x, int y) {
 }
 
 void myKeyboard(unsigned char key, int x, int y) {
-
+	printf(" in keypad \r\n");
+	
+	NPC_Flag.F = ((Z1 < -1.3) && (Z1 > -3.8 + 0.1)) && ((X1 < 1.7) && (X1 > -1.5));
+	printf(" NPC_Flag.F = %d \r\n" , NPC_Flag.F);
+	NPC_Flag.B = ((Z1 < -1.3 - 0.1) && (Z1 > -3.8)) && ((X1 < 1.7) && (X1 > -1.5));
+	printf(" NPC_Flag.B = %d \r\n", NPC_Flag.B);
+	NPC_Flag.L = ((Z1 < -1.3) && (Z1 > -3.8)) && ((X1 < 1.7) && (X1 > -1.5 + 0.1));
+	printf(" NPC_Flag.L = %d \r\n", NPC_Flag.L);
+	NPC_Flag.R = ((Z1 < -1.3) && (Z1 > -3.8)) && ((X1 < 1.7 - 0.1) && (X1 > -1.5));
+	printf(" NPC_Flag.R = %d \r\n", NPC_Flag.R);
 	switch (key) {
 	case 'w':
 		MoveZ = MoveZ + 5;
@@ -191,16 +216,66 @@ void myKeyboard(unsigned char key, int x, int y) {
 		printf(" MoveX = %f  \r\n", MoveX);
 		glutPostRedisplay();
 		break;
-	case '1': // 前進
-		My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1;
+	case '1': // 前進	
+		if (NPC_Flag.F) {
+			My_LookAt.Z = My_LookAt.Z;
+			DrawHint = true;
+		}
+		else {
+			My_LookAt.Z = My_LookAt.Z - 0.1;
+			My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1;
+			Z1 = My_LookAt.Watch_Z;
+			DrawHint = false;
+		}
+		printf(" My_LookAt.Z = %f  Fix-My_LookAt.Z = %f\r\n", My_LookAt.Z, My_LookAt.Z-Fixed_Z);
 		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
-		LookAt_Z_MenuFunc(2);
+		printf(" ForwardFalg = %d , BackFalg = %d  \r\n", ForwardFalg, BackFalg);
 		glutPostRedisplay();
 		break;
 	case '2': // 後退
-		My_LookAt.Watch_Z = My_LookAt.Watch_Z + 0.1;
-		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
-		LookAt_Z_MenuFunc(1);
+		if (NPC_Flag.B) {
+			My_LookAt.Z = My_LookAt.Z;
+			DrawHint = true;
+		}
+		else {
+			My_LookAt.Z = My_LookAt.Z + 0.1;
+			My_LookAt.Watch_Z = My_LookAt.Watch_Z + 0.1;
+			Z1 = My_LookAt.Watch_Z;
+			DrawHint = false;
+		}
+		printf(" My_LookAt.Z = %f  Fix-My_LookAt.Z = %f\r\n", My_LookAt.Z, My_LookAt.Z - Fixed_Z);
+		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);		
+		printf(" ForwardFalg = %d , BackFalg = %d  \r\n", ForwardFalg, BackFalg);
+		glutPostRedisplay();
+		break;
+	case '7': // 左轉	
+		if (NPC_Flag.L) {
+			My_LookAt.X = My_LookAt.X;
+			DrawHint = true;
+		}
+		else {
+			My_LookAt.X = My_LookAt.X - 0.1;
+			My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;
+			X1 = My_LookAt.Watch_X;
+			DrawHint = false;
+		}
+		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		glutPostRedisplay();
+		break;
+	case '8': // 右轉
+		if (NPC_Flag.R) {
+			My_LookAt.X = My_LookAt.X;
+			DrawHint = true;
+		}
+		else {
+			My_LookAt.X = My_LookAt.X + 0.1;
+			My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;
+			X1 = My_LookAt.Watch_X;
+			DrawHint = false;
+		}		
+		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
 		glutPostRedisplay();
 		break;
 	case '4': // 低頭
@@ -213,18 +288,6 @@ void myKeyboard(unsigned char key, int x, int y) {
 		LookAt_Y_MenuFunc(2);
 		My_LookAt.Watch_Y = My_LookAt.Watch_Y + 0.1;
 		printf(" My_LookAt.Watch_Y = %f  \r\n", My_LookAt.Watch_Y);
-		glutPostRedisplay();
-		break;
-	case '7': // 左轉
-		LookAt_X_MenuFunc(2);
-		My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;
-		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
-		glutPostRedisplay();
-		break;
-	case '8': // 右轉
-		LookAt_X_MenuFunc(1);
-		My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;
-		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
 		glutPostRedisplay();
 		break;
 	case 'z':
@@ -245,34 +308,44 @@ void myKeyboard(unsigned char key, int x, int y) {
 	case 'n':
 		LookAt_Z_MenuFunc(2);
 		break;
+	case 'e':
+		Rotated_theta = Rotated_theta + 1;
+		printf(" Rotated_theta = %f  \r\n", Rotated_theta);
+		glutPostRedisplay();
+		break;
+	case 'q':
+		Rotated_theta = Rotated_theta - 1;
+		printf(" Rotated_theta = %f  \r\n", Rotated_theta);
+		glutPostRedisplay();
+		break;
 	case 'f':
-		My_LookAt.Forward_X = My_LookAt.Forward_X + 0.1;
-		printf(" My_LookAt.Forward_X = %f  \r\n", My_LookAt.Forward_X);
+		Rotated_X = Rotated_X + 0.1;
+		printf(" Rotated_X = %f  \r\n", Rotated_X);
 		glutPostRedisplay();
 		break;
 	case 'g':
-		My_LookAt.Forward_X = My_LookAt.Forward_X - 0.1;
-		printf(" My_LookAt.Forward_X = %f  \r\n", My_LookAt.Forward_X);
+		Rotated_X = Rotated_X - 0.1;
+		printf(" Rotated_X = %f  \r\n", Rotated_X);
 		glutPostRedisplay();
 		break;
 	case 'h':
-		My_LookAt.Forward_Y = My_LookAt.Forward_Y + 0.1;
-		printf(" My_LookAt.Forward_Y = %f  \r\n", My_LookAt.Forward_Y);
+		Rotated_Y = Rotated_Y + 0.1;
+		printf(" Rotated_Y = %f  \r\n", Rotated_Y);
 		glutPostRedisplay();
 		break;
 	case 'j':
-		My_LookAt.Forward_Y = My_LookAt.Forward_Y - 0.1;
-		printf(" My_LookAt.Forward_Y = %f  \r\n", My_LookAt.Forward_Y);
+		Rotated_Y = Rotated_Y - 0.1;
+		printf(" Rotated_Y = %f  \r\n", Rotated_Y);
 		glutPostRedisplay();
 		break;
 	case 'k':
-		My_LookAt.Forward_Z = My_LookAt.Forward_Z + 0.1;
-		printf(" My_LookAt.Forward_Z = %f  \r\n", My_LookAt.Forward_Z);
+		Rotated_Z = Rotated_Z + 0.1;
+		printf(" Rotated_Z = %f  \r\n", Rotated_Z);
 		glutPostRedisplay();
 		break;
 	case 'l':
-		My_LookAt.Forward_Z = My_LookAt.Forward_Z - 0.1;
-		printf(" My_LookAt.Forward_Z = %f  \r\n", My_LookAt.Forward_Z);
+		Rotated_Z = Rotated_Z - 0.1;
+		printf(" Rotated_Z = %f  \r\n", Rotated_Z);
 		glutPostRedisplay();
 		break;
 	case 'r':
@@ -383,6 +456,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 
 
 	default:
+		
 		break;
 	}
 

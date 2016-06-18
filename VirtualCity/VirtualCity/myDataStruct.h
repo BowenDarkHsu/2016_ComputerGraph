@@ -73,12 +73,31 @@ typedef struct glMaterial_Parameter {
 /* End of Light Source Data Struct */
 
 /* Object Data Structure */
+typedef struct AvoidObject {
+	bool F;
+	bool B;
+	bool R;
+	bool L;
+}AvoidObject;
 typedef struct TreeNode{
 	GLfloat m[16];
 	void (*f)();
 	struct TreeNode* Child;
 	struct TreeNode* Sibling;
 }TreeNode;
+
+
+typedef struct FixObject {
+	TreeNode Plane;
+	TreeNode House_0;
+	TreeNode Tree_0;
+	TreeNode Side_0;
+}FixObject;
+
+typedef struct ShowObject {
+	TreeNode breath;
+	TreeNode sleep;
+}ShowObject;
 
 typedef struct HumanObject {
 	TreeNode Torso;
@@ -93,11 +112,21 @@ typedef struct HumanObject {
 	TreeNode RightLowerLeg;
 }HumanObject;
 
+typedef struct WorldObject {
+	FixObject Fix;
+	HumanObject Hum;
+	ShowObject show;
+}WorldObject;
+
 extern float MoveX;
 extern float MoveY;
 extern float MoveZ;
-
+extern bool DrawHint;
 extern HumanObject MajorRole;
+extern FixObject NonMovingObject;
+extern WorldObject MyWorldObject;
+
+extern AvoidObject NPC_Flag;
 /* End of Object Data Structure */
 
 extern glOrtho_Parameter My_Ortho;

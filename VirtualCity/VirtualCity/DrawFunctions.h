@@ -27,10 +27,18 @@ void DrawHouse(float Length, float Height, float Width, float door_L, float door
 void DrawFixWindows(void);
 void DrawFixPlane(void);
 void DrawVitality(void);
+void DrawHouse_0(void);
+void DrawTree_0(void);
+void DrawSide_0(void);
 extern char string1[10];
 extern char string2[10];
-
+extern float Rotated_theta;
 extern int id_texture;
+extern int id_texture2;
+extern float Rotated_X;
+extern float Rotated_Y;
+extern float Rotated_Z;
+
 #ifdef __cplusplus
 }
 #endif
