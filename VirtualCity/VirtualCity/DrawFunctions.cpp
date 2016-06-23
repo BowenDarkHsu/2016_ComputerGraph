@@ -2,6 +2,7 @@
 #include "DrawFunctions.h"
 #include "glFunctions.h"
 #include "texture.h"
+#include "math.h"
 void MovePosition(float x , float y , float z) {
 	glTranslated((x / My_Ortho.X2), (y / My_Ortho.Y2), (z / My_Ortho.Z2));
 }
@@ -60,7 +61,9 @@ void CreateNode(void) {
 	MovePosition(MoveX +0 , MoveY + 20, MoveZ + 0);
 	glRotated(Rotated_theta, Rotated_X, Rotated_Y, Rotated_Z);
 	//MovePosition(0, 20, 0);
+	
 	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+
 	glGetFloatv(GL_MODELVIEW_MATRIX, MajorRole.Torso.m);
 	MajorRole.Torso.f = DrawTorso;
 	MajorRole.Torso.Sibling = NULL;
@@ -391,7 +394,9 @@ void DrawFixWindows(void) {
 }
 void DrawFixPlane(void) {
 	glPushMatrix();
+
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//glMultMatrixf(mo);
 		glColor3f(0.4, 0.4, 0.4);
 		//glBegin(GL_POLYGON);			
 		glBindTexture(GL_TEXTURE_2D, id_texture);
@@ -404,7 +409,9 @@ void DrawFixPlane(void) {
 	glPopMatrix();
 
 	glPushMatrix();
+
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//glMultMatrixf(mo);
 		glColor3f(0.3, 0.3, 0.4);
 		//glBegin(GL_POLYGON);			
 		glBindTexture(GL_TEXTURE_2D, id_texture);
@@ -458,4 +465,17 @@ void DrawSide_0(void) {
 	glColor3f(1.0f, 0.0f, 1.0f);
 	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 	DrawCubeI(1, 5, 1);
+}
+
+void CalculateARC(float theta) {
+	float h = My_LookAt.X;	// 0
+	float k = My_LookAt.Z;	// 3.5
+	float r = 3.5;
+	float tempX = 0.0;
+	float tempZ = 0.0;
+	tempX = h + r*cos(theta);
+	tempZ = k + r*sin(theta);
+	printf(" My_LookAt.Watch_X = %f  \r\n", tempX);
+	printf(" My_LookAt.Watch_Z = %f  \r\n", tempZ);
+	//DrawCubeI(0.1,0.1,0.1);
 }

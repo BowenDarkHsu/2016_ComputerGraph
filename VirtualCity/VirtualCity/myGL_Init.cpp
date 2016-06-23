@@ -4,7 +4,7 @@
 #include "myLight.h"
 #include "glFunctions.h"
 #include "texture.h"
-
+#include "DrawFunctions.h"
 //#include "3dsloader.h"
 void OpenGL_Init(int argc, char** argv) {
 
@@ -38,7 +38,7 @@ void OpenGL_Init(int argc, char** argv) {
 
 	glutMouseFunc(mousebutton);
 	glutMotionFunc(mousemove);
-
+	//glutPassiveMotionFunc(mousemove);
 	glutMainLoop();
 }/* End of OpenGL_Init */
 
@@ -173,6 +173,18 @@ void myKeyboard(unsigned char key, int x, int y) {
 	NPC_Flag.R = ((Z1 < -1.3) && (Z1 > -3.8)) && ((X1 < 1.7 - 0.1) && (X1 > -1.5));
 	printf(" NPC_Flag.R = %d \r\n", NPC_Flag.R);
 	switch (key) {
+	case 'A':
+		RotateAngle = RotateAngle + 1;
+		printf(" RotateAngle = %f  \r\n", RotateAngle);
+		CalculateARC(RotateAngle);
+		glutPostRedisplay();
+		break;
+	case 'D':
+		RotateAngle = RotateAngle - 1;
+		printf(" RotateAngle = %f  \r\n", RotateAngle);
+		CalculateARC(RotateAngle);
+		glutPostRedisplay();
+		break;
 	case 'w':
 		MoveZ = MoveZ + 5;
 		//My_LookAt.Z = My_LookAt.Z + 0.25 / My_Ortho.Value;
@@ -288,6 +300,24 @@ void myKeyboard(unsigned char key, int x, int y) {
 		LookAt_Y_MenuFunc(2);
 		My_LookAt.Watch_Y = My_LookAt.Watch_Y + 0.1;
 		printf(" My_LookAt.Watch_Y = %f  \r\n", My_LookAt.Watch_Y);
+		glutPostRedisplay();
+		break;
+	case '<':
+		LookAt_X_MenuFunc(1);
+		LookAt_Z_MenuFunc(2);
+		My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		My_LookAt.Watch_Z = My_LookAt.Watch_Z + 0.1;
+		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
+		glutPostRedisplay();
+		break;
+	case '>':
+		LookAt_X_MenuFunc(2);
+		LookAt_Z_MenuFunc(1);
+		My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;
+		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+		My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1;
+		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		glutPostRedisplay();
 		break;
 	case 'z':

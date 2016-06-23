@@ -30,6 +30,7 @@ void DrawVitality(void);
 void DrawHouse_0(void);
 void DrawTree_0(void);
 void DrawSide_0(void);
+void CalculateARC(float theta);
 extern char string1[10];
 extern char string2[10];
 extern float Rotated_theta;

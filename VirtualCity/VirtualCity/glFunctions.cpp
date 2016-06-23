@@ -75,10 +75,17 @@ void mousemove(int x, int y)
 	vassign(v0, v1);
 
 	glPushMatrix();
-	glLoadIdentity();
-	glRotatef(angle * 180 / PI, axis[0], axis[1], axis[2]);
+	glLoadIdentity();	
+	glRotatef(angle * 180 / PI, 0, axis[1], 0);
+	printf("RotateF axis[0] = %f , axis[1] = %f , axis[2] = %f \r\n", axis[0], axis[1], axis[2]);
 	glMultMatrixf(mo);
 	glGetFloatv(GL_MODELVIEW_MATRIX, mo);
+	for (int i = 0; i < 16; i+=4) {
+		for(int j = 0 ; j < 4 ; j++)
+			printf(" mo[%d] = %f ,", i+j, mo[i+j]);
+		printf("\r\n");
+	}
+	printf("\r\n");
 	glPopMatrix();
 	glutPostRedisplay();
 }

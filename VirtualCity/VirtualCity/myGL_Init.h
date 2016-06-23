@@ -37,7 +37,7 @@ extern bool BackFalg;
 extern bool ForwardFalg;
 extern bool RightFalg;
 extern bool LeftFalg;
-
+extern float RotateAngle;
 
 
 #ifdef __cplusplus
