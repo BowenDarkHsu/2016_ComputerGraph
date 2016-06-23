@@ -70,7 +70,11 @@ bool LeftFalg = false;
 AvoidObject NPC_Flag;
 bool DrawHint = false;
 
-float RotateAngle = 0;
+float RotateAngle = 180;
+//float RotateAngle = 0;
+int RoatateCnt = 0;
+float MoveValeZ = 0;
+
 
 #if DisplayMode == 2
 GLfloat colors[8][3] = { {0,0,0},{1,0,0},{0,1,0},{0,0,1},{0,1,1},{1,0,1},{1,1,0},{1,1,1} };
@@ -225,9 +229,11 @@ void myDisplay() {
 	glutWireCube(0.7);
 	glutWireCube(0.5);*/
 		// Draw Horizontal
+
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(100, double(viewport[2]) / viewport[3], 0.1, 100.0);
+		//gluPerspective(100, double(viewport[2]) / viewport[3], 0.1, 100.0);
+		gluPerspective(60, double(viewport[2]) / viewport[3], 0.1, 100.0);
 		//printf("viewport[2] = %d , viewport[3] = %d , 2/3 = %f \r\n", viewport[2], viewport[3], double(viewport[2]) / viewport[3]);
 
 		glMatrixMode(GL_MODELVIEW);
@@ -265,9 +271,9 @@ void myDisplay() {
 
 			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 			
-			MovePosition(-100, 0, -50);
+			MovePosition(0, 0, 140);
 
-			DrawCubeI(1, 1, 1);
+			DrawCubeI(0.4, 0.4, 0.4);
 		glPopMatrix();
 		glPushMatrix();
 			glColor3f(1.0f, 0.0f, 0.0f);

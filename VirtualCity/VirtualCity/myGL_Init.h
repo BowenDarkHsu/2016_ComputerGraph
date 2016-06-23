@@ -38,8 +38,8 @@ extern bool ForwardFalg;
 extern bool RightFalg;
 extern bool LeftFalg;
 extern float RotateAngle;
-
-
+extern int RoatateCnt;
+extern float MoveValeZ;
 #ifdef __cplusplus
 }
 #endif

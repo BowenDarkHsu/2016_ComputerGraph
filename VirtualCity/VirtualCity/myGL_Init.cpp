@@ -5,6 +5,7 @@
 #include "glFunctions.h"
 #include "texture.h"
 #include "DrawFunctions.h"
+#include "math.h"
 //#include "3dsloader.h"
 void OpenGL_Init(int argc, char** argv) {
 
@@ -173,14 +174,26 @@ void myKeyboard(unsigned char key, int x, int y) {
 	NPC_Flag.R = ((Z1 < -1.3) && (Z1 > -3.8)) && ((X1 < 1.7 - 0.1) && (X1 > -1.5));
 	printf(" NPC_Flag.R = %d \r\n", NPC_Flag.R);
 	switch (key) {
-	case 'A':
-		RotateAngle = RotateAngle + 1;
+	case 'a':
+		if (RotateAngle < 360)
+			RotateAngle = RotateAngle + 1;
+		else
+			RotateAngle = 0;
 		printf(" RotateAngle = %f  \r\n", RotateAngle);
 		CalculateARC(RotateAngle);
+
 		glutPostRedisplay();
 		break;
-	case 'D':
-		RotateAngle = RotateAngle - 1;
+	case 'd':
+		if (RotateAngle > 0)
+			RotateAngle = RotateAngle - 1;
+		else
+			RotateAngle = 360;
+		if (RoatateCnt++ == 4) {
+			//LookAt_Z_MenuFunc(1);
+			RoatateCnt = 0;
+		}
+			
 		printf(" RotateAngle = %f  \r\n", RotateAngle);
 		CalculateARC(RotateAngle);
 		glutPostRedisplay();
@@ -200,7 +213,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	
-	case 'a':
+	case 'A':
 		MoveX = MoveX - 5 ;
 		/*if (4 == ++tempX1) {
 			My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;
@@ -214,7 +227,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 		printf(" MoveX = %f  \r\n", MoveX);
 		glutPostRedisplay();
 		break;
-	case 'd':
+	case 'D':
 		MoveX = MoveX + 5 ;
 		/*if (4 == ++tempX2) {
 			My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;
@@ -234,11 +247,13 @@ void myKeyboard(unsigned char key, int x, int y) {
 			DrawHint = true;
 		}
 		else {
-			My_LookAt.Z = My_LookAt.Z - 0.1;
-			My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1;
+			MoveValeZ = 1*cos(RotateAngle*0.017445) + 1*sin(RotateAngle*0.017445);
+			My_LookAt.Z = My_LookAt.Z - 0.1*MoveValeZ;
+			My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1*MoveValeZ;
 			Z1 = My_LookAt.Watch_Z;
 			DrawHint = false;
 		}
+		printf(" MoveValeZ = %f \r\n", MoveValeZ);
 		printf(" My_LookAt.Z = %f  Fix-My_LookAt.Z = %f\r\n", My_LookAt.Z, My_LookAt.Z-Fixed_Z);
 		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		printf(" ForwardFalg = %d , BackFalg = %d  \r\n", ForwardFalg, BackFalg);

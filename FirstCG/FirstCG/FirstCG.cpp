@@ -12,7 +12,7 @@
 	pi = 3.1415926 
 	1 degree = 2*pi/360 = 0.017445 radian
 */
-#define degree 0.017445
+//#define degree 0.017445
 
 /*
 	Function Define 
@@ -22,8 +22,8 @@ void myDisplay();
 void OpenGL_Init(int argc, char** argv);
 void DrawVertialOval();
 void DrawHorizontalOval();
-double OvalCal_X(double h, double a, double t);
-double OvalCal_Y(double k, double b, double t);
+double OvalCal_X(double h, double a, float t);
+double OvalCal_Y(double k, double b, float t);
 
 /*
 	Program Start
@@ -99,6 +99,7 @@ void DrawVertialOval() {
 		X = OvalCal_X(0, 2, i);
 		Y = OvalCal_Y(0, 1, i);
 		glVertex3f(X, Y, 0.0);
+		printf("X = %f , Y = %f \r\n",X,Y);
 	}
 	glEnd();
 }/* End of DrawVertialOval */
@@ -116,12 +117,12 @@ void DrawHorizontalOval() {
 	glEnd();
 }/* End of DrawHorizontalOval */
 
-double OvalCal_X(double h, double a, double t){
+double OvalCal_X(double h, double a, float t){
 	double x = 0.0;
 	x = h + a * cos(t);
 	return x;
 }/* End of OvalCal_X */
-double OvalCal_Y(double k, double b, double t) {
+double OvalCal_Y(double k, double b, float t) {
 	double y = 0.0;
 	y = k + b * sin(t);
 	return y;

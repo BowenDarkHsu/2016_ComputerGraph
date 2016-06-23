@@ -470,12 +470,21 @@ void DrawSide_0(void) {
 void CalculateARC(float theta) {
 	float h = My_LookAt.X;	// 0
 	float k = My_LookAt.Z;	// 3.5
+	float h1 = My_LookAt.X;	// 0
+	float k1 = My_LookAt.Z - 1;	// 3.5
+
+	float p = 1;
 	float r = 3.5;
 	float tempX = 0.0;
 	float tempZ = 0.0;
-	tempX = h + r*cos(theta);
-	tempZ = k + r*sin(theta);
-	printf(" My_LookAt.Watch_X = %f  \r\n", tempX);
-	printf(" My_LookAt.Watch_Z = %f  \r\n", tempZ);
+	//r = r / p;	
+	My_LookAt.Watch_Z = k + r*cos(theta*0.017445);
+	My_LookAt.Watch_X = h + r*sin(theta*0.017445);
+	tempZ = 0 + p*cos(theta*0.017445);
+	tempX = 0 + p*sin(theta*0.017445);
+	printf(" My_LookAt.X = %f  \r\n", tempX);
+	printf(" My_LookAt.Z = %f  \r\n", tempZ);
+	printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
+	printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 	//DrawCubeI(0.1,0.1,0.1);
 }
