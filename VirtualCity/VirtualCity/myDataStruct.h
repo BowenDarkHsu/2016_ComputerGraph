@@ -118,6 +118,8 @@ typedef struct WorldObject {
 	ShowObject show;
 }WorldObject;
 
+
+
 extern float MoveX;
 extern float MoveY;
 extern float MoveZ;

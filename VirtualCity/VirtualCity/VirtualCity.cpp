@@ -46,6 +46,8 @@ char string1[10] = "breath : ";
 char string2[10];
 int id_texture = 0;
 int id_texture2 = 0;
+int id_texture3 = 0;
+
 int num_texture = -1;
 
 float Rotated_theta = 0.0;
@@ -268,6 +270,14 @@ void myDisplay() {
 			printf("\r\n");*/
 			DrawCubeI(0.4, 0.4, 0.4);
 		glPopMatrix();
+
+		glPushMatrix();
+			glColor3f(0.0f, 1.0f, 0.0f);
+			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			MovePosition(-10, 0, -30);
+			DrawCubeTexture(1,1,1,id_texture3);
+		glPopMatrix();
+
 		glPushMatrix();
 			glColor3f(1.0f, 1.0f, 0.0f);
 

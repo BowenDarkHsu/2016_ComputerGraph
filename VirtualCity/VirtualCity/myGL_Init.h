@@ -5,7 +5,7 @@ extern "C" {
 #endif
 #include "glut.h"
 #define DisplayMode 0
-#define OpenTexture 1
+#define OpenTexture 0
 #define ShowDirValue 1
 	void initParticle(void);
 	void parDisplay(void);
@@ -30,6 +30,7 @@ extern float Rotated_X;
 extern float Rotated_Y;
 extern float Rotated_Z;
 extern int id_texture2;
+extern int id_texture3;
 extern float Fixed_Z;
 extern float Z1;
 extern float X1;

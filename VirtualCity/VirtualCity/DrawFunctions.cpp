@@ -176,7 +176,7 @@ void DrawCubeI(float L, float H, float W) {
 		{ Length,-Height,-Width },{ -Length,-Height,-Width },{ -Length,-Height,Width },
 		{ Length,-Height,Width },{ Length,-Height,-Width },{ Length,Height,-Width },
 		{ -Length,Height,-Width },{ -Length,-Height,-Width },{ -Length,-Height,Width },{ -Length,Height,Width } };
-	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
+	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };	
 	glBegin(GL_LINE_LOOP);
 	//glBegin(GL_POLYGON);
 	for (int i = 0; i < 16; i++) {
@@ -188,6 +188,39 @@ void DrawCubeI(float L, float H, float W) {
 	}
 	glEnd();
 }
+void DrawCubeTexture(float L, float H, float W,int texture) {
+	//glBegin(GL_LINE_LOOP);
+	GLfloat Length, Height, Width;
+	Length = L / 2;
+	Height = H / 2;
+	Width = W / 2;
+	GLfloat P0[3] = { Length,Height,Width };
+	GLfloat P1[3] = { Length,Height,-Width };
+	GLfloat P2[3] = { Length,-Height,Width };
+	GLfloat P3[3] = { Length,-Height,-Width };
+	GLfloat P4[3] = { -Length,Height,Width };
+	GLfloat P5[3] = { -Length,Height,-Width };
+	GLfloat P6[3] = { -Length,-Height,Width };
+	GLfloat P7[3] = { -Length,-Height,Width };	
+	GLfloat DrawPlaneA[4][3] = { *P0,*P1,*P3,*P2 };
+	GLfloat DrawPlaneB[4][3] = { { Length,Height,Width },{ Length,Height,-Width },{ Length,-Height,-Width },{ Length,-Height,Width } };
+	GLfloat DrawPlaneC[4][3] = { { Length,Height,Width },{ -Length,Height,Width },{ -Length,-Height,Width },{ Length,-Height,Width } };
+	GLfloat DrawPlaneD[4][3] = { { -Length,Height,-Width },{ -Length,Height,Width },{ -Length,-Height,Width },{ -Length,-Height,-Width } };
+
+	GLfloat Testure2D[4][2] = { { 0,0 },{ 1,0 },{ 1,1 },{ 0,1 } };
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glBegin(GL_QUADS);
+	for (int i = 0; i < 4; i++) {
+		glNormal3fv(DrawPlaneA[i]);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
+		glVertex3fv(DrawPlaneB[i]);
+	}
+	glEnd();
+	
+}
+
+
 
 void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H) {
 	DrawCubeF(Length, Height, Width);
@@ -438,7 +471,7 @@ void DrawVitality(void) {
 	glPopMatrix();*/
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 0.0f);
-		gluLookAt(0, 0.1, 6, 0, 0, 2.6, 0, 1, 0);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		MovePosition(-150, 100, 0);
 		glBindTexture(GL_TEXTURE_2D, id_texture2);
 		glBegin(GL_QUADS);

@@ -77,8 +77,9 @@ void myInit() {
 void myTexture() {
 	//glGenTextures(2, texName);
 	//glBindTexture(GL_TEXTURE_2D, texName[0]);
-	id_texture = LoadBitmap2("texture/back.bmp");
+	id_texture = LoadBitmap2("texture/front.bmp");
 	id_texture2 = LoadBitmap2("texture/heart.bmp");
+	id_texture3 = LoadBitmap2("texture/miniMouse.bmp");
 }
 
 
