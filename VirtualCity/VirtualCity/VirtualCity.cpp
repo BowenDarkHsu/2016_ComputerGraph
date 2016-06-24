@@ -75,6 +75,8 @@ float RotateAngle = 180;
 int RoatateCnt = 0;
 float MoveValeZ = 0;
 
+float PosXUnit = 0.0;
+float PosZUnit = 0.0;
 
 #if DisplayMode == 2
 GLfloat colors[8][3] = { {0,0,0},{1,0,0},{0,1,0},{0,0,1},{0,1,1},{1,0,1},{1,1,0},{1,1,1} };
@@ -341,7 +343,7 @@ void myDisplay() {
 	glPushMatrix();
 
 		glColor3f(1.0f, 0.0f, 1.0f);
-		gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		
 		// h
 		glBegin(GL_LINE_LOOP);
@@ -392,7 +394,7 @@ void myDisplay() {
 	//}
 
 	if (DrawHint) {
-		gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+		gluLookAt(0, 0.1, 2, 0, 0, 0, 0, 1, 0);
 		glPushMatrix();
 		glColor3f(1.0f, 1.0f, 1.0f);
 		//glRasterPos3f(-10, 7, 0);

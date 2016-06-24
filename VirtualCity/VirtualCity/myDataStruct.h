@@ -13,11 +13,11 @@ typedef struct glLookAt_Parameter {
 	float Y = -0.2;
 	float Z = 0.3;*/
 	float X = 0;
-	float Y = 1.5;
-	float Z = 3.5;
+	float Y = 0.1;
+	float Z = 6.0;
 	float Watch_X = 0.0;
 	float Watch_Y = 0.0;
-	float Watch_Z = 0.0;
+	float Watch_Z = 2.6;
 	float Forward_X = 0.0;
 	float Forward_Y = 1.0;
 	float Forward_Z = 0.0;

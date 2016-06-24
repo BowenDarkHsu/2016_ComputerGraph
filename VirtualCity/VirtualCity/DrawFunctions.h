@@ -5,6 +5,7 @@ extern "C" {
 #endif
 #include "glut.h"
 #include "myDataStruct.h"
+#define DebugMode 0
 void MovePosition(float x, float y, float z);
 /* Modeling Function */
 void CreateNode(void);
@@ -39,7 +40,8 @@ extern int id_texture2;
 extern float Rotated_X;
 extern float Rotated_Y;
 extern float Rotated_Z;
-
+extern float PosXUnit;
+extern float PosZUnit;
 #ifdef __cplusplus
 }
 #endif

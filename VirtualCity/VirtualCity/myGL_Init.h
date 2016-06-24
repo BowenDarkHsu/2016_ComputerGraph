@@ -5,8 +5,8 @@ extern "C" {
 #endif
 #include "glut.h"
 #define DisplayMode 0
-#define OpenTexture 0
-
+#define OpenTexture 1
+#define ShowDirValue 1
 	void initParticle(void);
 	void parDisplay(void);
 	float forces(int i, int j);

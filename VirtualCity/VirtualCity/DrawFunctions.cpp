@@ -58,7 +58,7 @@ void CreateNode(void) {
 
 	// MajorRole.Torso
 	glLoadIdentity();
-	MovePosition(MoveX +0 , MoveY + 20, MoveZ + 0);
+	MovePosition(MoveX +0 , MoveY + 0, MoveZ + 0);
 	glRotated(Rotated_theta, Rotated_X, Rotated_Y, Rotated_Z);
 	//MovePosition(0, 20, 0);
 	
@@ -438,7 +438,7 @@ void DrawVitality(void) {
 	glPopMatrix();*/
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 0.0f);
-		gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+		gluLookAt(0, 0.1, 6, 0, 0, 2.6, 0, 1, 0);
 		MovePosition(-150, 100, 0);
 		glBindTexture(GL_TEXTURE_2D, id_texture2);
 		glBegin(GL_QUADS);
@@ -480,10 +480,19 @@ void CalculateARC(float theta) {
 	//r = r / p;	
 	My_LookAt.Watch_Z = k + r*cos(theta*0.017445);
 	My_LookAt.Watch_X = h + r*sin(theta*0.017445);
-	tempZ = 0 + p*cos(theta*0.017445);
-	tempX = 0 + p*sin(theta*0.017445);
-	printf(" My_LookAt.X = %f  \r\n", tempX);
-	printf(" My_LookAt.Z = %f  \r\n", tempZ);
+	
+	#if DebugMode == 1
+		tempZ = 0 + p*cos(theta*0.017445);
+		tempX = 0 + p*sin(theta*0.017445);
+		printf("plane Y-axis tempX = %f  \r\n", tempX);
+		printf("plane X-axis tempZ = %f  \r\n", tempZ);
+	#else
+		PosZUnit = 0 + p*cos(theta*0.017445)*0.1;
+		PosXUnit = 0 + p*sin(theta*0.017445)*0.1;
+		printf(" PosXUnit = %f  \r\n", PosXUnit);
+		printf(" PosZUnit = %f  \r\n", PosZUnit);
+	#endif
+	
 	printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
 	printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 	//DrawCubeI(0.1,0.1,0.1);
