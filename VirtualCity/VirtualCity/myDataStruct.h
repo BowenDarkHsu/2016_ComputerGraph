@@ -79,6 +79,7 @@ typedef struct AvoidObject {
 	bool R;
 	bool L;
 }AvoidObject;
+
 typedef struct TreeNode{
 	GLfloat m[16];
 	void (*f)();
@@ -87,12 +88,6 @@ typedef struct TreeNode{
 }TreeNode;
 
 
-typedef struct FixObject {
-	TreeNode Plane;
-	TreeNode House_0;
-	TreeNode Tree_0;
-	TreeNode Side_0;
-}FixObject;
 
 typedef struct ShowObject {
 	TreeNode breath;
@@ -113,19 +108,20 @@ typedef struct HumanObject {
 }HumanObject;
 
 typedef struct WorldObject {
-	FixObject Fix;
 	HumanObject Hum;
 	ShowObject show;
 }WorldObject;
 
-
-
+typedef struct ObjBox {
+	GLfloat P0[3];
+	
+}ObjBox;
+extern ObjBox ObjA;
 extern float MoveX;
 extern float MoveY;
 extern float MoveZ;
 extern bool DrawHint;
 extern HumanObject MajorRole;
-extern FixObject NonMovingObject;
 extern WorldObject MyWorldObject;
 
 extern AvoidObject NPC_Flag;

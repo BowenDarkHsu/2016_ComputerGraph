@@ -10,6 +10,7 @@ void MovePosition(float x, float y, float z);
 /* Modeling Function */
 void CreateNode(void);
 void PreorderTravesal(TreeNode *root);
+
 void DrawTorso(void);
 void DrawHead(void);
 void DrawLUA(void);
@@ -32,6 +33,11 @@ void DrawHouse_0(void);
 void DrawTree_0(void);
 void DrawSide_0(void);
 void CalculateARC(float theta);
+float f_abs(float x, float y);
+void CameraForward(void);
+void CameraBackward(void);
+void CameraLeftward(void);
+void CameraRightward(void);
 void DrawCubeTexture(float L, float H, float W, int texture);
 extern char string1[10];
 extern char string2[10];
@@ -44,6 +50,8 @@ extern float Rotated_Y;
 extern float Rotated_Z;
 extern float PosXUnit;
 extern float PosZUnit;
+
+extern GLfloat D[8][3];
 #ifdef __cplusplus
 }
 #endif

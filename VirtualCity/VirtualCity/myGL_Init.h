@@ -41,6 +41,32 @@ extern bool LeftFalg;
 extern float RotateAngle;
 extern int RoatateCnt;
 extern float MoveValeZ;
+
+extern float Py;
+extern float Px;
+extern float Pz;
+extern float Wx;
+extern float Wz;
+extern float BoundPxU;
+extern float BoundPxD;
+extern float BoundPzU;
+extern float BoundPzD;
+extern float BoundWxU;
+extern float BoundWxD;
+extern float BoundWzU;
+extern float BoundWzD;
+extern bool BoundPx;
+extern bool BoundPz;
+extern bool BoundWx;
+extern bool BoundWz;
+extern float ObjA_w; // z
+extern float ObjA_h; // y
+extern float ObjA_l; // x
+extern float objBox1[16];
+extern float BoundPyU;
+extern float BoundPyD;
+extern bool BoundPy;
+extern bool BoundObjBox1;
 #ifdef __cplusplus
 }
 #endif

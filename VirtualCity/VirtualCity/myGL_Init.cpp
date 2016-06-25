@@ -79,7 +79,7 @@ void myTexture() {
 	//glBindTexture(GL_TEXTURE_2D, texName[0]);
 	id_texture = LoadBitmap2("texture/front.bmp");
 	id_texture2 = LoadBitmap2("texture/heart.bmp");
-	id_texture3 = LoadBitmap2("texture/miniMouse.bmp");
+	id_texture3 = LoadBitmap2("texture/teapot.bmp");
 }
 
 
@@ -170,14 +170,27 @@ void myMouse(int button, int state, int x, int y) {
 void myKeyboard(unsigned char key, int x, int y) {
 	printf(" in keypad \r\n");
 	
-	NPC_Flag.F = ((Z1 < -1.3) && (Z1 > -3.8 + 0.1)) && ((X1 < 1.7) && (X1 > -1.5));
+	/*NPC_Flag.F = ((Z1 < -1.3) && (Z1 > -3.8 + 0.1)) && ((X1 < 1.7) && (X1 > -1.5));
 	printf(" NPC_Flag.F = %d \r\n" , NPC_Flag.F);
 	NPC_Flag.B = ((Z1 < -1.3 - 0.1) && (Z1 > -3.8)) && ((X1 < 1.7) && (X1 > -1.5));
 	printf(" NPC_Flag.B = %d \r\n", NPC_Flag.B);
 	NPC_Flag.L = ((Z1 < -1.3) && (Z1 > -3.8)) && ((X1 < 1.7) && (X1 > -1.5 + 0.1));
 	printf(" NPC_Flag.L = %d \r\n", NPC_Flag.L);
 	NPC_Flag.R = ((Z1 < -1.3) && (Z1 > -3.8)) && ((X1 < 1.7 - 0.1) && (X1 > -1.5));
-	printf(" NPC_Flag.R = %d \r\n", NPC_Flag.R);
+	printf(" NPC_Flag.R = %d \r\n", NPC_Flag.R);*/
+	Py = objBox1[12];
+	Px = objBox1[13];
+	Pz = objBox1[14];
+	BoundPy = (Py < BoundPyU) && (BoundPyD < Py);
+	BoundPx = (Px < BoundPxU) && (BoundPxD < Px);
+	BoundPz = (Pz < BoundPzU) && (BoundPzD < Pz);
+	BoundObjBox1 = BoundPx && BoundPy && BoundPz;
+	printf(" Py = %f , ", Py);
+	printf(" Px = %f , ", Px);
+	printf(" Pz = %f \r\n", Pz);
+	printf(" BoundPy = %d , ", BoundPy);
+	printf(" BoundPx = %d , ", BoundPx);
+	printf(" BoundPz = %d \r\n", BoundPz);
 #if ShowDirValue == 1
 	printf(" My_LookAt.X = %f \r\n", My_LookAt.X);
 	printf(" My_LookAt.Z = %f \r\n", My_LookAt.Z);
@@ -215,72 +228,68 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case 'w': // 前進	
-		if (NPC_Flag.F) {
-			My_LookAt.Z = My_LookAt.Z;
+		if (BoundObjBox1) {
+			CameraBackward();
+			CameraBackward();
 			DrawHint = true;
 		}
 		else {
-			/*MoveValeZ = 1 * cos(RotateAngle*0.017445) + 1 * sin(RotateAngle*0.017445);
-			My_LookAt.Z = My_LookAt.Z - 0.1*MoveValeZ;
-			My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1*MoveValeZ;*/
-			//My_LookAt.Z = My_LookAt.Z - 0.1;
-			//My_LookAt.Watch_Z = My_LookAt.Watch_Z - 0.1;
-			My_LookAt.X = My_LookAt.X + PosXUnit;
+			/*My_LookAt.X = My_LookAt.X + PosXUnit;
 			My_LookAt.Watch_X = My_LookAt.Watch_X + PosXUnit;
 			My_LookAt.Z = My_LookAt.Z + PosZUnit;
-			My_LookAt.Watch_Z = My_LookAt.Watch_Z + PosZUnit;
-			Z1 = My_LookAt.Watch_Z; // balk value
+			My_LookAt.Watch_Z = My_LookAt.Watch_Z + PosZUnit;*/
+			CameraForward();
+			Z1 = My_LookAt.Watch_Z; // balk value					
 			DrawHint = false;
 		}		
 		glutPostRedisplay();
 		break;
 	case 's': // 後退
-		if (NPC_Flag.B) {
-			My_LookAt.Z = My_LookAt.Z;
+		if (BoundObjBox1) {
+			CameraForward();
+			CameraForward();
 			DrawHint = true;
 		}
 		else {
-			/*My_LookAt.Z = My_LookAt.Z + 0.1;
-			My_LookAt.Watch_Z = My_LookAt.Watch_Z + 0.1;*/
-			My_LookAt.X = My_LookAt.X - PosXUnit;
+			/*My_LookAt.X = My_LookAt.X - PosXUnit;
 			My_LookAt.Watch_X = My_LookAt.Watch_X - PosXUnit;
 			My_LookAt.Z = My_LookAt.Z - PosZUnit;
-			My_LookAt.Watch_Z = My_LookAt.Watch_Z - PosZUnit;
-
+			My_LookAt.Watch_Z = My_LookAt.Watch_Z - PosZUnit;*/
+			CameraBackward();
 			Z1 = My_LookAt.Watch_Z; // balk value
 			DrawHint = false;
 		}
 		glutPostRedisplay();
 		break;
 	case 'a': // 左轉	
-		if (NPC_Flag.L) {
-			My_LookAt.X = My_LookAt.X;
+		if (BoundObjBox1) {
+			CameraRightward();
+			CameraRightward();
 			DrawHint = true;
 		}
 		else {
-			/*My_LookAt.X = My_LookAt.X - 0.1;
-			My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;*/
-			My_LookAt.X = My_LookAt.X + PosZUnit ;
+			/*My_LookAt.X = My_LookAt.X + PosZUnit ;
 			My_LookAt.Watch_X = My_LookAt.Watch_X + PosZUnit;
 			My_LookAt.Z = My_LookAt.Z -PosXUnit;
-			My_LookAt.Watch_Z = My_LookAt.Watch_Z - PosXUnit;
+			My_LookAt.Watch_Z = My_LookAt.Watch_Z - PosXUnit;*/
+			CameraLeftward();
 			X1 = My_LookAt.Watch_X; // balk value
 			DrawHint = false;
 		}
 		glutPostRedisplay();
 		break;
 	case 'd': // 右轉
-		if (NPC_Flag.R) {
-			My_LookAt.X = My_LookAt.X;
+		if (BoundObjBox1) {
+			CameraLeftward();
+			CameraLeftward();
 			DrawHint = true;
 		}
 		else {
-			/*My_LookAt.X = My_LookAt.X + 0.1;
-			My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;*/
-			My_LookAt.X = My_LookAt.X - PosZUnit;
+			/*My_LookAt.X = My_LookAt.X - PosZUnit;
 			My_LookAt.Watch_X = My_LookAt.Watch_X - PosZUnit;
 			My_LookAt.Z = My_LookAt.Z + PosXUnit;
-			My_LookAt.Watch_Z = My_LookAt.Watch_Z + PosXUnit;
+			My_LookAt.Watch_Z = My_LookAt.Watch_Z + PosXUnit;*/
+			CameraRightward();
 			X1 = My_LookAt.Watch_X; // balk value
 			DrawHint = false;
 		}
@@ -528,9 +537,19 @@ void myKeyboard(unsigned char key, int x, int y) {
 	default:
 		
 		break;
-	}
-
+	}	
+	
+	/*Wx = My_LookAt.Watch_X;
+	Wz = My_LookAt.Watch_Z;
+	printf(" Wx = %f , ", Wx);
+	printf(" Wz = %f \r\n", Wz);
+	BoundWx = (Wx < BoundWxU) && (BoundWxD < Wx);
+	BoundWz = (Wz < BoundWzU) && (BoundWzD < Wz);
+	printf(" BoundWx = %d , ", BoundWx);
+	printf(" BoundWz = %d \r\n", BoundWz);*/
 }
+
+
 
 /* Camera LookAt Functions */
 void LookAt_X_MenuFunc(int id) {

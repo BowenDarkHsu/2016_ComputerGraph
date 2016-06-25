@@ -32,14 +32,16 @@ RobotArmPosition Robot_Position;
 glLookAt_Parameter My_LookAt;
 glLookAt_Parameter Initial_LookAt;
 HumanObject MajorRole ;
-FixObject NonMovingObject;
 WorldObject MyWorldObject;
+ObjBox ObjA;
+
 
 float MoveX = 0.0;
 float MoveY = 0.0;
 float MoveZ = 0.0;
 float v0[3], v1[3];
 float mo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
+float mo2[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float ORGmo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 int VitalityNum = 100.0;
 char string1[10] = "breath : ";
@@ -79,6 +81,36 @@ float MoveValeZ = 0;
 
 float PosXUnit = 0.0;
 float PosZUnit = 0.0;
+// Boundary
+float Px = 0.0;
+float Pz = 0.0;
+float Py = 0.0;
+float Wx = 0.0;
+float Wz = 0.0;
+float BoundPxU = -0.060;
+float BoundPxD = -0.1132;
+float BoundPzU = 0.46;
+float BoundPzD = -1.25;
+float BoundPyU = 0.95;
+float BoundPyD = -0.95;
+
+
+float distant_x = 0.0;
+float distant_y = 0.0;
+float distant_z = 0.0;
+float ObjA_w = 1.0; // z
+float ObjA_h = 1.0; // y
+float ObjA_l = 1.0; // x
+bool BoundPy = false;
+bool BoundPx = false;
+bool BoundPz = false;
+bool BoundObjBox1 = false;
+
+float objBox1[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
+float objBox2[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
+
+GLfloat D[8][3];
+
 
 #if DisplayMode == 2
 GLfloat colors[8][3] = { {0,0,0},{1,0,0},{0,1,0},{0,0,1},{0,1,1},{1,0,1},{1,1,0},{1,1,1} };
@@ -241,61 +273,64 @@ void myDisplay() {
 		//printf("viewport[2] = %d , viewport[3] = %d , 2/3 = %f \r\n", viewport[2], viewport[3], double(viewport[2]) / viewport[3]);
 
 		glMatrixMode(GL_MODELVIEW);
-
 		glLoadIdentity();
-		
-		
+
 		DrawFixPlane();
-		//glutSolidTeapot(1);
-		glLoadIdentity();
 
-		glPushMatrix();
+		/*glPushMatrix();
 			glColor3f(1.0f, 1.0f, 1.0f);
-			/*glGetFloatv(GL_MODELVIEW_MATRIX, ORGmo);
-			for (int i = 0; i < 16; i += 4) {
-				for (int j = 0; j < 4; j++)
-					printf(" ORGmo[%d] = %f ,", i + j, ORGmo[i + j]);
-				printf("\r\n");
-			}
-			printf(" =========== \r\n");*/
-
 			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			//glMultMatrixf(mo);
-			//MovePosition(10, 0, 0);
-			/*for (int i = 0; i < 16; i += 4) {
-				for (int j = 0; j < 4; j++)
-					printf(" mo[%d] = %f ,", i + j, mo[i + j]);
-				printf("\r\n");
-			}
-			printf("\r\n");*/
+			MovePosition(0, 0, 0);
 			DrawCubeI(0.4, 0.4, 0.4);
-		glPopMatrix();
+		glPopMatrix();*/
 
 		glPushMatrix();
 			glColor3f(0.0f, 1.0f, 0.0f);
 			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(-10, 0, -30);
+			MovePosition(0, 0, 0);
+			glGetFloatv(GL_MODELVIEW_MATRIX, mo);
+			for (int i = 0; i < 16; i += 4) {
+				for (int j = 0; j < 4; j++) {
+					objBox1[i + j] = mo[i + j];
+					printf(" mo[%d] = %f ,", i + j, mo[i + j]);
+				}
+				printf("\r\n");
+			}
+			printf("\r\n");
 			DrawCubeTexture(1,1,1,id_texture3);
 		glPopMatrix();
 
 		glPushMatrix();
-			glColor3f(1.0f, 1.0f, 0.0f);
-
+			glColor3f(1.0f, 0.0f, 0.0f);
 			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			
+			MovePosition(-50, 0, -50);
+			glGetFloatv(GL_MODELVIEW_MATRIX, mo2);
+			for (int i = 0; i < 16; i += 4) {
+				for (int j = 0; j < 4; j++) {
+					objBox2[i + j] = mo2[i + j];
+					printf(" mo2[%d] = %f ,", i + j, mo2[i + j]);
+				}
+				printf("\r\n");
+			}
+			printf("\r\n");
+			DrawCubeTexture(1,1,1,id_texture3);
+		glPopMatrix();
+		/*glPushMatrix();
+			glColor3f(1.0f, 1.0f, 0.0f);
+			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 			MovePosition(0, 0, 140);
-
 			DrawCubeI(0.4, 0.4, 0.4);
 		glPopMatrix();
+
 		glPushMatrix();
 			glColor3f(1.0f, 0.0f, 0.0f);
-
 			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			
 			MovePosition(100, 0, -50);
-
 			DrawCubeI(1, 1, 1);
-		glPopMatrix();
+		glPopMatrix();*/
+
+
+
 
 		//BuildNormalCity();
 		// Draw Robot - Arm
@@ -309,18 +344,18 @@ void myDisplay() {
 		/*glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();*/
 
-		CreateNode();
-		//PreorderTravesal(&MyWorldObject.Fix.Plane);
-		PreorderTravesal(&MajorRole.Torso);
-		
-		glLoadIdentity();
-		glPushMatrix();
-			glColor3f(0.0f, 0.0f, 1.0f);
-			
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-
-			DrawCubeI(3.2, 1, 1);
-		glPopMatrix();
+		//-------------------------------------------------
+		//CreateNode();
+		////PreorderTravesal(&MyWorldObject.Fix.Plane);
+		//PreorderTravesal(&MajorRole.Torso);
+		//
+		//glLoadIdentity();
+		//glPushMatrix();
+		//	glColor3f(0.0f, 0.0f, 1.0f);
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	DrawCubeI(3.2, 1, 1);
+		//glPopMatrix();
+		//-------------------------------------------------
 
 	//DrawTorso();
 	/*glPushMatrix();
@@ -404,7 +439,7 @@ void myDisplay() {
 	//}
 
 	if (DrawHint) {
-		gluLookAt(0, 0.1, 2, 0, 0, 0, 0, 1, 0);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glPushMatrix();
 		glColor3f(1.0f, 1.0f, 1.0f);
 		//glRasterPos3f(-10, 7, 0);

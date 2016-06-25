@@ -136,6 +136,8 @@ void PreorderTravesal(TreeNode *root) {
 		PreorderTravesal(root->Sibling);
 }
 /* End of Modeling Function */
+
+
 void DrawTorso() {	
 	
 	glColor3f(0.0f, 1.0f, 0.0f);
@@ -188,38 +190,72 @@ void DrawCubeI(float L, float H, float W) {
 	}
 	glEnd();
 }
-void DrawCubeTexture(float L, float H, float W,int texture) {
-	//glBegin(GL_LINE_LOOP);
-	GLfloat Length, Height, Width;
-	Length = L / 2;
-	Height = H / 2;
-	Width = W / 2;
-	GLfloat P0[3] = { Length,Height,Width };
-	GLfloat P1[3] = { Length,Height,-Width };
-	GLfloat P2[3] = { Length,-Height,Width };
-	GLfloat P3[3] = { Length,-Height,-Width };
-	GLfloat P4[3] = { -Length,Height,Width };
-	GLfloat P5[3] = { -Length,Height,-Width };
-	GLfloat P6[3] = { -Length,-Height,Width };
-	GLfloat P7[3] = { -Length,-Height,Width };	
-	GLfloat DrawPlaneA[4][3] = { *P0,*P1,*P3,*P2 };
-	GLfloat DrawPlaneB[4][3] = { { Length,Height,Width },{ Length,Height,-Width },{ Length,-Height,-Width },{ Length,-Height,Width } };
-	GLfloat DrawPlaneC[4][3] = { { Length,Height,Width },{ -Length,Height,Width },{ -Length,-Height,Width },{ Length,-Height,Width } };
-	GLfloat DrawPlaneD[4][3] = { { -Length,Height,-Width },{ -Length,Height,Width },{ -Length,-Height,Width },{ -Length,-Height,-Width } };
 
+void DrawCubeTexture(float L, float H, float W, int texture) {
+	//glBegin(GL_LINE_LOOP);
+	GLfloat L1, H1, W1;
+	L1 = L / 2;
+	H1 = H / 2;
+	W1 = W / 2;
+	GLfloat P[8][3] = { { L1,H1,W1 },{ L1,H1,-W1 },{ L1,-H1,W1 },{ L1,-H1,-W1 },
+						{ -L1,H1,W1 },{ -L1,H1,-W1 },{ -L1,-H1,W1 },{ -L1,-H1,-W1 } };
+	GLfloat P0[3] = { L1,H1,W1 };
+	GLfloat P1[3] = { L1,H1,-W1 };
+	GLfloat P2[3] = { L1,-H1,W1 };
+	GLfloat P3[3] = { L1,-H1,-W1 };
+	GLfloat P4[3] = { -L1,H1,W1 };
+	GLfloat P5[3] = { -L1,H1,-W1 };
+	GLfloat P6[3] = { -L1,-H1,W1 };
+	GLfloat P7[3] = { -L1,-H1,W1 };
+	GLfloat Draw_U[4][3] = { { L1,H1,W1 },{ -L1,H1,W1 },{ -L1,H1,-W1 },{ L1,H1,-W1 } };		// 0451
+	GLfloat Draw_R[4][3] = { { L1,-H1,-W1 },{ L1,-H1,W1 },{ L1,H1,W1 },{ L1,H1,-W1 } };		// 3201
+	GLfloat Draw_D[4][3] = { { L1,-H1,W1 },{ -L1,-H1,W1 },{ -L1,-H1,-W1 },{ L1,-H1,-W1 } }; // 2673
+	GLfloat Draw_L[4][3] = { { -L1,-H1,W1 },{ -L1,-H1,-W1 },{ -L1,H1,-W1 },{ -L1,H1,W1 } }; // 6754
+	GLfloat Draw_F[4][3] = { { L1,-H1,W1 },{ -L1,-H1,W1 },{ -L1,H1,W1 },{ L1,H1,W1 } };		// 2640
+	GLfloat Draw_B[4][3] = { { L1,-H1,-W1 },{ -L1,-H1,-W1 },{ -L1,H1,-W1 },{ L1,H1,-W1 } }; // 3751
 	GLfloat Testure2D[4][2] = { { 0,0 },{ 1,0 },{ 1,1 },{ 0,1 } };
+
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glColor3f(0.0f, 1.0f, 0.0f);
 	glBegin(GL_QUADS);
 	for (int i = 0; i < 4; i++) {
-		glNormal3fv(DrawPlaneA[i]);
+		glNormal3fv(Draw_U[i]);
 		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
-		glVertex3fv(DrawPlaneB[i]);
+		glVertex3fv(Draw_U[i]);
+	}
+	for (int i = 0; i < 4; i++) {
+		glNormal3fv(Draw_R[i]);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
+		glVertex3fv(Draw_R[i]);
+	}
+	for (int i = 0; i < 4; i++) {
+		glNormal3fv(Draw_D[i]);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
+		glVertex3fv(Draw_D[i]);
+	}
+	for (int i = 0; i < 4; i++) {
+		glNormal3fv(Draw_L[i]);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
+		glVertex3fv(Draw_L[i]);
+	}
+	for (int i = 0; i < 4; i++) {
+		glNormal3fv(Draw_F[i]);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
+		glVertex3fv(Draw_F[i]);
+	}
+	for (int i = 0; i < 4; i++) {
+		glNormal3fv(Draw_B[i]);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
+		glVertex3fv(Draw_B[i]);
 	}
 	glEnd();
-	
+	/*for (int i = 0; i < 8; i++){
+		for (int j = 0; j < 3; j++) {
+			D[i][j] = P[i][j];
+			printf(" D[%d][%d] = %f , ", i,j,D[i][j]);
+		}
+		printf(" \r\n");
+	}*/
 }
-
 
 
 void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H) {
@@ -500,6 +536,39 @@ void DrawSide_0(void) {
 	DrawCubeI(1, 5, 1);
 }
 
+float f_abs(float x, float y) {
+	float temp = 0.0;
+	if (x > y)
+		temp = x - y;
+	else
+		temp = y - x;
+	return temp;
+}
+// w
+void CameraForward(void) {
+	My_LookAt.X = My_LookAt.X + PosXUnit;
+	My_LookAt.Watch_X = My_LookAt.Watch_X + PosXUnit;
+	My_LookAt.Z = My_LookAt.Z + PosZUnit;
+	My_LookAt.Watch_Z = My_LookAt.Watch_Z + PosZUnit;
+}
+void CameraBackward(void) {
+	My_LookAt.X = My_LookAt.X - PosXUnit;
+	My_LookAt.Watch_X = My_LookAt.Watch_X - PosXUnit;
+	My_LookAt.Z = My_LookAt.Z - PosZUnit;
+	My_LookAt.Watch_Z = My_LookAt.Watch_Z - PosZUnit;
+}
+void CameraLeftward(void) {
+	My_LookAt.X = My_LookAt.X + PosZUnit;
+	My_LookAt.Watch_X = My_LookAt.Watch_X + PosZUnit;
+	My_LookAt.Z = My_LookAt.Z - PosXUnit;
+	My_LookAt.Watch_Z = My_LookAt.Watch_Z - PosXUnit;
+}
+void CameraRightward(void) {
+	My_LookAt.X = My_LookAt.X - PosZUnit;
+	My_LookAt.Watch_X = My_LookAt.Watch_X - PosZUnit;
+	My_LookAt.Z = My_LookAt.Z + PosXUnit;
+	My_LookAt.Watch_Z = My_LookAt.Watch_Z + PosXUnit;
+}
 void CalculateARC(float theta) {
 	float h = My_LookAt.X;	// 0
 	float k = My_LookAt.Z;	// 3.5
