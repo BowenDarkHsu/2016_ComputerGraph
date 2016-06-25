@@ -53,7 +53,7 @@ extern float Rotated_Y;
 extern float Rotated_Z;
 extern float PosXUnit;
 extern float PosZUnit;
-
+extern int id_texture4;
 extern GLfloat D[8][3];
 #ifdef __cplusplus
 }

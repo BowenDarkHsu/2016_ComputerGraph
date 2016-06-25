@@ -22,6 +22,7 @@
 void myDisplay();
 void LightSource(void);
 void LightSource2(void);
+void DrawVSValue(void);
 void CALLBACK AttackTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time);
 glLight_Parameter mySource_1;
 glMaterial_Parameter myMaterial_1;
@@ -46,12 +47,20 @@ float v0[3], v1[3];
 float mo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float mo2[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float ORGmo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
-int VitalityNum = 100.0;
+int VitalityNum = 100;
+int SleepNum = 200;
+int TaskGNum = 0;
+int TaskGMax = 5;
 char string1[10] = "breath : ";
 char string2[10];
+char string3[10];
+
+char string4[10];
+
 int id_texture = 0;
 int id_texture2 = 0;
 int id_texture3 = 0;
+int id_texture4 = 0;
 
 int num_texture = -1;
 
@@ -124,9 +133,10 @@ float objBox1[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
 GLfloat D[8][3];
 
-float TempMoveX = 5.0;
-float TempMoveY = 5.0;
-
+//float TempMoveX = -308.0;
+//float TempMoveY = 121.0;
+float TempMoveX = -12.5;
+float TempMoveY = 4.3;
 
 #if DisplayMode == 2
 GLfloat colors[8][3] = { {0,0,0},{1,0,0},{0,1,0},{0,0,1},{0,1,1},{1,0,1},{1,1,0},{1,1,1} };
@@ -201,6 +211,18 @@ void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD 
 	VitalityNum = VitalityNum - 1;
 	sprintf(string2, " %d ", VitalityNum);
 	printf("%s\n", string2);
+	if (DrawHint) {
+		TaskGNum = TaskGNum + 1;
+		sprintf(string4, " %d / %d ", TaskGNum, TaskGMax);
+		printf("%s\n", string4);
+	}
+
+	glutPostRedisplay();
+}
+void CALLBACK SleepTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
+	SleepNum = SleepNum - 1;
+	sprintf(string3, " %d ", SleepNum);
+	printf("%s\n", string3);
 	glutPostRedisplay();
 }
 void CALLBACK AttackTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
@@ -210,8 +232,8 @@ void CALLBACK AttackTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD ti
 }
 int main(int argc, char** argv) {	
 	// set Vitality Call Back Fun Timer : 3 sec
-	//SetTimer(NULL, 0, 3000, VitalityTimeCallBack);
-	
+		SetTimer(NULL, 0, 1000, VitalityTimeCallBack);
+		//SetTimer(NULL, 0, 5000, SleepTimeCallBack);
 	//KillTimer(NULL, 1);
 	DrawPosition();
 	OpenGL_Init(argc, argv);
@@ -416,36 +438,121 @@ void myDisplay() {
 
 	// OpenGL -  ensures that the drawing command are actually executed.
 	DrawVitality();
-	// heart
-	//if (DrawHint) {
-	//	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
-	//	glPushMatrix();
-	//	glColor3f(1.0f, 0.0f, 1.0f);
-	//	//glRasterPos3f(-10, 7, 0);
-	//	glRasterPos3f(-6.5, 5.5, 0);
-	//	drawString(string1);
-	//	glPopMatrix();
-	//}
+
+	glDisable(GL_TEXTURE_2D);
 	
-	glPushMatrix();
-		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		//glRasterPos3f(-10, 7, 0);
-		glRasterPos3f(-14, 7, 0);
-		drawString(" 1234");
-	glPopMatrix();
+	DrawVSValue();
 
 	if (DrawHint) {
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glPushMatrix();
-		glColor3f(1.0f, 1.0f, 1.0f);
-		//glRasterPos3f(-10, 7, 0);
+		glColor3f(1.0f, 0.0f, 0.0f);
 		glRasterPos3f(-14, 7, 0);
 		drawString(" hello my name is NPC 1");
 		glPopMatrix();
 	}
-	
+	glEnable(GL_TEXTURE_2D);
 
 	glFlush();
 	glutSwapBuffers();
 }/* End of myDisplay */
+
+void DrawVSValue(void) {
+	// 生命 的白底框 string2
+	glPushMatrix();
+		glColor3f(1.0f, 1.0f, 1.0f);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		//MovePosition(TempMoveX, TempMoveY, 0);
+		MovePosition(-258, 181, 0);
+		glBegin(GL_QUADS);
+			glVertex3f(0, 0, 0); //--
+			glVertex3f(2.5, 0, 0); //+-
+			glVertex3f(2.5, 2.5, 0); //++ 
+			glVertex3f(0, 2.5, 0); //-+ 
+		glEnd();
+	glPopMatrix();
+	// 生命 的 string2
+	glPushMatrix();
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glRasterPos3f(-12, 10, 0);
+		//glRasterPos3f(TempMoveX, TempMoveY, 0);
+		drawString(string2);
+	glPopMatrix();
+
+	// Sleep 的白底框 string3
+	glPushMatrix();
+		glColor3f(1.0f, 1.0f, 1.0f);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		//MovePosition(TempMoveX, TempMoveY, 0);
+		MovePosition(-158, 181, 0);
+		glBegin(GL_QUADS);
+			glVertex3f(0, 0, 0); //--
+			glVertex3f(2.5, 0, 0); //+-
+			glVertex3f(2.5, 2.5, 0); //++ 
+			glVertex3f(0, 2.5, 0); //-+ 
+		glEnd();
+	glPopMatrix();
+	// Sleep 的 string3
+	glPushMatrix();
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glRasterPos3f(-7, 10, 0);
+		//glRasterPos3f(TempMoveX, TempMoveY, 0);
+		drawString(string3);
+	glPopMatrix();
+
+	// 提示字 的白底框
+	glPushMatrix();
+		glColor3f(1.0f, 1.0f, 1.0f);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		MovePosition(-308, 121, 0);
+		glBegin(GL_QUADS);
+			glVertex3f(0, 0, 0); //--
+			glVertex3f(8, 0, 0); //+-
+			glVertex3f(8, 3, 0); //++ 
+			glVertex3f(0, 3, 0); //-+ 
+		glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glRasterPos3f(-15, 7.8, 0);
+		drawString(" Hint Font : ");
+	glPopMatrix();
+
+	// 任務字 的白底框
+	glPushMatrix();
+		glColor3f(1.0f, 1.0f, 1.0f);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		MovePosition(-308, 1, 0);
+		//MovePosition(TempMoveX, TempMoveY, 0);
+		glBegin(GL_QUADS);
+			glVertex3f(0, 0, 0); //--
+			glVertex3f(8, 0, 0); //+-
+			glVertex3f(8, 6, 0); //++ 
+			glVertex3f(0, 6, 0); //-+ 
+		glEnd();
+	glPopMatrix();
+
+	// 任務字 
+	glPushMatrix();
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glRasterPos3f(-15, 5, 0);
+		//glRasterPos3f(TempMoveX, TempMoveY, 0);
+		drawString(" Task : ");
+	glPopMatrix();
+
+	// 任務字 
+	glPushMatrix();
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glRasterPos3f(-14.5, 4.3, 0);
+		//glRasterPos3f(TempMoveX, TempMoveY, 0);
+		drawString(" Green Object : ");
+		glRasterPos3f(-11, 4.3, 0);
+		drawString(string4);
+	glPopMatrix();
+}

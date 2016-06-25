@@ -80,6 +80,7 @@ void myTexture() {
 	id_texture = LoadBitmap2("texture/front.bmp");
 	id_texture2 = LoadBitmap2("texture/heart.bmp");
 	id_texture3 = LoadBitmap2("texture/teapot.bmp");
+	id_texture4 = LoadBitmap2("texture/sleep.bmp");
 }
 
 
@@ -296,23 +297,27 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case '1':
-		TempMoveX = TempMoveX + 1;
+		TempMoveX = TempMoveX + 0.1;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
+		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
 	case '2':
-		TempMoveX = TempMoveX - 1 ;
+		TempMoveX = TempMoveX - 0.1 ;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
+		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
 	
 	case '4':
-		TempMoveY = TempMoveY + 1 ;
+		TempMoveY = TempMoveY + 0.1 ;
+		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
 	case '5':
-		TempMoveY = TempMoveY - 1;
+		TempMoveY = TempMoveY - 0.1;
+		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;

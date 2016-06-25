@@ -533,6 +533,7 @@ void DrawFixPlane(void) {
 		glEnd();
 	glPopMatrix();
 }
+
 void DrawVitality(void) {
 	//glLoadIdentity();
 	/*gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
@@ -559,7 +560,23 @@ void DrawVitality(void) {
 		glEnd();
 	glPopMatrix();
 
+	glPushMatrix();
+		glColor3f(1.0f, 1.0f, 0.0f);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		MovePosition(-208, 181, 0);
+		glBindTexture(GL_TEXTURE_2D, id_texture4);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0, 0.0);glVertex3f(0, 0, 0); //--
+			glTexCoord2f(1.0, 0.0);glVertex3f(2.5, 0, 0); //+-
+			glTexCoord2f(1.0, 1.0);glVertex3f(2.5, 2.5, 0); //++ 
+			glTexCoord2f(0.0, 1.0);glVertex3f(0, 2.5, 0); //-+ 
+		glEnd();
+	glPopMatrix();
+
+
 }
+
+
 
 void DrawHouse_0(void) {
 	glColor3f(1.0f, 1.0f, 1.0f);

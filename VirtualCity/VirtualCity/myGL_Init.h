@@ -31,6 +31,7 @@ extern float Rotated_Y;
 extern float Rotated_Z;
 extern int id_texture2;
 extern int id_texture3;
+extern int id_texture4;
 extern float Fixed_Z;
 extern float Z1;
 extern float X1;
