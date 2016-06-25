@@ -58,7 +58,7 @@ void CreateNode(void) {
 
 	// MajorRole.Torso
 	glLoadIdentity();
-	MovePosition(MoveX +0 , MoveY + 0, MoveZ + 0);
+	MovePosition(MoveX -100 , MoveY +55, MoveZ + 0);
 	glRotated(Rotated_theta, Rotated_X, Rotated_Y, Rotated_Z);
 	//MovePosition(0, 20, 0);
 	
@@ -463,10 +463,10 @@ void DrawFixWindows(void) {
 }
 void DrawFixPlane(void) {
 	glPushMatrix();
-
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		//glMultMatrixf(mo);
 		glColor3f(0.4, 0.4, 0.4);
+		
 		//glBegin(GL_POLYGON);			
 		glBindTexture(GL_TEXTURE_2D, id_texture);
 		glBegin(GL_QUADS);
@@ -476,19 +476,60 @@ void DrawFixPlane(void) {
 			glTexCoord2f(0.0, 1.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z2); //-+ 
 		glEnd();
 	glPopMatrix();
-
+	// Back
 	glPushMatrix();
-
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		//glMultMatrixf(mo);
 		glColor3f(0.3, 0.3, 0.4);
 		//glBegin(GL_POLYGON);			
 		glBindTexture(GL_TEXTURE_2D, id_texture);
 		glBegin(GL_QUADS);
-		glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X1, My_Ortho.Y2, My_Ortho.Z2); //--
-		glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X2, My_Ortho.Y2, My_Ortho.Z2); //+-
-		glTexCoord2f(1.0, 1.0);glVertex3f(My_Ortho.X2, 0, My_Ortho.Z2); //++ 
-		glTexCoord2f(0.0, 1.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z2); //-+ 
+			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X2, 0,My_Ortho.Z2); // 右下
+			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z2); // 左下
+			glTexCoord2f(1.0, 1.0);glVertex3f(My_Ortho.X1, My_Ortho.Y2, My_Ortho.Z2); //左上 
+			glTexCoord2f(0.0, 1.0);glVertex3f(My_Ortho.X2, My_Ortho.Y2, My_Ortho.Z2); //右上
+		glEnd();
+	glPopMatrix();
+	// Front 
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//glMultMatrixf(mo);
+		glColor3f(0.5, 0.5, 0.4);
+		//glBegin(GL_POLYGON);			
+		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X2, 0,My_Ortho.Z1); // 右下
+			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1); // 左下
+			glTexCoord2f(1.0, 1.0);glVertex3f(My_Ortho.X1, My_Ortho.Y2, My_Ortho.Z1); //左上 
+			glTexCoord2f(0.0, 1.0);glVertex3f(My_Ortho.X2, My_Ortho.Y2, My_Ortho.Z1); //右上 
+		glEnd();
+	glPopMatrix();
+	// Left
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//glMultMatrixf(mo);
+		glColor3f(0.5, 0.7, 0.4);
+		//glBegin(GL_POLYGON);			
+		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X1, 0,My_Ortho.Z2); // 右下
+			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1); // 左下
+			glTexCoord2f(1.0, 1.0);glVertex3f(My_Ortho.X1, My_Ortho.Y2, My_Ortho.Z1); //左上 
+			glTexCoord2f(0.0, 1.0);glVertex3f(My_Ortho.X1, My_Ortho.Y2, My_Ortho.Z2); //右上 
+		glEnd();
+	glPopMatrix();
+	// Right
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//glMultMatrixf(mo);
+		glColor3f(0.8, 0.7, 0.4);
+		//glBegin(GL_POLYGON);			
+		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X2, 0,My_Ortho.Z1); // 右下
+			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X2, 0, My_Ortho.Z2); // 左下
+			glTexCoord2f(1.0, 1.0);glVertex3f(My_Ortho.X2, My_Ortho.Y2, My_Ortho.Z2); //左上 
+			glTexCoord2f(0.0, 1.0);glVertex3f(My_Ortho.X2, My_Ortho.Y2, My_Ortho.Z1); //右上 
 		glEnd();
 	glPopMatrix();
 }
@@ -508,13 +549,13 @@ void DrawVitality(void) {
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 0.0f);
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		MovePosition(-150, 100, 0);
+		MovePosition(-308, 181, 0);
 		glBindTexture(GL_TEXTURE_2D, id_texture2);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0);glVertex3f(0, 0, 0); //--
-			glTexCoord2f(1.0, 0.0);glVertex3f(0.8, 0, 0); //+-
-			glTexCoord2f(1.0, 1.0);glVertex3f(0.8, 0.8, 0); //++ 
-			glTexCoord2f(0.0, 1.0);glVertex3f(0, 0.8, 0); //-+ 
+			glTexCoord2f(1.0, 0.0);glVertex3f(2.5, 0, 0); //+-
+			glTexCoord2f(1.0, 1.0);glVertex3f(2.5, 2.5, 0); //++ 
+			glTexCoord2f(0.0, 1.0);glVertex3f(0, 2.5, 0); //-+ 
 		glEnd();
 	glPopMatrix();
 
@@ -534,6 +575,114 @@ void DrawSide_0(void) {
 	glColor3f(1.0f, 0.0f, 1.0f);
 	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 	DrawCubeI(1, 5, 1);
+}
+
+void DrawFixObj(void) {
+		glPushMatrix();
+			glColor3f(0.0f, 1.0f, 0.0f);
+			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			MovePosition(0, 0, 0);
+			glGetFloatv(GL_MODELVIEW_MATRIX, ObjA.org_m);
+			ObjA.m[0] = ObjA.org_m[12];
+			ObjA.m[1] = ObjA.org_m[13];
+			ObjA.m[2] = ObjA.org_m[14];
+			//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n" , ObjA.m[0], ObjA.m[1], ObjA.m[2]);
+			DrawCubeTexture(1,1,1,id_texture3);
+		glPopMatrix();
+
+		glPushMatrix();
+			glColor3f(1.0f, 0.0f, 0.0f);
+			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			MovePosition(-100, 0, -50);
+			glGetFloatv(GL_MODELVIEW_MATRIX, ObjB.org_m);
+			ObjB.m[0] = ObjB.org_m[12];
+			ObjB.m[1] = ObjB.org_m[13];
+			ObjB.m[2] = ObjB.org_m[14];
+			//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjB.m[0], ObjB.m[1], ObjB.m[2]);
+			DrawCubeTexture(1,1,1,id_texture3);
+		glPopMatrix();
+
+		// 畫房子 1
+		glPushMatrix();
+			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			glColor3f(1.0, 0.0, 0.0);
+			MovePosition(80, 0, 0);
+			glGetFloatv(GL_MODELVIEW_MATRIX, ObjH1.org_m);
+			ObjH1.m[0] = ObjH1.org_m[12];
+			ObjH1.m[1] = ObjH1.org_m[13];
+			ObjH1.m[2] = ObjH1.org_m[14];
+			//printf(" m1[0] = %f , m1[1] = %f , m1[2] = %f \r\n", ObjH1.m[0], ObjH1.m[1], ObjH1.m[2]);			
+			DrawCubeTexture(1.0, 1.0, 1.0, id_texture3);
+			MovePosition(0, 10, 0);
+			DrawRoof(0.5, 0.5, 0.5);
+			MovePosition(0, -10, 0);
+			DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+			MovePosition(0, -5, 0);
+			DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+		glPopMatrix();
+		// 畫房子 2
+		glPushMatrix();
+			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			glColor3f(0.0, 0.0, 1.0);
+			MovePosition(120, 0, 0);
+			glGetFloatv(GL_MODELVIEW_MATRIX, ObjH2.org_m);
+			ObjH2.m[0] = ObjH2.org_m[12];
+			ObjH2.m[1] = ObjH2.org_m[13];
+			ObjH2.m[2] = ObjH2.org_m[14];
+			//printf(" m1[0] = %f , m1[1] = %f , m1[2] = %f \r\n", ObjH2.m[0], ObjH2.m[1], ObjH2.m[2]);			
+			DrawCubeTexture(1.0, 2.0, 1.0, id_texture3);
+			MovePosition(0, 20, 0);
+			DrawRoof(0.5, 0.5, 0.5);
+			MovePosition(0, -30, 0);
+			DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+			MovePosition(0, -5, 0);
+			DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+		glPopMatrix();
+}
+
+
+void checkTouch(ObjBox *obj) {
+	float Px = 0.0;
+	float Pz = 0.0;
+	float Py = 0.0;
+	bool BoundPy = false;
+	bool BoundPx = false;
+	bool BoundPz = false;
+	Py = obj->m[0];
+	Px = obj->m[1];
+	Pz = obj->m[2];
+	BoundPy = (Py < BoundPyU) && (BoundPyD < Py);
+	BoundPx = (Px < BoundPxU) && (BoundPxD < Px);
+	BoundPz = (Pz < BoundPzU) && (BoundPzD < Pz);
+	obj->flag = BoundPx && BoundPy && BoundPz;
+	printf(" Px = %f , ", Px);
+	printf(" Py = %f , ", Py);	
+	printf(" Pz = %f \r\n", Pz);
+	printf(" BoundPx = %d , ", BoundPx);
+	printf(" BoundPy = %d , ", BoundPy);	
+	printf(" BoundPz = %d \r\n", BoundPz);
+}
+
+void checkTouch2(ObjBox *obj,float xU, float yU, float zU, float xD, float yD, float zD) {
+	float Px = 0.0;
+	float Pz = 0.0;
+	float Py = 0.0;
+	bool BoundPy = false;
+	bool BoundPx = false;
+	bool BoundPz = false;
+	Py = obj->org_m[12];
+	Px = obj->org_m[13];
+	Pz = obj->org_m[14];
+	BoundPy = (Py < yU) && (yD < Py);
+	BoundPx = (Px < xU) && (xD < Px);
+	BoundPz = (Pz < zU) && (zD < Pz);
+	obj->flag = BoundPx && BoundPy && BoundPz;
+	printf(" 2Py = %f , ", Py);
+	printf(" 2Px = %f , ", Px);
+	printf(" 2Pz = %f \r\n", Pz);
+	printf(" BoundPy = %d , ", BoundPy);
+	printf(" BoundPx = %d , ", BoundPx);
+	printf(" BoundPz = %d \r\n", BoundPz);
 }
 
 float f_abs(float x, float y) {

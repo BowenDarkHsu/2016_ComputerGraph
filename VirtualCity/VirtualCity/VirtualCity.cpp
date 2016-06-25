@@ -33,8 +33,11 @@ glLookAt_Parameter My_LookAt;
 glLookAt_Parameter Initial_LookAt;
 HumanObject MajorRole ;
 WorldObject MyWorldObject;
-ObjBox ObjA;
 
+ObjBox ObjA;
+ObjBox ObjB;
+ObjBox ObjH1;
+ObjBox ObjH2;
 
 float MoveX = 0.0;
 float MoveY = 0.0;
@@ -87,12 +90,21 @@ float Pz = 0.0;
 float Py = 0.0;
 float Wx = 0.0;
 float Wz = 0.0;
+// Cube 1.0
 float BoundPxU = -0.060;
 float BoundPxD = -0.1132;
 float BoundPzU = 0.46;
 float BoundPzD = -1.25;
 float BoundPyU = 0.95;
 float BoundPyD = -0.95;
+// House 1.0
+float H_PyU = 1.14;   //m1
+float H_PyD = -1.25;
+float H_PxU = -0.04;  //m2
+float H_PxD = -0.12;
+float H_PzU = 0.4;    //m3
+float H_PzD = -1.8;
+
 
 
 float distant_x = 0.0;
@@ -106,10 +118,14 @@ bool BoundPx = false;
 bool BoundPz = false;
 bool BoundObjBox1 = false;
 
+bool WorldCollFalg = false;
+
 float objBox1[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
-float objBox2[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
 GLfloat D[8][3];
+
+float TempMoveX = 5.0;
+float TempMoveY = 5.0;
 
 
 #if DisplayMode == 2
@@ -284,37 +300,10 @@ void myDisplay() {
 			DrawCubeI(0.4, 0.4, 0.4);
 		glPopMatrix();*/
 
-		glPushMatrix();
-			glColor3f(0.0f, 1.0f, 0.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(0, 0, 0);
-			glGetFloatv(GL_MODELVIEW_MATRIX, mo);
-			for (int i = 0; i < 16; i += 4) {
-				for (int j = 0; j < 4; j++) {
-					objBox1[i + j] = mo[i + j];
-					printf(" mo[%d] = %f ,", i + j, mo[i + j]);
-				}
-				printf("\r\n");
-			}
-			printf("\r\n");
-			DrawCubeTexture(1,1,1,id_texture3);
-		glPopMatrix();
+		DrawFixObj();
 
-		glPushMatrix();
-			glColor3f(1.0f, 0.0f, 0.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(-50, 0, -50);
-			glGetFloatv(GL_MODELVIEW_MATRIX, mo2);
-			for (int i = 0; i < 16; i += 4) {
-				for (int j = 0; j < 4; j++) {
-					objBox2[i + j] = mo2[i + j];
-					printf(" mo2[%d] = %f ,", i + j, mo2[i + j]);
-				}
-				printf("\r\n");
-			}
-			printf("\r\n");
-			DrawCubeTexture(1,1,1,id_texture3);
-		glPopMatrix();
+		
+
 		/*glPushMatrix();
 			glColor3f(1.0f, 1.0f, 0.0f);
 			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
@@ -345,9 +334,9 @@ void myDisplay() {
 		glLoadIdentity();*/
 
 		//-------------------------------------------------
-		//CreateNode();
+		CreateNode();
 		////PreorderTravesal(&MyWorldObject.Fix.Plane);
-		//PreorderTravesal(&MajorRole.Torso);
+		PreorderTravesal(&MajorRole.Torso);
 		//
 		//glLoadIdentity();
 		//glPushMatrix();
@@ -437,13 +426,21 @@ void myDisplay() {
 	//	drawString(string1);
 	//	glPopMatrix();
 	//}
+	
+	glPushMatrix();
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		//glRasterPos3f(-10, 7, 0);
+		glRasterPos3f(-14, 7, 0);
+		drawString(" 1234");
+	glPopMatrix();
 
 	if (DrawHint) {
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glPushMatrix();
 		glColor3f(1.0f, 1.0f, 1.0f);
 		//glRasterPos3f(-10, 7, 0);
-		glRasterPos3f(-5, 5, 0);
+		glRasterPos3f(-14, 7, 0);
 		drawString(" hello my name is NPC 1");
 		glPopMatrix();
 	}

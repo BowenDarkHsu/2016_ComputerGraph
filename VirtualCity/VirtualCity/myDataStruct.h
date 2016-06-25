@@ -112,15 +112,30 @@ typedef struct WorldObject {
 	ShowObject show;
 }WorldObject;
 
-typedef struct ObjBox {
-	GLfloat P0[3];
-	
+typedef struct ObjBox {	
+	float org_m[16];
+	float m[3];
+	bool flag = false;
+	bool hint = false;
+	int texture = 0;
 }ObjBox;
+
 extern ObjBox ObjA;
+extern ObjBox ObjB;
+extern ObjBox ObjH1;
+extern ObjBox ObjH2;
 extern float MoveX;
 extern float MoveY;
 extern float MoveZ;
 extern bool DrawHint;
+extern float BoundPxU;
+extern float BoundPxD;
+extern float BoundPzU;
+extern float BoundPzD;
+extern float BoundPyU;
+extern float BoundPyD;
+extern float TempMoveX;
+extern float TempMoveY;
 extern HumanObject MajorRole;
 extern WorldObject MyWorldObject;
 

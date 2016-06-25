@@ -5,7 +5,7 @@ extern "C" {
 #endif
 #include "glut.h"
 #define DisplayMode 0
-#define OpenTexture 0
+#define OpenTexture 1
 #define ShowDirValue 1
 	void initParticle(void);
 	void parDisplay(void);
@@ -67,6 +67,13 @@ extern float BoundPyU;
 extern float BoundPyD;
 extern bool BoundPy;
 extern bool BoundObjBox1;
+extern float H_PxU;  //m2
+extern float H_PxD;
+extern float H_PzU;    //m3
+extern float H_PzD;
+extern float H_PyU;   //m1
+extern float H_PyD;
+extern bool WorldCollFalg;
 #ifdef __cplusplus
 }
 #endif

@@ -169,28 +169,24 @@ void myMouse(int button, int state, int x, int y) {
 
 void myKeyboard(unsigned char key, int x, int y) {
 	printf(" in keypad \r\n");
-	
-	/*NPC_Flag.F = ((Z1 < -1.3) && (Z1 > -3.8 + 0.1)) && ((X1 < 1.7) && (X1 > -1.5));
-	printf(" NPC_Flag.F = %d \r\n" , NPC_Flag.F);
-	NPC_Flag.B = ((Z1 < -1.3 - 0.1) && (Z1 > -3.8)) && ((X1 < 1.7) && (X1 > -1.5));
-	printf(" NPC_Flag.B = %d \r\n", NPC_Flag.B);
-	NPC_Flag.L = ((Z1 < -1.3) && (Z1 > -3.8)) && ((X1 < 1.7) && (X1 > -1.5 + 0.1));
-	printf(" NPC_Flag.L = %d \r\n", NPC_Flag.L);
-	NPC_Flag.R = ((Z1 < -1.3) && (Z1 > -3.8)) && ((X1 < 1.7 - 0.1) && (X1 > -1.5));
-	printf(" NPC_Flag.R = %d \r\n", NPC_Flag.R);*/
-	Py = objBox1[12];
+	/*Py = objBox1[12];
 	Px = objBox1[13];
 	Pz = objBox1[14];
 	BoundPy = (Py < BoundPyU) && (BoundPyD < Py);
 	BoundPx = (Px < BoundPxU) && (BoundPxD < Px);
 	BoundPz = (Pz < BoundPzU) && (BoundPzD < Pz);
-	BoundObjBox1 = BoundPx && BoundPy && BoundPz;
+	ObjA.flag = BoundPx && BoundPy && BoundPz;
 	printf(" Py = %f , ", Py);
 	printf(" Px = %f , ", Px);
 	printf(" Pz = %f \r\n", Pz);
 	printf(" BoundPy = %d , ", BoundPy);
 	printf(" BoundPx = %d , ", BoundPx);
-	printf(" BoundPz = %d \r\n", BoundPz);
+	printf(" BoundPz = %d \r\n", BoundPz);*/
+	checkTouch(&ObjA);
+	checkTouch(&ObjB);
+	checkTouch2(&ObjH1, H_PxU, H_PyU, H_PzU, H_PxD, H_PyD, H_PzD);
+	checkTouch2(&ObjH2, H_PxU, H_PyU, H_PzU, H_PxD, H_PyD, H_PzD);
+	WorldCollFalg = ObjA.flag || ObjB.flag || ObjH1.flag || ObjH2.flag;
 #if ShowDirValue == 1
 	printf(" My_LookAt.X = %f \r\n", My_LookAt.X);
 	printf(" My_LookAt.Z = %f \r\n", My_LookAt.Z);
@@ -228,7 +224,8 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case 'w': // 前進	
-		if (BoundObjBox1) {
+		if (WorldCollFalg) {
+			CameraBackward();
 			CameraBackward();
 			CameraBackward();
 			DrawHint = true;
@@ -245,7 +242,8 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case 's': // 後退
-		if (BoundObjBox1) {
+		if (WorldCollFalg) {
+			CameraForward();
 			CameraForward();
 			CameraForward();
 			DrawHint = true;
@@ -262,7 +260,8 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case 'a': // 左轉	
-		if (BoundObjBox1) {
+		if (WorldCollFalg) {
+			CameraRightward();
 			CameraRightward();
 			CameraRightward();
 			DrawHint = true;
@@ -279,7 +278,8 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case 'd': // 右轉
-		if (BoundObjBox1) {
+		if (WorldCollFalg) {
+			CameraLeftward();
 			CameraLeftward();
 			CameraLeftward();
 			DrawHint = true;
@@ -296,56 +296,34 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case '1':
-		MoveZ = MoveZ + 5;
-		//My_LookAt.Z = My_LookAt.Z + 0.25 / My_Ortho.Value;
-		//printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
-		printf(" MoveZ = %f  \r\n", MoveZ);
+		TempMoveX = TempMoveX + 1;
+		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		glutPostRedisplay();
 		break;
 	case '2':
-		MoveZ = MoveZ - 5 ;
-		//My_LookAt.Z = My_LookAt.Z - 0.25 / My_Ortho.Value;
-		//printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
-		printf(" MoveZ = %f  \r\n", MoveZ);
+		TempMoveX = TempMoveX - 1 ;
+		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		glutPostRedisplay();
 		break;
 	
-	case 'A':
-		MoveX = MoveX - 5 ;
-		/*if (4 == ++tempX1) {
-			My_LookAt.Watch_X = My_LookAt.Watch_X - 0.1;
-			printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
-			tempX1 = 0;
-		}*/
-		/*My_LookAt.Watch_X = My_LookAt.Watch_X - 0.01 / My_Ortho.Value;
-		My_LookAt.X = My_LookAt.X + 0.5 / My_Ortho.Value;
-		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
-		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);	*/	
-		printf(" MoveX = %f  \r\n", MoveX);
+	case '4':
+		TempMoveY = TempMoveY + 1 ;
+		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
-	case 'D':
-		MoveX = MoveX + 5 ;
-		/*if (4 == ++tempX2) {
-			My_LookAt.Watch_X = My_LookAt.Watch_X + 0.1;
-			printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);
-			tempX2 = 0;
-		}*/
-		/*My_LookAt.Watch_X = My_LookAt.Watch_X + 0.01 / My_Ortho.Value;
-		My_LookAt.X = My_LookAt.X - 0.5 / My_Ortho.Value;
-		printf(" My_LookAt.X = %f  \r\n", My_LookAt.X);
-		printf(" My_LookAt.Watch_X = %f  \r\n", My_LookAt.Watch_X);*/
-		printf(" MoveX = %f  \r\n", MoveX);
+	case '5':
+		TempMoveY = TempMoveY - 1;
+		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
 	
-	case '4': // 低頭
+	case '6': // 低頭
 		LookAt_Y_MenuFunc(1);
 		My_LookAt.Watch_Y = My_LookAt.Watch_Y - 0.1;
 		printf(" My_LookAt.Watch_Y = %f  \r\n", My_LookAt.Watch_Y);
 		glutPostRedisplay();
 		break;
-	case '5': // 抬頭
+	case '3': // 抬頭
 		LookAt_Y_MenuFunc(2);
 		My_LookAt.Watch_Y = My_LookAt.Watch_Y + 0.1;
 		printf(" My_LookAt.Watch_Y = %f  \r\n", My_LookAt.Watch_Y);
@@ -387,12 +365,12 @@ void myKeyboard(unsigned char key, int x, int y) {
 	case 'n':
 		LookAt_Z_MenuFunc(2);
 		break;
-	case '3':
+	case '7':
 		Rotated_theta = Rotated_theta + 1;
 		printf(" Rotated_theta = %f  \r\n", Rotated_theta);
 		glutPostRedisplay();
 		break;
-	case '6':
+	case '8':
 		Rotated_theta = Rotated_theta - 1;
 		printf(" Rotated_theta = %f  \r\n", Rotated_theta);
 		glutPostRedisplay();
