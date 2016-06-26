@@ -707,6 +707,17 @@ void DrawFixObj(void) {
 		glPopMatrix();
 }
 
+void DrawObjCube05(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture) {
+	glPushMatrix();
+	//glColor3f(0.0f, 1.0f, 0.0f);
+	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+	MovePosition(MoveX, MoveY, MoveZ);
+	glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
+	//printf(" m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);
+	DrawCubeTexture(0.5, 0.5, 0.5, texture);
+	glPopMatrix();
+}
+
 void DrawObjCube10(ObjBox* obj,float MoveX, float MoveY, float MoveZ,int texture) {
 	glPushMatrix();
 		//glColor3f(0.0f, 1.0f, 0.0f);
@@ -718,6 +729,18 @@ void DrawObjCube10(ObjBox* obj,float MoveX, float MoveY, float MoveZ,int texture
 	glPopMatrix();
 }
 
+void DrawObjTree(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture) {
+	// Tree Object
+	glPushMatrix();
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		MovePosition(MoveX, MoveY +20, MoveZ);
+		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
+		//printf(" m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);
+		DrawCubeTexture(0.5,2.5,0.5,id_texture3);
+		MovePosition(MoveX, MoveY + 10, MoveZ);
+		DrawTriangleTexture(2,3,2, id_texture3);
+	glPopMatrix();
+}
 
 void checkTouch(ObjBox *obj) {
 	float Px = 0.0;
@@ -785,11 +808,35 @@ void checkTouch3(ObjBox *obj, float m0U, float m0D , float m1U, float m1D, float
 	printf(" Boundm2 = %d \r\n", Boundm2);
 }
 
+
+void CheckTouch(ObjBox *obj, ObjectBoundary *obj_B) {
+	float m0 = 0.0;
+	float m1 = 0.0;
+	float m2 = 0.0;
+	bool Boundm0 = false;
+	bool Boundm1 = false;
+	bool Boundm2 = false;
+	m0 = obj->org_m[12];
+	m1 = obj->org_m[13];
+	m2 = obj->org_m[14];
+	Boundm0 = (m0 < obj_B->m0_U) && (obj_B->m0_D < m0);
+	Boundm1 = (m1 < obj_B->m1_U) && (obj_B->m1_D < m1);
+	Boundm2 = (m2 < obj_B->m2_U) && (obj_B->m2_D < m2);
+	obj->flag = Boundm1 && Boundm0 && Boundm2;
+	printf(" 2m0 = %f , ", m0);
+	printf(" 2m1 = %f , ", m1);
+	printf(" 2m2 = %f \r\n", m2);
+	printf(" Boundm0 = %d , ", Boundm0);
+	printf(" Boundm1 = %d , ", Boundm1);
+	printf(" Boundm2 = %d \r\n", Boundm2);
+}
+
+
 bool CheckObjTouchFlow(ObjBox *obj) {
 	if (obj == NULL) return false;
 	bool BigFlag = false;
-	if (obj->DetectTouch != NULL) 
-		obj->DetectTouch(obj);
+	if ((obj->DetectTouch != NULL)&&(obj->Boundary != NULL) )
+		obj->DetectTouch(obj,obj->Boundary);
 	if (obj->NextObjLink != NULL) {		
 		BigFlag = obj->flag || CheckObjTouchFlow(obj->NextObjLink);
 		//printf("BigFlag = %d \r\n", BigFlag);
@@ -800,6 +847,7 @@ bool CheckObjTouchFlow(ObjBox *obj) {
 			return obj->flag;
 	}
 }
+
 
 
 float f_abs(float x, float y) {

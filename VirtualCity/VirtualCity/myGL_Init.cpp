@@ -56,6 +56,7 @@ void myInit() {
 
 	/* Init Light Value*/
 	//InitLight_Ambient(mySource_1);
+	InitObjBoundary();
 
 	#if OpenTexture == 1
 		myTexture();
@@ -83,6 +84,52 @@ void myTexture() {
 	id_texture4 = LoadBitmap2("texture/sleep.bmp");
 }
 
+void InitObjBoundary(void) {
+	
+	/*
+	.m0_U = ;
+	.m0_D = ;
+	.m1_U = ;
+	.m1_D = ;
+	.m2_U = ;
+	.m2_D = ;
+	*/
+	// Tree
+	Tree1_B.m0_U = 0.6;
+	Tree1_B.m0_D = -0.7;
+	Tree1_B.m1_U = 0.95;
+	Tree1_B.m1_D = 0.85;
+	Tree1_B.m2_U = 0.5;
+	Tree1_B.m2_D = -0.95;
+	// House 1
+	House1_B.m0_U = 1.14;
+	House1_B.m0_D = -1.25;
+	House1_B.m1_U = -0.04;
+	House1_B.m1_D = -0.12;
+	House1_B.m2_U = 0.4;
+	House1_B.m2_D = 1.8;
+	// House 2
+	House2_B.m0_U = 0.991;
+	House2_B.m0_D = -0.9;
+	House2_B.m1_U = 0.5;
+	House2_B.m1_D = 0.28;
+	House2_B.m2_U = 0.7;
+	House2_B.m2_D = -1.6;
+	// Cube 1.0
+	Cube10_B.m0_U = 0.95;
+	Cube10_B.m0_D = -0.95;
+	Cube10_B.m1_U = -0.060;
+	Cube10_B.m1_D = -0.1132;
+	Cube10_B.m2_U = 0.46;
+	Cube10_B.m2_D = -1.25;
+	// Cube 0.5
+	Cube05_B.m0_U = 0.232;
+	Cube05_B.m0_D = -0.6;
+	Cube05_B.m1_U = -0.06;
+	Cube05_B.m1_D = -0.9;
+	Cube05_B.m2_U = 0.302;
+	Cube05_B.m2_D = -1.0;
+}
 
 void myMenuInit() {
 	int X_Direction_menu = glutCreateMenu(X_DirectionMenuFunc);

@@ -112,23 +112,33 @@ typedef struct WorldObject {
 	ShowObject show;
 }WorldObject;
 
+typedef struct ObjectBoundary {
+	float m0_U = 0.0;
+	float m0_D = 0.0;
+	float m1_U = 0.0;
+	float m1_D = 0.0;
+	float m2_U = 0.0;
+	float m2_D = 0.0;
+}ObjectBoundary;
+
 typedef struct ObjBox {	
 	float org_m[16];
 	float m[3];
 	bool flag = false;
 	bool hint = false;
 	int texture = 0;
-	void(*DetectTouch)(ObjBox*);
+	void(*DetectTouch)(ObjBox *obj, ObjectBoundary *obj_B);
 	void(*DrawObj)(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
 	ObjBox* NextObjLink;
+	ObjectBoundary *Boundary;
 }ObjBox;
 
-typedef struct ObjectBoundary {
-	float m0 = 0.0;
-	float m1 = 0.0;
-	float m2 = 0.0;
-}ObjectBoundary;
 
+extern ObjectBoundary Tree1_B;
+extern ObjectBoundary House1_B;
+extern ObjectBoundary House2_B;
+extern ObjectBoundary Cube10_B;
+extern ObjectBoundary Cube05_B;
 extern ObjBox ObjTree_A;
 extern ObjBox ObjRed_A;
 extern ObjBox ObjA;

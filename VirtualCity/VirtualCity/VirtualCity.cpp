@@ -108,6 +108,7 @@ float BoundPxU = -0.060;
 float BoundPxD = -0.1132;
 float BoundPzU = 0.46;
 float BoundPzD = -1.25;
+
 float BoundPyU = 0.95;
 float BoundPyD = -0.95;
 // House 1.0
@@ -138,6 +139,11 @@ float BTreem1_U = 0.95;
 float BTreem1_D = 0.85;
 float BTreem2_U = 0.5;
 float BTreem2_D = -0.95;
+ObjectBoundary Tree1_B;
+ObjectBoundary House1_B;
+ObjectBoundary House2_B;
+ObjectBoundary Cube10_B;
+ObjectBoundary Cube05_B;
 //############################################ Boundary ############################################\\
 float distant_x = 0.0;
 float distant_y = 0.0;
@@ -350,21 +356,35 @@ void myDisplay() {
 
 		
 
-		ObjA.DetectTouch = checkTouch;
-		ObjA.DrawObj = DrawObjCube10;
+		ObjA.DetectTouch = CheckTouch;		
+		ObjA.Boundary = &Cube10_B;
+		ObjA.DrawObj = DrawObjCube10;		
 		ObjA.NextObjLink = &ObjB;
 
-		ObjB.DetectTouch = checkTouch;
-		ObjB.DrawObj = DrawObjCube10;
+		ObjB.DetectTouch = CheckTouch;
+		ObjB.Boundary = &Cube10_B;
+		ObjB.DrawObj = DrawObjCube10;		
 		ObjB.NextObjLink = &ObjC;
 
-		ObjC.DetectTouch = checkTouch;
-		ObjC.DrawObj = DrawObjCube10;
+		ObjC.DetectTouch = CheckTouch;
+		ObjC.Boundary = &Cube10_B;
+		ObjC.DrawObj = DrawObjCube10;		
 		ObjC.NextObjLink = &ObjD;
 
-		ObjD.DetectTouch = checkTouch;
-		ObjD.DrawObj = DrawObjCube10;
-		ObjD.NextObjLink = NULL;
+		ObjD.DetectTouch = CheckTouch;
+		ObjD.Boundary = &Cube10_B;
+		ObjD.DrawObj = DrawObjCube10;		
+		ObjD.NextObjLink = &ObjTree_A;
+
+		ObjTree_A.DetectTouch = CheckTouch;
+		ObjTree_A.Boundary = &Tree1_B;
+		ObjTree_A.DrawObj = DrawObjTree;
+		ObjTree_A.NextObjLink = &ObjRed_A;
+
+		ObjRed_A.DetectTouch = CheckTouch;
+		ObjRed_A.Boundary = &Cube05_B;
+		ObjRed_A.DrawObj = DrawObjCube05;
+		ObjRed_A.NextObjLink = NULL;
 
 		glColor3f(0.0f, 1.0f, 0.0f);
 		ObjA.DrawObj(&ObjA,80,0,0,id_texture4);
@@ -378,33 +398,39 @@ void myDisplay() {
 		glColor3f(0.8f, 1.0f, 1.0f);
 		ObjC.DrawObj(&ObjD, -130, 0, 0, id_texture4);
 
-		// Tree Object
-		glPushMatrix();
-			glColor3f(0.8f, 0.5f, 0.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(0, 20, 0);
-			glGetFloatv(GL_MODELVIEW_MATRIX, ObjTree_A.org_m);
-			ObjTree_A.m[0] = ObjTree_A.org_m[12];
-			ObjTree_A.m[1] = ObjTree_A.org_m[13];
-			ObjTree_A.m[2] = ObjTree_A.org_m[14];
-			//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjTree_A.m[0], ObjTree_A.m[1], ObjTree_A.m[2]);
-			DrawCubeTexture(0.5,2.5,0.5,id_texture3);
-			MovePosition(0, 10, 0);
-			DrawTriangleTexture(2,3,2, id_texture3);
-		glPopMatrix();
+		glColor3f(0.8f, 0.5f, 0.0f);
+		ObjTree_A.DrawObj(&ObjTree_A,0,0,10, id_texture4);
+
+		glColor3f(1.0f, 0.0f, 1.0f);
+		ObjRed_A.DrawObj(&ObjRed_A,-100,0,0,id_texture4);
+
+		//// Tree Object
+		//glPushMatrix();
+		//	glColor3f(0.8f, 0.5f, 0.0f);
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	MovePosition(0, 20, 0);
+		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjTree_A.org_m);
+		//	ObjTree_A.m[0] = ObjTree_A.org_m[12];
+		//	ObjTree_A.m[1] = ObjTree_A.org_m[13];
+		//	ObjTree_A.m[2] = ObjTree_A.org_m[14];
+		//	//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjTree_A.m[0], ObjTree_A.m[1], ObjTree_A.m[2]);
+		//	DrawCubeTexture(0.5,2.5,0.5,id_texture3);
+		//	MovePosition(0, 10, 0);
+		//	DrawTriangleTexture(2,3,2, id_texture3);
+		//glPopMatrix();
 
 		// Red Object
-		glPushMatrix();
-			glColor3f(1.0f, 0.0f, 0.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(-50, 0, 0);
-			glGetFloatv(GL_MODELVIEW_MATRIX, ObjRed_A.org_m);
-			ObjRed_A.m[0] = ObjRed_A.org_m[12];
-			ObjRed_A.m[1] = ObjRed_A.org_m[13];
-			ObjRed_A.m[2] = ObjRed_A.org_m[14];
-			//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjRed_A.m[0], ObjRed_A.m[1], ObjRed_A.m[2]);
-			DrawCubeTexture(0.5,0.5,0.5,id_texture3);
-		glPopMatrix();
+		//glPushMatrix();
+		//	glColor3f(1.0f, 0.0f, 0.0f);
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	MovePosition(-50, 0, 0);
+		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjRed_A.org_m);
+		//	ObjRed_A.m[0] = ObjRed_A.org_m[12];
+		//	ObjRed_A.m[1] = ObjRed_A.org_m[13];
+		//	ObjRed_A.m[2] = ObjRed_A.org_m[14];
+		//	//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjRed_A.m[0], ObjRed_A.m[1], ObjRed_A.m[2]);
+		//	DrawCubeTexture(0.5,0.5,0.5,id_texture3);
+		//glPopMatrix();
 		
 		//// µe©Ð¤l 2
 		//glPushMatrix();
