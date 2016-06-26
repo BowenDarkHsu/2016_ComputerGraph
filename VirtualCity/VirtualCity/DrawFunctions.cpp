@@ -707,6 +707,17 @@ void DrawFixObj(void) {
 		glPopMatrix();
 }
 
+void DrawObjCube10(ObjBox* obj,float MoveX, float MoveY, float MoveZ,int texture) {
+	glPushMatrix();
+		//glColor3f(0.0f, 1.0f, 0.0f);
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		MovePosition(MoveX, MoveY, MoveZ);
+		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
+		//printf(" m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);
+		DrawCubeTexture(1,1,1,texture);
+	glPopMatrix();
+}
+
 
 void checkTouch(ObjBox *obj) {
 	float Px = 0.0;
@@ -715,9 +726,9 @@ void checkTouch(ObjBox *obj) {
 	bool BoundPy = false;
 	bool BoundPx = false;
 	bool BoundPz = false;
-	Py = obj->m[0];
-	Px = obj->m[1];
-	Pz = obj->m[2];
+	Py = obj->org_m[12];
+	Px = obj->org_m[13];
+	Pz = obj->org_m[14];
 	BoundPy = (Py < BoundPyU) && (BoundPyD < Py);
 	BoundPx = (Px < BoundPxU) && (BoundPxD < Px);
 	BoundPz = (Pz < BoundPzU) && (BoundPzD < Pz);
@@ -727,7 +738,7 @@ void checkTouch(ObjBox *obj) {
 	printf(" Pz = %f \r\n", Pz);
 	printf(" BoundPx = %d , ", BoundPx);
 	printf(" BoundPy = %d , ", BoundPy);	
-	printf(" BoundPz = %d \r\n", BoundPz);
+	printf(" BoundPz = %d , ", BoundPz);
 }
 
 void checkTouch2(ObjBox *obj,float xU, float yU, float zU, float xD, float yD, float zD) {
@@ -773,6 +784,24 @@ void checkTouch3(ObjBox *obj, float m0U, float m0D , float m1U, float m1D, float
 	printf(" Boundm1 = %d , ", Boundm1);
 	printf(" Boundm2 = %d \r\n", Boundm2);
 }
+
+bool CheckObjTouchFlow(ObjBox *obj) {
+	if (obj == NULL) return false;
+	bool BigFlag = false;
+	if (obj->DetectTouch != NULL) 
+		obj->DetectTouch(obj);
+	if (obj->NextObjLink != NULL) {		
+		BigFlag = obj->flag || CheckObjTouchFlow(obj->NextObjLink);
+		//printf("BigFlag = %d \r\n", BigFlag);
+		return BigFlag;
+	}
+	else {
+		if (obj->DetectTouch != NULL) 
+			return obj->flag;
+	}
+}
+
+
 float f_abs(float x, float y) {
 	float temp = 0.0;
 	if (x > y)

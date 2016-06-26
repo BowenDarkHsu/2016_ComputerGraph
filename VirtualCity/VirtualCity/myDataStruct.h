@@ -118,6 +118,9 @@ typedef struct ObjBox {
 	bool flag = false;
 	bool hint = false;
 	int texture = 0;
+	void(*DetectTouch)(ObjBox*);
+	void(*DrawObj)(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
+	ObjBox* NextObjLink;
 }ObjBox;
 
 typedef struct ObjectBoundary {
@@ -125,10 +128,13 @@ typedef struct ObjectBoundary {
 	float m1 = 0.0;
 	float m2 = 0.0;
 }ObjectBoundary;
+
 extern ObjBox ObjTree_A;
 extern ObjBox ObjRed_A;
 extern ObjBox ObjA;
 extern ObjBox ObjB;
+extern ObjBox ObjC;
+extern ObjBox ObjD;
 extern ObjBox ObjH1;
 extern ObjBox ObjH2;
 extern float MoveX;

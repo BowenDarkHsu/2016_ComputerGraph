@@ -40,6 +40,8 @@ void CameraLeftward(void);
 void CameraRightward(void);
 
 void DrawTriangleTexture(float L, float H, float W, int texture);
+void DrawObjCube10(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
+bool CheckObjTouchFlow(ObjBox *obj);
 
 void checkTouch3(ObjBox *obj, float m0U, float m0D, float m1U, float m1D, float m2U, float m2D);
 void checkTouch2(ObjBox *obj, float xU, float yU, float zU, float xD, float yD, float zD);
@@ -58,6 +60,7 @@ extern float Rotated_Z;
 extern float PosXUnit;
 extern float PosZUnit;
 extern int id_texture4;
+extern bool WorldCollFalg;
 extern GLfloat D[8][3];
 #ifdef __cplusplus
 }

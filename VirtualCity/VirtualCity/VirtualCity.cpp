@@ -37,6 +37,8 @@ WorldObject MyWorldObject;
 
 ObjBox ObjA;
 ObjBox ObjB;
+ObjBox ObjC;
+ObjBox ObjD;
 ObjBox ObjH1;
 ObjBox ObjH2;
 ObjBox ObjRed_A;
@@ -346,6 +348,36 @@ void myDisplay() {
 		// 固定物件的建立
 		//DrawFixObj();
 
+		
+
+		ObjA.DetectTouch = checkTouch;
+		ObjA.DrawObj = DrawObjCube10;
+		ObjA.NextObjLink = &ObjB;
+
+		ObjB.DetectTouch = checkTouch;
+		ObjB.DrawObj = DrawObjCube10;
+		ObjB.NextObjLink = &ObjC;
+
+		ObjC.DetectTouch = checkTouch;
+		ObjC.DrawObj = DrawObjCube10;
+		ObjC.NextObjLink = &ObjD;
+
+		ObjD.DetectTouch = checkTouch;
+		ObjD.DrawObj = DrawObjCube10;
+		ObjD.NextObjLink = NULL;
+
+		glColor3f(0.0f, 1.0f, 0.0f);
+		ObjA.DrawObj(&ObjA,80,0,0,id_texture4);
+
+		glColor3f(0.8f, 0.5f, 0.0f);
+		ObjB.DrawObj(&ObjB, 30, 0, -20, id_texture4);
+
+		glColor3f(0.8f, 0.5f, 1.0f);
+		ObjC.DrawObj(&ObjC, 130, 0, -20, id_texture4);
+
+		glColor3f(0.8f, 1.0f, 1.0f);
+		ObjC.DrawObj(&ObjD, -130, 0, 0, id_texture4);
+
 		// Tree Object
 		glPushMatrix();
 			glColor3f(0.8f, 0.5f, 0.0f);
@@ -355,11 +387,12 @@ void myDisplay() {
 			ObjTree_A.m[0] = ObjTree_A.org_m[12];
 			ObjTree_A.m[1] = ObjTree_A.org_m[13];
 			ObjTree_A.m[2] = ObjTree_A.org_m[14];
-			printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjTree_A.m[0], ObjTree_A.m[1], ObjTree_A.m[2]);
+			//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjTree_A.m[0], ObjTree_A.m[1], ObjTree_A.m[2]);
 			DrawCubeTexture(0.5,2.5,0.5,id_texture3);
 			MovePosition(0, 10, 0);
 			DrawTriangleTexture(2,3,2, id_texture3);
 		glPopMatrix();
+
 		// Red Object
 		glPushMatrix();
 			glColor3f(1.0f, 0.0f, 0.0f);
