@@ -44,6 +44,10 @@ ObjBox ObjH2;
 ObjBox ObjRed_A;
 ObjBox ObjTree_A;
 
+ObjBox MyHouse;
+ObjBox MyTree_A;
+ObjBox MyTree_B;
+
 float MoveX = 0.0;
 float MoveY = 0.0;
 float MoveZ = 0.0;
@@ -162,13 +166,15 @@ float objBox1[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
 GLfloat D[8][3];
 
-float ObjPosMapping[8][3] = {	{ 0,0,0 },{ -40,0,0 },{ -40,0,-40 },{ 0,0,-40 },
+float ObjPosMapping[8][3] = {	{ 0,0,0 },{ -40,0,0 },{ 40,0,0 },{ 0,0,0 },
 								{ 0,0,0 },{ 0,0,0 },{ 0,0,0 },{ 0,0,0 } };
 
 //float TempMoveX = -308.0;
 //float TempMoveY = 121.0;
 float TempMoveX = -12.5;
 float TempMoveY = 4.3;
+
+int LevelCnt = 0;
 
 #if DisplayMode == 2
 GLfloat colors[8][3] = { {0,0,0},{1,0,0},{0,1,0},{0,0,1},{0,1,1},{1,0,1},{1,1,0},{1,1,1} };
@@ -240,7 +246,10 @@ void parIdle(void) {
 #endif
 
 void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
-	VitalityNum = VitalityNum - 1;
+	if(MyHouse.hint)
+		VitalityNum = VitalityNum + 1;
+	else
+		VitalityNum = VitalityNum - 1;
 	sprintf(string2, " %d ", VitalityNum);
 	printf("%s\n", string2);
 	if (DrawHint) {
@@ -252,11 +261,15 @@ void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD 
 	glutPostRedisplay();
 }
 void CALLBACK SleepTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
-	SleepNum = SleepNum - 1;
+	if(MyTree_A.flag || MyTree_B.flag)
+		SleepNum = SleepNum + 1;
+	else
+		SleepNum = SleepNum - 1;
 	sprintf(string3, " %d ", SleepNum);
 	printf("%s\n", string3);
 	glutPostRedisplay();
 }
+
 void CALLBACK AttackTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
 	MoveZ1 = MoveZ1 - 0.1;
 	printf("%s\n", string2);
@@ -357,35 +370,64 @@ void myDisplay() {
 		// 固定物件的建立
 		//DrawFixObj();
 
+		/*
+		.MappingPos = ObjPosMapping[];
+		.DetectTouch = CheckTouch;				
+		.DrawObj = ;		
+		.Boundary = &;
+		.NextObjLink = &;
+		*/
+		MyHouse.MappingPos = ObjPosMapping[0];
+		MyHouse.DetectTouch = CheckTouch;
+		MyHouse.DrawObj = DrawObjHouse1;
+		MyHouse.Boundary = &House1_B;
+		MyHouse.NextObjLink = &MyTree_A;
+
+		MyTree_A.MappingPos = ObjPosMapping[1];
+		MyTree_A.DetectTouch = CheckTouch;
+		MyTree_A.DrawObj = DrawObjTree;
+		MyTree_A.Boundary = &Tree1_B;
+		MyTree_A.NextObjLink = &MyTree_B;
+
+		MyTree_B.MappingPos = ObjPosMapping[2];
+		MyTree_B.DetectTouch = CheckTouch;
+		MyTree_B.DrawObj = DrawObjTree;
+		MyTree_B.Boundary = &Tree1_B;
+		MyTree_B.NextObjLink = NULL;
+
+
+
+		DrawObjFlow(&MyHouse);
+
 		
-		//ObjA.Pos[0] = 0;ObjA.Pos[1] = 0;ObjA.Pos[2] = 0;
-		ObjA.MappingPos = ObjPosMapping[0];
-		ObjA.DetectTouch = CheckTouch;		
-		ObjA.Boundary = &Cube10_B;
-		ObjA.DrawObj = DrawObjCube10;		
-		ObjA.NextObjLink = &ObjB;
+		////ObjA.Pos[0] = 0;ObjA.Pos[1] = 0;ObjA.Pos[2] = 0;
+		//ObjA.MappingPos = ObjPosMapping[0];
+		//ObjA.DetectTouch = CheckTouch;		
+		//ObjA.Boundary = &Cube10_B;
+		//ObjA.DrawObj = DrawObjCube10;		
+		//ObjA.NextObjLink = &ObjB;
 
-		//ObjB.Pos[0] = -40;ObjB.Pos[1] = 0;ObjB.Pos[2] = -40;
-		ObjB.MappingPos = ObjPosMapping[1];
-		ObjB.DetectTouch = CheckTouch;
-		ObjB.Boundary = &Cube10_B;
-		ObjB.DrawObj = DrawObjCube10;		
-		ObjB.NextObjLink = &ObjC;
+		////ObjB.Pos[0] = -40;ObjB.Pos[1] = 0;ObjB.Pos[2] = -40;
+		//ObjB.MappingPos = ObjPosMapping[1];
+		//ObjB.DetectTouch = CheckTouch;
+		//ObjB.Boundary = &Cube10_B;
+		//ObjB.DrawObj = DrawObjCube10;		
+		//ObjB.NextObjLink = &ObjC;
 
-		//ObjC.Pos[0] = -40;ObjC.Pos[1] = 0;ObjC.Pos[2] = 40;
-		ObjC.MappingPos = ObjPosMapping[2];
-		ObjC.DetectTouch = CheckTouch;
-		ObjC.Boundary = &Cube10_B;
-		ObjC.DrawObj = DrawObjCube10;		
-		ObjC.NextObjLink = &ObjD;
+		////ObjC.Pos[0] = -40;ObjC.Pos[1] = 0;ObjC.Pos[2] = 40;
+		//ObjC.MappingPos = ObjPosMapping[2];
+		//ObjC.DetectTouch = CheckTouch;
+		//ObjC.Boundary = &Cube10_B;
+		//ObjC.DrawObj = DrawObjCube10;		
+		//ObjC.NextObjLink = &ObjD;
 
-		//ObjD.Pos[0] = 40;ObjD.Pos[1] = 0;ObjD.Pos[2] = 40;
-		ObjD.MappingPos = ObjPosMapping[3];
-		ObjD.DetectTouch = CheckTouch;
-		ObjD.Boundary = &Cube10_B;
-		ObjD.DrawObj = DrawObjCube10;		
-		//ObjD.NextObjLink = &ObjTree_A;
-		ObjD.NextObjLink = NULL;
+		////ObjD.Pos[0] = 40;ObjD.Pos[1] = 0;ObjD.Pos[2] = 40;
+		//ObjD.MappingPos = ObjPosMapping[3];
+		//ObjD.DetectTouch = CheckTouch;
+		//ObjD.Boundary = &Cube10_B;
+		//ObjD.DrawObj = DrawObjCube10;		
+		////ObjD.NextObjLink = &ObjTree_A;
+		//ObjD.NextObjLink = NULL;
 /*
 		ObjTree_A.DetectTouch = CheckTouch;
 		ObjTree_A.Boundary = &Tree1_B;
@@ -432,7 +474,7 @@ void myDisplay() {
 		glColor3f(0.85f, 0.56f, 0.72f);
 		ObjH2.DrawObj(&ObjH2, -100, 0, -50, id_texture4);
 */
-		DrawObjFlow(&ObjA);
+		
 
 		//// 畫房子 1
 		//glPushMatrix();
@@ -501,34 +543,8 @@ void myDisplay() {
 		//	DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
 		//glPopMatrix();
 
-		/*glPushMatrix();
-			glColor3f(1.0f, 1.0f, 0.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(0, 0, 140);
-			DrawCubeI(0.4, 0.4, 0.4);
-		glPopMatrix();
+		
 
-		glPushMatrix();
-			glColor3f(1.0f, 0.0f, 0.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(100, 0, -50);
-			DrawCubeI(1, 1, 1);
-		glPopMatrix();*/
-
-
-
-
-		//BuildNormalCity();
-		// Draw Robot - Arm
-		/*glColor3f(1.0, 0.0, 0.0);
-		DrawCube_Lib(0.4,0.4,0.4);
-		glColor3f(0.0, 1.0, 0.0);
-		glTranslated(0.1, 0.5, 0);
-		DrawCube_Lib(0.2, 0.6, 0.2);
-		glTranslated(0.5, 0.2, 0);
-		DrawCube_Lib(0.2, 1, 0.2);*/
-		/*glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();*/
 
 		//-------------------------------------------------
 		//CreateNode();
@@ -617,16 +633,37 @@ void myDisplay() {
 	glDisable(GL_TEXTURE_2D);
 	
 	// 面板顯示
-	//DrawVSValue();
+	DrawVSValue();
+	if (MyHouse.hint) {
+		glPushMatrix();
+			gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+			glColor3f(0.0f, 0.0f, 0.0f);
+			glRasterPos3f(-15.2, 7, 0);
+			drawString("This is my house. You can get 1 blood.");
+		glPopMatrix();
+		printf(" h \r\n");
+		MyHouse.hint = false;
+	}
+	else if (MyTree_A.hint) {
+		printf(" A \r\n");
+		MyTree_A.hint = false;
+	}
+	else if (MyTree_B.hint) {
+		printf(" B \r\n");
+		MyTree_B.hint = false;
+	}
+	else
+		printf(" others \r\n");
 
-	if (DrawHint) {
+	/*if (DrawHint) {
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glPushMatrix();
 		glColor3f(0.0f, 0.0f, 0.0f);
 		glRasterPos3f(-14, 7, 0);
 		drawString(" hello my name is NPC 1");
 		glPopMatrix();
-	}
+		DrawHint = false;
+	}*/
 	glEnable(GL_TEXTURE_2D);
 
 	glFlush();

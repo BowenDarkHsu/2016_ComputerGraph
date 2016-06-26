@@ -130,13 +130,16 @@ typedef struct ObjBox {
 	bool flag = false;
 	bool hint = false;
 	int texture = 0;
+	int EventID = 0;
 	void(*DetectTouch)(ObjBox *obj, ObjectBoundary *obj_B);
 	void(*DrawObj)(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
 	ObjBox* NextObjLink;
 	ObjectBoundary *Boundary;
 }ObjBox;
-
-
+extern int LevelCnt;
+extern ObjBox MyHouse;
+extern ObjBox MyTree_A;
+extern ObjBox MyTree_B;
 extern ObjectBoundary Tree1_B;
 extern ObjectBoundary House1_B;
 extern ObjectBoundary House2_B;

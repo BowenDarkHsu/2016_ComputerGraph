@@ -230,7 +230,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 	printf(" BoundPy = %d , ", BoundPy);
 	printf(" BoundPx = %d , ", BoundPx);
 	printf(" BoundPz = %d \r\n", BoundPz);*/
-	WorldCollFalg = CheckObjTouchFlow(&ObjA);
+	WorldCollFalg = CheckObjTouchFlow(&MyHouse);
 
 	//checkTouch(&ObjA);
 	/*
@@ -242,7 +242,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 	
 	// checkTouch3(&ObjTree_A, BTreem0_U, BTreem0_D, BTreem1_U, BTreem1_D, BTreem2_U, BTreem2_D);
 	//WorldCollFalg = ObjA.flag || ObjB.flag || ObjH1.flag || ObjH2.flag || ObjRed_A.flag || ObjTree_A.flag || ObjC.flag;
-	printf(" pk WorldCollFalg = %d \r\n", WorldCollFalg);
+	//printf(" pk WorldCollFalg = %d \r\n", WorldCollFalg);
 #if ShowDirValue == 1
 	printf(" My_LookAt.X = %f \r\n", My_LookAt.X);
 	printf(" My_LookAt.Z = %f \r\n", My_LookAt.Z);
@@ -285,6 +285,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 			CameraBackward();
 			CameraBackward();
 			DrawHint = true;
+			CheckObjFlagFlow(&MyHouse);			
 		}
 		else {
 			/*My_LookAt.X = My_LookAt.X + PosXUnit;
@@ -303,6 +304,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 			CameraForward();
 			CameraForward();
 			DrawHint = true;
+			CheckObjFlagFlow(&MyHouse);
 		}
 		else {
 			/*My_LookAt.X = My_LookAt.X - PosXUnit;
@@ -321,6 +323,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 			CameraRightward();
 			CameraRightward();
 			DrawHint = true;
+			CheckObjFlagFlow(&MyHouse);
 		}
 		else {
 			/*My_LookAt.X = My_LookAt.X + PosZUnit ;
@@ -339,6 +342,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 			CameraLeftward();
 			CameraLeftward();
 			DrawHint = true;
+			CheckObjFlagFlow(&MyHouse);
 		}
 		else {
 			/*My_LookAt.X = My_LookAt.X - PosZUnit;

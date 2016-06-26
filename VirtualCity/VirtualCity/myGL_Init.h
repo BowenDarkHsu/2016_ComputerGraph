@@ -6,7 +6,7 @@ extern "C" {
 #include "glut.h"
 #define DisplayMode 0
 #define OpenTexture 0
-#define ShowDirValue 1
+#define ShowDirValue 0
 	void initParticle(void);
 	void parDisplay(void);
 	float forces(int i, int j);

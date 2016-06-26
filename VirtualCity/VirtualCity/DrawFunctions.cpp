@@ -714,7 +714,7 @@ void DrawObjHouse1(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int textu
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 			MovePosition(MoveX, MoveY, MoveZ);
 		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
-		printf("H1 m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);			
+		//printf("H1 m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);			
 		DrawCubeTexture(1.0, 1.0, 1.0, texture);
 			MovePosition(0, MoveY + 10, 0);
 			DrawRoof(0.5, 0.5, 0.5);
@@ -731,7 +731,7 @@ void DrawObjHouse2(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int textu
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 			MovePosition(MoveX, MoveY + 10 , MoveZ);
 		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
-		printf("H2 m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);			
+		//printf("H2 m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);			
 		DrawCubeTexture(1.0, 2.0, 1.0, texture);
 			
 			MovePosition(0, MoveY + 20, 0);
@@ -772,7 +772,7 @@ void DrawObjTree(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture
 		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
 		//printf(" m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);
 		DrawCubeTexture(0.5,2.5,0.5,id_texture3);
-		MovePosition(MoveX, MoveY + 10, MoveZ);
+		MovePosition(0, MoveY + 10, 0);
 		DrawTriangleTexture(2,3,2, id_texture3);
 	glPopMatrix();
 }
@@ -882,6 +882,15 @@ bool CheckObjTouchFlow(ObjBox *obj) {
 		if (obj->DetectTouch != NULL) 
 			return obj->flag;
 	}
+}
+
+void CheckObjFlagFlow(ObjBox *obj ) {
+	if (obj == NULL) return;	
+	if (obj->flag) 
+		obj->hint = true;		
+	if (obj->NextObjLink != NULL) 
+		CheckObjFlagFlow(obj->NextObjLink);
+
 }
 
 void DrawObjFlow(ObjBox *obj) {
