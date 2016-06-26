@@ -707,14 +707,49 @@ void DrawFixObj(void) {
 		glPopMatrix();
 }
 
+void DrawObjHouse1(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture) {
+	// 畫房子 1
+	glPushMatrix();
+		//glColor3f(0.0f, 1.0f, 0.0f);
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			MovePosition(MoveX, MoveY, MoveZ);
+		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
+		printf("H1 m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);			
+		DrawCubeTexture(1.0, 1.0, 1.0, texture);
+			MovePosition(0, MoveY + 10, 0);
+			DrawRoof(0.5, 0.5, 0.5);
+				MovePosition(0, MoveY - 10, 0);
+				DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+					MovePosition(0, MoveY - 5, 0);
+					DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+	glPopMatrix();
+}
+void DrawObjHouse2(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture) {
+	// 畫房子 2
+	glPushMatrix();
+		//glColor3f(0.0f, 1.0f, 0.0f);
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			MovePosition(MoveX, MoveY + 10 , MoveZ);
+		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
+		printf("H2 m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);			
+		DrawCubeTexture(1.0, 2.0, 1.0, texture);
+			
+			MovePosition(0, MoveY + 20, 0);
+			DrawRoof(0.5, 0.5, 0.5);
+				MovePosition(0, MoveY - 30, 0);
+				DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+					MovePosition(0, MoveY - 5, 0);
+					DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+	glPopMatrix();
+}
 void DrawObjCube05(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture) {
 	glPushMatrix();
-	//glColor3f(0.0f, 1.0f, 0.0f);
-	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-	MovePosition(MoveX, MoveY, MoveZ);
-	glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
-	//printf(" m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);
-	DrawCubeTexture(0.5, 0.5, 0.5, texture);
+		//glColor3f(0.0f, 1.0f, 0.0f);
+		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		MovePosition(MoveX, MoveY, MoveZ);
+		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
+		//printf(" m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);
+		DrawCubeTexture(0.5, 0.5, 0.5, texture);
 	glPopMatrix();
 }
 
@@ -741,6 +776,7 @@ void DrawObjTree(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture
 		DrawTriangleTexture(2,3,2, id_texture3);
 	glPopMatrix();
 }
+
 
 void checkTouch(ObjBox *obj) {
 	float Px = 0.0;
@@ -848,7 +884,18 @@ bool CheckObjTouchFlow(ObjBox *obj) {
 	}
 }
 
-
+void DrawObjFlow(ObjBox *obj) {
+	if (obj == NULL) return;	
+	if (obj->DrawObj != NULL) {
+		glColor3f(1.0f, 1.0f, 1.0f);
+		if(obj->MappingPos == NULL)
+			obj->DrawObj(obj, obj->Pos[0], obj->Pos[1], obj->Pos[2], obj->texture);
+		else
+			obj->DrawObj(obj, obj->MappingPos[0], obj->MappingPos[1], obj->MappingPos[2], obj->texture);
+	}
+	if (obj->NextObjLink != NULL)
+		DrawObjFlow(obj->NextObjLink);
+}
 
 float f_abs(float x, float y) {
 	float temp = 0.0;

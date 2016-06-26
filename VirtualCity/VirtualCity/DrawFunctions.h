@@ -41,11 +41,15 @@ void CameraRightward(void);
 
 void DrawTriangleTexture(float L, float H, float W, int texture);
 
+void DrawObjHouse2(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
+void DrawObjHouse1(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
 void DrawObjCube05(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
 void DrawObjCube10(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
 void DrawObjTree(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
+
 bool CheckObjTouchFlow(ObjBox *obj);
 void CheckTouch(ObjBox *obj, ObjectBoundary *obj_B);
+void DrawObjFlow(ObjBox *obj);
 
 void checkTouch3(ObjBox *obj, float m0U, float m0D, float m1U, float m1D, float m2U, float m2D);
 void checkTouch2(ObjBox *obj, float xU, float yU, float zU, float xD, float yD, float zD);

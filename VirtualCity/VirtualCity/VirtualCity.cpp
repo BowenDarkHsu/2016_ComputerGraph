@@ -162,6 +162,9 @@ float objBox1[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
 GLfloat D[8][3];
 
+float ObjPosMapping[8][3] = {	{ 0,0,0 },{ -40,0,0 },{ -40,0,-40 },{ 0,0,-40 },
+								{ 0,0,0 },{ 0,0,0 },{ 0,0,0 },{ 0,0,0 } };
+
 //float TempMoveX = -308.0;
 //float TempMoveY = 121.0;
 float TempMoveX = -12.5;
@@ -355,27 +358,35 @@ void myDisplay() {
 		//DrawFixObj();
 
 		
-
+		//ObjA.Pos[0] = 0;ObjA.Pos[1] = 0;ObjA.Pos[2] = 0;
+		ObjA.MappingPos = ObjPosMapping[0];
 		ObjA.DetectTouch = CheckTouch;		
 		ObjA.Boundary = &Cube10_B;
 		ObjA.DrawObj = DrawObjCube10;		
 		ObjA.NextObjLink = &ObjB;
 
+		//ObjB.Pos[0] = -40;ObjB.Pos[1] = 0;ObjB.Pos[2] = -40;
+		ObjB.MappingPos = ObjPosMapping[1];
 		ObjB.DetectTouch = CheckTouch;
 		ObjB.Boundary = &Cube10_B;
 		ObjB.DrawObj = DrawObjCube10;		
 		ObjB.NextObjLink = &ObjC;
 
+		//ObjC.Pos[0] = -40;ObjC.Pos[1] = 0;ObjC.Pos[2] = 40;
+		ObjC.MappingPos = ObjPosMapping[2];
 		ObjC.DetectTouch = CheckTouch;
 		ObjC.Boundary = &Cube10_B;
 		ObjC.DrawObj = DrawObjCube10;		
 		ObjC.NextObjLink = &ObjD;
 
+		//ObjD.Pos[0] = 40;ObjD.Pos[1] = 0;ObjD.Pos[2] = 40;
+		ObjD.MappingPos = ObjPosMapping[3];
 		ObjD.DetectTouch = CheckTouch;
 		ObjD.Boundary = &Cube10_B;
 		ObjD.DrawObj = DrawObjCube10;		
-		ObjD.NextObjLink = &ObjTree_A;
-
+		//ObjD.NextObjLink = &ObjTree_A;
+		ObjD.NextObjLink = NULL;
+/*
 		ObjTree_A.DetectTouch = CheckTouch;
 		ObjTree_A.Boundary = &Tree1_B;
 		ObjTree_A.DrawObj = DrawObjTree;
@@ -384,9 +395,20 @@ void myDisplay() {
 		ObjRed_A.DetectTouch = CheckTouch;
 		ObjRed_A.Boundary = &Cube05_B;
 		ObjRed_A.DrawObj = DrawObjCube05;
-		ObjRed_A.NextObjLink = NULL;
+		ObjRed_A.NextObjLink = &ObjH1;
 
-		glColor3f(0.0f, 1.0f, 0.0f);
+		ObjH1.DetectTouch = CheckTouch;
+		ObjH1.Boundary = &House1_B;
+		ObjH1.DrawObj = DrawObjHouse1;
+		ObjH1.NextObjLink = &ObjH2;
+
+		ObjH2.DetectTouch = CheckTouch;
+		ObjH2.Boundary = &House2_B;
+		ObjH2.DrawObj = DrawObjHouse2;
+		ObjH2.NextObjLink = NULL;*/
+
+
+		/*glColor3f(0.0f, 1.0f, 0.0f);
 		ObjA.DrawObj(&ObjA,80,0,0,id_texture4);
 
 		glColor3f(0.8f, 0.5f, 0.0f);
@@ -395,14 +417,42 @@ void myDisplay() {
 		glColor3f(0.8f, 0.5f, 1.0f);
 		ObjC.DrawObj(&ObjC, 130, 0, -20, id_texture4);
 
-		glColor3f(0.8f, 1.0f, 1.0f);
-		ObjC.DrawObj(&ObjD, -130, 0, 0, id_texture4);
-
 		glColor3f(0.8f, 0.5f, 0.0f);
 		ObjTree_A.DrawObj(&ObjTree_A,0,0,10, id_texture4);
 
-		glColor3f(1.0f, 0.0f, 1.0f);
-		ObjRed_A.DrawObj(&ObjRed_A,-100,0,0,id_texture4);
+		glColor3f(0.8f, 1.0f, 1.0f);
+		ObjD.DrawObj(&ObjD, 0, 0, 0, id_texture4);
+
+		glColor3f(1.0f, 0.0f, 0.0f);
+		ObjRed_A.DrawObj(&ObjRed_A,-10,0,0,id_texture4);*/
+
+		/*glColor3f(1.0f, 1.0f, 1.0f);
+		ObjH1.DrawObj(&ObjH1, -10, 0, -50, id_texture4);
+
+		glColor3f(0.85f, 0.56f, 0.72f);
+		ObjH2.DrawObj(&ObjH2, -100, 0, -50, id_texture4);
+*/
+		DrawObjFlow(&ObjA);
+
+		//// µe©Ð¤l 1
+		//glPushMatrix();
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	glColor3f(1.0, 0.0, 0.0);
+		//	MovePosition(80, 0, -100);
+		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjH1.org_m);
+		//	ObjH1.m[0] = ObjH1.org_m[12];
+		//	ObjH1.m[1] = ObjH1.org_m[13];
+		//	ObjH1.m[2] = ObjH1.org_m[14];
+		//	//printf(" m1[0] = %f , m1[1] = %f , m1[2] = %f \r\n", ObjH1.m[0], ObjH1.m[1], ObjH1.m[2]);			
+		//	DrawCubeTexture(1.0, 1.0, 1.0, id_texture3);
+		//	MovePosition(0, 10, 0);
+		//	DrawRoof(0.5, 0.5, 0.5);
+		//	MovePosition(0, -10, 0);
+		//	DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+		//	MovePosition(0, -5, 0);
+		//	DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+		//glPopMatrix();
+
 
 		//// Tree Object
 		//glPushMatrix();
@@ -436,7 +486,7 @@ void myDisplay() {
 		//glPushMatrix();
 		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 		//	glColor3f(0.0, 0.0, 1.0);
-		//	MovePosition(0, 10, 0);
+		//	MovePosition(-20, 10, 0);
 		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjH2.org_m);
 		//	ObjH2.m[0] = ObjH2.org_m[12];
 		//	ObjH2.m[1] = ObjH2.org_m[13];

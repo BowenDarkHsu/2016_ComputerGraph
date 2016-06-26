@@ -107,7 +107,7 @@ void InitObjBoundary(void) {
 	House1_B.m1_U = -0.04;
 	House1_B.m1_D = -0.12;
 	House1_B.m2_U = 0.4;
-	House1_B.m2_D = 1.8;
+	House1_B.m2_D = -1.8;
 	// House 2
 	House2_B.m0_U = 0.991;
 	House2_B.m0_D = -0.9;

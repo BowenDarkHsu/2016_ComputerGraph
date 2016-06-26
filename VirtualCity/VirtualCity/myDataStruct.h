@@ -122,8 +122,11 @@ typedef struct ObjectBoundary {
 }ObjectBoundary;
 
 typedef struct ObjBox {	
-	float org_m[16];
+	float org_m[16];	
+	float *MappingPos = NULL;	
+	float Pos[3];
 	float m[3];
+	
 	bool flag = false;
 	bool hint = false;
 	int texture = 0;
