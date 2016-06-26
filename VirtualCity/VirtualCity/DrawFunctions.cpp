@@ -905,7 +905,26 @@ void DrawObjFlow(ObjBox *obj) {
 	if (obj->NextObjLink != NULL)
 		DrawObjFlow(obj->NextObjLink);
 }
-
+void DrawCenterLine(void) {
+	glPushMatrix();
+		glColor3f(0.0f, 0.0f, 0.0f);
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		// h
+		glBegin(GL_POLYGON);
+			glVertex3f(-1, 0, 1); //--
+			glVertex3f(1, 0, 1); //--
+			glVertex3f(1, 0.1, 1); //--
+			glVertex3f(-1, 0.1, 1); //--
+		glEnd();
+		// v
+		glBegin(GL_POLYGON);
+			glVertex3f(0, -1, 1); //--
+			glVertex3f(0, 1, 1); //--
+			glVertex3f(0.1, 1, 1); //--
+			glVertex3f(0.1, -1, 1); //--
+		glEnd();
+	glPopMatrix();
+}
 float f_abs(float x, float y) {
 	float temp = 0.0;
 	if (x > y)

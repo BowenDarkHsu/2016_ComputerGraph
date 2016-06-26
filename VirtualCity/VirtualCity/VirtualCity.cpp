@@ -41,8 +41,13 @@ ObjBox ObjC;
 ObjBox ObjD;
 ObjBox ObjH1;
 ObjBox ObjH2;
+ObjBox ObjH3;
+ObjBox ObjH4;
 ObjBox ObjRed_A;
 ObjBox ObjTree_A;
+ObjBox ObjTree_B;
+ObjBox ObjTree_C;
+ObjBox ObjTree_D;
 
 ObjBox MyHouse;
 ObjBox MyTree_A;
@@ -166,13 +171,17 @@ float objBox1[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
 GLfloat D[8][3];
 
-float ObjPosMapping[8][3] = {	{ 0,0,0 },{ -40,0,0 },{ 40,0,0 },{ 0,0,0 },
-								{ 0,0,0 },{ 0,0,0 },{ 0,0,0 },{ 0,0,0 } };
+float ObjPosMapping[16][3] = {	{ 0,0,0 },{ -40,0,0 },{ 40,0,0 },
+								{ 40,0,-40 },{ -40,0,-40 },{ 70,0,-40 },{ -70,0,-40 },
+								{ 130,0,0 },{ 0,0,-40 },{ 100,0,0 },{ -100,0,0 }, // 11
+								{ 100,0,100 },{ -100,0,100 },{ -70,0,50 },{ -50,0,50 },// 15
+								{ 50,0,50 } // 16
+							};
 
 //float TempMoveX = -308.0;
 //float TempMoveY = 121.0;
-float TempMoveX = -12.5;
-float TempMoveY = 4.3;
+float TempMoveX = 100;
+float TempMoveY = 0;
 
 int LevelCnt = 0;
 
@@ -336,17 +345,6 @@ void myDisplay() {
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-	/*glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(50.0, 1.0, 3.0, 7.0);
-	glutWireCube(2);
-	glutWireCube(1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-	glutWireCube(0.7);
-	glutWireCube(0.5);*/
 		// Draw Horizontal
 
 		glMatrixMode(GL_PROJECTION);
@@ -357,97 +355,20 @@ void myDisplay() {
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-
 		DrawFixPlane();
 
-		/*glPushMatrix();
-			glColor3f(1.0f, 1.0f, 1.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(0, 0, 0);
-			DrawCubeI(0.4, 0.4, 0.4);
-		glPopMatrix();*/
 
 		// 固定物件的建立
 		//DrawFixObj();
 
-		/*
-		.MappingPos = ObjPosMapping[];
-		.DetectTouch = CheckTouch;				
-		.DrawObj = ;		
-		.Boundary = &;
-		.NextObjLink = &;
-		*/
-		MyHouse.MappingPos = ObjPosMapping[0];
-		MyHouse.DetectTouch = CheckTouch;
-		MyHouse.DrawObj = DrawObjHouse1;
-		MyHouse.Boundary = &House1_B;
-		MyHouse.NextObjLink = &MyTree_A;
-
-		MyTree_A.MappingPos = ObjPosMapping[1];
-		MyTree_A.DetectTouch = CheckTouch;
-		MyTree_A.DrawObj = DrawObjTree;
-		MyTree_A.Boundary = &Tree1_B;
-		MyTree_A.NextObjLink = &MyTree_B;
-
-		MyTree_B.MappingPos = ObjPosMapping[2];
-		MyTree_B.DetectTouch = CheckTouch;
-		MyTree_B.DrawObj = DrawObjTree;
-		MyTree_B.Boundary = &Tree1_B;
-		MyTree_B.NextObjLink = NULL;
-
-
+		
+		
 
 		DrawObjFlow(&MyHouse);
 
 		
-		////ObjA.Pos[0] = 0;ObjA.Pos[1] = 0;ObjA.Pos[2] = 0;
-		//ObjA.MappingPos = ObjPosMapping[0];
-		//ObjA.DetectTouch = CheckTouch;		
-		//ObjA.Boundary = &Cube10_B;
-		//ObjA.DrawObj = DrawObjCube10;		
-		//ObjA.NextObjLink = &ObjB;
+		
 
-		////ObjB.Pos[0] = -40;ObjB.Pos[1] = 0;ObjB.Pos[2] = -40;
-		//ObjB.MappingPos = ObjPosMapping[1];
-		//ObjB.DetectTouch = CheckTouch;
-		//ObjB.Boundary = &Cube10_B;
-		//ObjB.DrawObj = DrawObjCube10;		
-		//ObjB.NextObjLink = &ObjC;
-
-		////ObjC.Pos[0] = -40;ObjC.Pos[1] = 0;ObjC.Pos[2] = 40;
-		//ObjC.MappingPos = ObjPosMapping[2];
-		//ObjC.DetectTouch = CheckTouch;
-		//ObjC.Boundary = &Cube10_B;
-		//ObjC.DrawObj = DrawObjCube10;		
-		//ObjC.NextObjLink = &ObjD;
-
-		////ObjD.Pos[0] = 40;ObjD.Pos[1] = 0;ObjD.Pos[2] = 40;
-		//ObjD.MappingPos = ObjPosMapping[3];
-		//ObjD.DetectTouch = CheckTouch;
-		//ObjD.Boundary = &Cube10_B;
-		//ObjD.DrawObj = DrawObjCube10;		
-		////ObjD.NextObjLink = &ObjTree_A;
-		//ObjD.NextObjLink = NULL;
-/*
-		ObjTree_A.DetectTouch = CheckTouch;
-		ObjTree_A.Boundary = &Tree1_B;
-		ObjTree_A.DrawObj = DrawObjTree;
-		ObjTree_A.NextObjLink = &ObjRed_A;
-
-		ObjRed_A.DetectTouch = CheckTouch;
-		ObjRed_A.Boundary = &Cube05_B;
-		ObjRed_A.DrawObj = DrawObjCube05;
-		ObjRed_A.NextObjLink = &ObjH1;
-
-		ObjH1.DetectTouch = CheckTouch;
-		ObjH1.Boundary = &House1_B;
-		ObjH1.DrawObj = DrawObjHouse1;
-		ObjH1.NextObjLink = &ObjH2;
-
-		ObjH2.DetectTouch = CheckTouch;
-		ObjH2.Boundary = &House2_B;
-		ObjH2.DrawObj = DrawObjHouse2;
-		ObjH2.NextObjLink = NULL;*/
 
 
 		/*glColor3f(0.0f, 1.0f, 0.0f);
@@ -559,22 +480,7 @@ void myDisplay() {
 		//glPopMatrix();
 		//-------------------------------------------------
 
-	//DrawTorso();
-	/*glPushMatrix();
-		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-		glColor3f(0.0, 0.0, 1.0);
-
-		MovePosition(2, 0, 0);
-		DrawCubeF(1, 1, 0.5);
-		MovePosition(0, 0.5, 0);
-		DrawRoof(1, 1, 1);
-		MovePosition(0, 0, -15);
-		glColor3f(1.0, 1.0, 0.0);
-		DrawCubeF(2, 2, 1.5);
-		MovePosition(0, 0, 30);
-		glColor3f(1.0, 0.0, 0.0);
-		DrawCubeF(4, 4, 1.5);
-	glPopMatrix();*/
+	
 
 
 
@@ -583,57 +489,13 @@ void myDisplay() {
 	//LightSource();
 	//LightSource2();
 	//LightSource3();
-	//
 	
-	//補助線
-	glLoadIdentity();
-	glPushMatrix();
-
-		glColor3f(1.0f, 0.0f, 1.0f);
-		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		
-		// h
-		glBegin(GL_LINE_LOOP);
-			glVertex3f(-7, 1.5, 1); //--
-			glVertex3f(7, 1.5, 1); //--
-		glEnd();
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glBegin(GL_LINE_LOOP);
-			glVertex3f(-7, -2.5, 1); //--
-			glVertex3f(7, -2.5, 1); //--
-		glEnd();
-		// v
-		glBegin(GL_LINE_LOOP);
-			glVertex3f(1.5, 7, 1); //--
-			glVertex3f(1.5, -7, 1); //--
-		glEnd();
-		glColor3f(1.0f, 1.0f, 0.0f);
-		glBegin(GL_LINE_LOOP);
-			glVertex3f(-1, -7, 1); //--
-			glVertex3f(-1, 7, 1); //--
-		glEnd();
-	glPopMatrix();
-
-	//glPushMatrix();
-	//	glColor3f(1.0f, 1.0f, 0.0f);		
-	//	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
-	//	MovePosition(-150, 100, 0);
-	//	glBindTexture(GL_TEXTURE_2D, id_texture2);
-	//	glBegin(GL_QUADS);
-	//		glTexCoord2f(0.0, 0.0);glVertex3f(0, 0, 0); //--
-	//		glTexCoord2f(1.0, 0.0);glVertex3f(0.8, 0, 0); //+-
-	//		glTexCoord2f(1.0, 1.0);glVertex3f(0.8, 0.8, 0); //++ 
-	//		glTexCoord2f(0.0, 1.0);glVertex3f(0, 0.8, 0); //-+ 
-	//	glEnd();
-	//glPopMatrix();
-
-	// OpenGL -  ensures that the drawing command are actually executed.
 	DrawVitality();
 
 	glDisable(GL_TEXTURE_2D);
-	
-	// 面板顯示
-	DrawVSValue();
+
+	DrawCenterLine();	// 補助線
+	DrawVSValue();		// 面板顯示
 	if (MyHouse.hint) {
 		glPushMatrix();
 			gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);

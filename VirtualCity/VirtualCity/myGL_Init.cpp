@@ -56,6 +56,7 @@ void myInit() {
 
 	/* Init Light Value*/
 	//InitLight_Ambient(mySource_1);
+	InitObjParameter();
 	InitObjBoundary();
 
 	#if OpenTexture == 1
@@ -129,6 +130,106 @@ void InitObjBoundary(void) {
 	Cube05_B.m1_D = -0.9;
 	Cube05_B.m2_U = 0.302;
 	Cube05_B.m2_D = -1.0;
+}
+
+void InitObjParameter(void) {
+	/*
+	ObjBox ObjH1;
+	ObjBox ObjH2;
+	ObjBox ObjRed_A;
+	ObjBox ObjTree_A;
+	.MappingPos = ObjPosMapping[];
+	.DetectTouch = CheckTouch;
+	.DrawObj = ;
+	.Boundary = &;
+	.NextObjLink = &;
+	*/
+	MyHouse.MappingPos = ObjPosMapping[0];
+	MyHouse.DetectTouch = CheckTouch;
+	MyHouse.DrawObj = DrawObjHouse1;
+	MyHouse.Boundary = &House1_B;
+	MyHouse.NextObjLink = &MyTree_A;
+
+	MyTree_A.MappingPos = ObjPosMapping[1];
+	MyTree_A.DetectTouch = CheckTouch;
+	MyTree_A.DrawObj = DrawObjTree;
+	MyTree_A.Boundary = &Tree1_B;
+	MyTree_A.NextObjLink = &MyTree_B;
+
+	MyTree_B.MappingPos = ObjPosMapping[2];
+	MyTree_B.DetectTouch = CheckTouch;
+	MyTree_B.DrawObj = DrawObjTree;
+	MyTree_B.Boundary = &Tree1_B;
+	MyTree_B.NextObjLink = &ObjA;
+	// World Object  Cube 1.0
+	ObjA.MappingPos = ObjPosMapping[3];
+	ObjA.DetectTouch = CheckTouch;		
+	ObjA.DrawObj = DrawObjCube10;	
+	ObjA.Boundary = &Cube10_B;
+	ObjA.NextObjLink = &ObjB;
+	ObjB.MappingPos = ObjPosMapping[4];
+	ObjB.DetectTouch = CheckTouch;
+	ObjB.DrawObj = DrawObjCube10;	
+	ObjB.Boundary = &Cube10_B;
+	ObjB.NextObjLink = &ObjC;
+	ObjC.MappingPos = ObjPosMapping[5];
+	ObjC.DetectTouch = CheckTouch;
+	ObjC.DrawObj = DrawObjCube10;		
+	ObjC.Boundary = &Cube10_B;
+	ObjC.NextObjLink = &ObjD;
+	ObjD.MappingPos = ObjPosMapping[6];
+	ObjD.DetectTouch = CheckTouch;
+	ObjD.DrawObj = DrawObjCube10;		
+	ObjD.Boundary = &Cube10_B;
+	ObjD.NextObjLink = &ObjTree_A;
+	////////////////  Tree
+	ObjTree_A.MappingPos = ObjPosMapping[7];
+	ObjTree_A.DetectTouch = CheckTouch;
+	ObjTree_A.DrawObj = DrawObjTree;
+	ObjTree_A.Boundary = &Tree1_B;
+	ObjTree_A.NextObjLink = &ObjTree_B;
+	ObjTree_B.MappingPos = ObjPosMapping[11];
+	ObjTree_B.DetectTouch = CheckTouch;
+	ObjTree_B.DrawObj = DrawObjTree;
+	ObjTree_B.Boundary = &Tree1_B;
+	ObjTree_B.NextObjLink = &ObjTree_C;
+	ObjTree_C.MappingPos = ObjPosMapping[12];
+	ObjTree_C.DetectTouch = CheckTouch;
+	ObjTree_C.DrawObj = DrawObjTree;
+	ObjTree_C.Boundary = &Tree1_B;
+	ObjTree_C.NextObjLink = &ObjTree_D;
+	ObjTree_D.MappingPos = ObjPosMapping[13];
+	ObjTree_D.DetectTouch = CheckTouch;
+	ObjTree_D.DrawObj = DrawObjTree;
+	ObjTree_D.Boundary = &Tree1_B;
+	ObjTree_D.NextObjLink = &ObjRed_A;
+
+	ObjRed_A.MappingPos = ObjPosMapping[8];
+	ObjRed_A.DetectTouch = CheckTouch;
+	ObjRed_A.DrawObj = DrawObjCube05;
+	ObjRed_A.Boundary = &Cube05_B;
+	ObjRed_A.NextObjLink = &ObjH1;
+
+	ObjH1.MappingPos = ObjPosMapping[9];
+	ObjH1.DetectTouch = CheckTouch;
+	ObjH1.DrawObj = DrawObjHouse1;
+	ObjH1.Boundary = &House1_B;
+	ObjH1.NextObjLink = &ObjH2;
+	ObjH2.MappingPos = ObjPosMapping[10];
+	ObjH2.DetectTouch = CheckTouch;
+	ObjH2.DrawObj = DrawObjHouse2;
+	ObjH2.Boundary = &House2_B;
+	ObjH2.NextObjLink = &ObjH3;
+	ObjH3.MappingPos = ObjPosMapping[14];
+	ObjH3.DetectTouch = CheckTouch;
+	ObjH3.DrawObj = DrawObjHouse1;
+	ObjH3.Boundary = &House1_B;
+	ObjH3.NextObjLink = &ObjH4;
+	ObjH4.MappingPos = ObjPosMapping[15];
+	ObjH4.DetectTouch = CheckTouch;
+	ObjH4.DrawObj = DrawObjHouse2;
+	ObjH4.Boundary = &House2_B;
+	ObjH4.NextObjLink = NULL;
 }
 
 void myMenuInit() {
@@ -356,26 +457,26 @@ void myKeyboard(unsigned char key, int x, int y) {
 		glutPostRedisplay();
 		break;
 	case '1':
-		TempMoveX = TempMoveX + 0.1;
+		TempMoveX = TempMoveX + 1;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
 	case '2':
-		TempMoveX = TempMoveX - 0.1 ;
+		TempMoveX = TempMoveX - 1 ;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
 	
 	case '4':
-		TempMoveY = TempMoveY + 0.1 ;
+		TempMoveY = TempMoveY + 1 ;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
 	case '5':
-		TempMoveY = TempMoveY - 0.1;
+		TempMoveY = TempMoveY - 1;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
