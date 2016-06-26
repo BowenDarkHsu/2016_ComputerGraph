@@ -39,6 +39,8 @@ ObjBox ObjA;
 ObjBox ObjB;
 ObjBox ObjH1;
 ObjBox ObjH2;
+ObjBox ObjRed_A;
+ObjBox ObjTree_A;
 
 float MoveX = 0.0;
 float MoveY = 0.0;
@@ -93,7 +95,7 @@ float MoveValeZ = 0;
 
 float PosXUnit = 0.0;
 float PosZUnit = 0.0;
-// Boundary
+//############################################ Boundary ############################################\\
 float Px = 0.0;
 float Pz = 0.0;
 float Py = 0.0;
@@ -113,9 +115,28 @@ float H_PxU = -0.04;  //m2
 float H_PxD = -0.12;
 float H_PzU = 0.4;    //m3
 float H_PzD = -1.8;
-
-
-
+// Cube 0.5
+float BC05m0_U = 0.232; // a lot of ++
+float BC05m0_D = -0.6;  // a lot of ++
+float BC05m1_U = -0.06; 
+float BC05m1_D = -0.9;
+float BC05m2_U = 0.302;
+float BC05m2_D = -1.0;
+// House 1.0 2.0 1.0
+float BH121m0_U = 0.991;
+float BH121m0_D = -0.9;
+float BH121m1_U = 0.5;
+float BH121m1_D = 0.28;
+float BH121m2_U = 0.7;
+float BH121m2_D = -1.6;
+// Tree 
+float BTreem0_U = 0.6;
+float BTreem0_D = -0.7;
+float BTreem1_U = 0.95;
+float BTreem1_D = 0.85;
+float BTreem2_U = 0.5;
+float BTreem2_D = -0.95;
+//############################################ Boundary ############################################\\
 float distant_x = 0.0;
 float distant_y = 0.0;
 float distant_z = 0.0;
@@ -232,7 +253,7 @@ void CALLBACK AttackTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD ti
 }
 int main(int argc, char** argv) {	
 	// set Vitality Call Back Fun Timer : 3 sec
-		SetTimer(NULL, 0, 1000, VitalityTimeCallBack);
+		//SetTimer(NULL, 0, 1000, VitalityTimeCallBack);
 		//SetTimer(NULL, 0, 5000, SleepTimeCallBack);
 	//KillTimer(NULL, 1);
 	DrawPosition();
@@ -322,9 +343,54 @@ void myDisplay() {
 			DrawCubeI(0.4, 0.4, 0.4);
 		glPopMatrix();*/
 
-		DrawFixObj();
+		// 固定物件的建立
+		//DrawFixObj();
 
+		// Tree Object
+		glPushMatrix();
+			glColor3f(0.8f, 0.5f, 0.0f);
+			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			MovePosition(0, 20, 0);
+			glGetFloatv(GL_MODELVIEW_MATRIX, ObjTree_A.org_m);
+			ObjTree_A.m[0] = ObjTree_A.org_m[12];
+			ObjTree_A.m[1] = ObjTree_A.org_m[13];
+			ObjTree_A.m[2] = ObjTree_A.org_m[14];
+			printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjTree_A.m[0], ObjTree_A.m[1], ObjTree_A.m[2]);
+			DrawCubeTexture(0.5,2.5,0.5,id_texture3);
+			MovePosition(0, 10, 0);
+			DrawTriangleTexture(2,3,2, id_texture3);
+		glPopMatrix();
+		// Red Object
+		glPushMatrix();
+			glColor3f(1.0f, 0.0f, 0.0f);
+			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+			MovePosition(-50, 0, 0);
+			glGetFloatv(GL_MODELVIEW_MATRIX, ObjRed_A.org_m);
+			ObjRed_A.m[0] = ObjRed_A.org_m[12];
+			ObjRed_A.m[1] = ObjRed_A.org_m[13];
+			ObjRed_A.m[2] = ObjRed_A.org_m[14];
+			//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjRed_A.m[0], ObjRed_A.m[1], ObjRed_A.m[2]);
+			DrawCubeTexture(0.5,0.5,0.5,id_texture3);
+		glPopMatrix();
 		
+		//// 畫房子 2
+		//glPushMatrix();
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	glColor3f(0.0, 0.0, 1.0);
+		//	MovePosition(0, 10, 0);
+		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjH2.org_m);
+		//	ObjH2.m[0] = ObjH2.org_m[12];
+		//	ObjH2.m[1] = ObjH2.org_m[13];
+		//	ObjH2.m[2] = ObjH2.org_m[14];
+		//	//printf(" m1[0] = %f , m1[1] = %f , m1[2] = %f \r\n", ObjH2.m[0], ObjH2.m[1], ObjH2.m[2]);			
+		//	DrawCubeTexture(1.0, 2.0, 1.0, id_texture3);
+		//	MovePosition(0, 20, 0);
+		//	DrawRoof(0.5, 0.5, 0.5);
+		//	MovePosition(0, -30, 0);
+		//	DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+		//	MovePosition(0, -5, 0);
+		//	DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+		//glPopMatrix();
 
 		/*glPushMatrix();
 			glColor3f(1.0f, 1.0f, 0.0f);
@@ -356,9 +422,9 @@ void myDisplay() {
 		glLoadIdentity();*/
 
 		//-------------------------------------------------
-		CreateNode();
+		//CreateNode();
 		////PreorderTravesal(&MyWorldObject.Fix.Plane);
-		PreorderTravesal(&MajorRole.Torso);
+		//PreorderTravesal(&MajorRole.Torso);
 		//
 		//glLoadIdentity();
 		//glPushMatrix();
@@ -441,12 +507,13 @@ void myDisplay() {
 
 	glDisable(GL_TEXTURE_2D);
 	
-	DrawVSValue();
+	// 面板顯示
+	//DrawVSValue();
 
 	if (DrawHint) {
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glPushMatrix();
-		glColor3f(1.0f, 0.0f, 0.0f);
+		glColor3f(0.0f, 0.0f, 0.0f);
 		glRasterPos3f(-14, 7, 0);
 		drawString(" hello my name is NPC 1");
 		glPopMatrix();
@@ -556,3 +623,8 @@ void DrawVSValue(void) {
 		drawString(string4);
 	glPopMatrix();
 }
+/*
+"收集完，指定物品，可以開始建造房子，那會需要30秒"
+After finish collecting indicative items, 
+you can start building house, which will take 30 seconds
+*/

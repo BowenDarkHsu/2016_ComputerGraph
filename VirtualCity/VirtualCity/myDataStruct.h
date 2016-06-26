@@ -120,6 +120,13 @@ typedef struct ObjBox {
 	int texture = 0;
 }ObjBox;
 
+typedef struct ObjectBoundary {
+	float m0 = 0.0;
+	float m1 = 0.0;
+	float m2 = 0.0;
+}ObjectBoundary;
+extern ObjBox ObjTree_A;
+extern ObjBox ObjRed_A;
 extern ObjBox ObjA;
 extern ObjBox ObjB;
 extern ObjBox ObjH1;

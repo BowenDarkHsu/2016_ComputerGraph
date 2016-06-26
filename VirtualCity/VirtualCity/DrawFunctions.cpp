@@ -257,6 +257,56 @@ void DrawCubeTexture(float L, float H, float W, int texture) {
 	}*/
 }
 
+void DrawTriangleTexture(float L, float H, float W, int texture) {
+	GLfloat Length, Height, Width;
+	Length = L / 2;
+	Height = H / 2;
+	Width = W / 2;
+	GLfloat Testure2D[4][2] = { { 0,0 },{ 1,0 },{ 1,1 },{ 0,1 } };
+
+	GLfloat DrawRange[5][3] = {
+		{ Length,0,Width },{ -Length,0,Width },{ -Length,0,-Width },{ Length,0,-Width },{ Length,0,Width }	// 5
+	};
+
+	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
+
+	GLfloat Draw_Triangle[12][3] = {
+		{ Length , 0 , Width } ,{ -Length , 0 , Width } ,{ ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) } , // ABM
+		{ Length , 0 , Width } ,{ Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) } , // ADM
+		{ -Length , 0 , Width } ,{ -Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) } , // BCM
+		{ -Length , 0 , -Width } ,{ Length , 0 , -Width } ,{ ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) } , // CDM
+	};
+
+	GLfloat Draw_A[3] = { Length , 0 , Width };
+	GLfloat Draw_B[3] = { -Length , 0 , Width };
+	GLfloat Draw_C[3] = { -Length , 0 , -Width };
+	GLfloat Draw_D[3] = { Length , 0 , -Width };
+	GLfloat Draw_M[3] = { ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) };
+
+
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 5; i++) {
+		DrawPoint[0] = DrawRange[i][0];
+		DrawPoint[1] = DrawRange[i][1];
+		DrawPoint[2] = DrawRange[i][2];
+		glNormal3fv(DrawPoint);
+		glVertex3fv(DrawPoint);
+	}
+	glEnd();
+
+	glColor3f(0.0, 1.0, 0.0);
+	glBegin(GL_TRIANGLES);
+
+	for (int j = 0 ; j < 12 ; j++) {
+		for (int k = 0 ; k < 3 ; k++) {
+			DrawPoint[k] = Draw_Triangle[j][k];
+		}
+		glNormal3fv(DrawPoint);
+		glVertex3fv(DrawPoint);
+	}
+	glEnd();
+
+}
 
 void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H) {
 	DrawCubeF(Length, Height, Width);
@@ -641,7 +691,7 @@ void DrawFixObj(void) {
 		glPushMatrix();
 			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
 			glColor3f(0.0, 0.0, 1.0);
-			MovePosition(120, 0, 0);
+			MovePosition(120, 10, 0);
 			glGetFloatv(GL_MODELVIEW_MATRIX, ObjH2.org_m);
 			ObjH2.m[0] = ObjH2.org_m[12];
 			ObjH2.m[1] = ObjH2.org_m[13];
@@ -702,6 +752,27 @@ void checkTouch2(ObjBox *obj,float xU, float yU, float zU, float xD, float yD, f
 	printf(" BoundPz = %d \r\n", BoundPz);
 }
 
+void checkTouch3(ObjBox *obj, float m0U, float m0D , float m1U, float m1D, float m2U, float m2D) {
+	float m0 = 0.0;
+	float m1 = 0.0;
+	float m2 = 0.0;
+	bool Boundm0 = false;
+	bool Boundm1 = false;
+	bool Boundm2 = false;
+	m0 = obj->org_m[12];
+	m1 = obj->org_m[13];
+	m2 = obj->org_m[14];
+	Boundm0 = (m0 < m0U) && (m0D < m0);
+	Boundm1 = (m1 < m1U) && (m1D < m1);
+	Boundm2 = (m2 < m2U) && (m2D < m2);
+	obj->flag = Boundm1 && Boundm0 && Boundm2;
+	printf(" 2m0 = %f , ", m0);
+	printf(" 2m1 = %f , ", m1);
+	printf(" 2m2 = %f \r\n", m2);
+	printf(" Boundm0 = %d , ", Boundm0);
+	printf(" Boundm1 = %d , ", Boundm1);
+	printf(" Boundm2 = %d \r\n", Boundm2);
+}
 float f_abs(float x, float y) {
 	float temp = 0.0;
 	if (x > y)

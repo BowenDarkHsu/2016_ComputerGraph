@@ -183,11 +183,15 @@ void myKeyboard(unsigned char key, int x, int y) {
 	printf(" BoundPy = %d , ", BoundPy);
 	printf(" BoundPx = %d , ", BoundPx);
 	printf(" BoundPz = %d \r\n", BoundPz);*/
-	checkTouch(&ObjA);
+
+	/*checkTouch(&ObjA);
 	checkTouch(&ObjB);
 	checkTouch2(&ObjH1, H_PxU, H_PyU, H_PzU, H_PxD, H_PyD, H_PzD);
-	checkTouch2(&ObjH2, H_PxU, H_PyU, H_PzU, H_PxD, H_PyD, H_PzD);
-	WorldCollFalg = ObjA.flag || ObjB.flag || ObjH1.flag || ObjH2.flag;
+	checkTouch3(&ObjRed_A, BC05m0_U, BC05m0_D, BC05m1_U, BC05m1_D, BC05m2_U, BC05m2_D);
+	checkTouch3(&ObjH2, BH121m0_U, BH121m0_D, BH121m1_U, BH121m1_D, BH121m2_U, BH121m2_D);
+	*/
+	checkTouch3(&ObjTree_A, BTreem0_U, BTreem0_D, BTreem1_U, BTreem1_D, BTreem2_U, BTreem2_D);
+	WorldCollFalg = ObjA.flag || ObjB.flag || ObjH1.flag || ObjH2.flag || ObjRed_A.flag || ObjTree_A.flag;
 #if ShowDirValue == 1
 	printf(" My_LookAt.X = %f \r\n", My_LookAt.X);
 	printf(" My_LookAt.Z = %f \r\n", My_LookAt.Z);
