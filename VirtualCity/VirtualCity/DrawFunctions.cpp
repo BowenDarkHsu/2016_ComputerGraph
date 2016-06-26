@@ -887,7 +887,7 @@ bool CheckObjTouchFlow(ObjBox *obj) {
 void CheckObjFlagFlow(ObjBox *obj ) {
 	if (obj == NULL) return;	
 	if (obj->flag) 
-		obj->hint = true;		
+		obj->hint = true;
 	if (obj->NextObjLink != NULL) 
 		CheckObjFlagFlow(obj->NextObjLink);
 

@@ -23,6 +23,7 @@ void myDisplay();
 void LightSource(void);
 void LightSource2(void);
 void DrawVSValue(void);
+void HintJudge(void);
 void CALLBACK AttackTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time);
 glLight_Parameter mySource_1;
 glMaterial_Parameter myMaterial_1;
@@ -43,11 +44,18 @@ ObjBox ObjH1;
 ObjBox ObjH2;
 ObjBox ObjH3;
 ObjBox ObjH4;
-ObjBox ObjRed_A;
 ObjBox ObjTree_A;
 ObjBox ObjTree_B;
 ObjBox ObjTree_C;
 ObjBox ObjTree_D;
+
+ObjBox ObjRed_A;
+ObjBox ObjRed_B;
+ObjBox ObjRed_C;
+ObjBox ObjGreen_A;
+ObjBox ObjGreen_B;
+ObjBox ObjBlue_A;
+ObjBox ObjBlue_B;
 
 ObjBox MyHouse;
 ObjBox MyTree_A;
@@ -62,8 +70,14 @@ float mo2[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float ORGmo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 int VitalityNum = 100;
 int SleepNum = 200;
+
+int TaskRNum = 0;
+int TaskRMax = 3;
 int TaskGNum = 0;
-int TaskGMax = 5;
+int TaskGMax = 2;
+int TaskBNum = 0;
+int TaskBMax = 2;
+
 char string1[10] = "breath : ";
 char string2[10];
 char string3[10];
@@ -172,12 +186,15 @@ float objBox1[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 GLfloat D[8][3];
 
 float ObjPosMapping[16][3] = {	{ 0,0,0 },{ -40,0,0 },{ 40,0,0 },
-								{ 40,0,-40 },{ -40,0,-40 },{ 70,0,-40 },{ -70,0,-40 },
+								{ 40,0,-40 },{ 120,0,-40 },{ -40,0,-40 },{ -120,0,-40 },
 								{ 130,0,0 },{ 0,0,-40 },{ 100,0,0 },{ -100,0,0 }, // 11
 								{ 100,0,100 },{ -100,0,100 },{ -70,0,50 },{ -50,0,50 },// 15
 								{ 50,0,50 } // 16
-							};
-
+							 };
+float ObjTaskPosMapping[7][3] = {	{ 10,0,50 },{ 50,0,50 },{ 100,0,50 },	// R  1  1  1
+									{ -10,0,50 },{ -80,0,50 },				// G 05 05
+									{ 30,0,100 },{ -30,0,100 }					// B  1 05
+								};
 //float TempMoveX = -308.0;
 //float TempMoveY = 121.0;
 float TempMoveX = 100;
@@ -255,10 +272,19 @@ void parIdle(void) {
 #endif
 
 void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
-	if(MyHouse.hint)
-		VitalityNum = VitalityNum + 1;
-	else
-		VitalityNum = VitalityNum - 1;
+	if (MyHouse.hint) {
+		if (VitalityNum == 100)
+			VitalityNum = 100;
+		else
+			VitalityNum = VitalityNum + 1;
+	}
+	else {
+		if (VitalityNum == 0)
+			exit(0);
+		else
+			VitalityNum = VitalityNum - 1;
+	}
+		
 	sprintf(string2, " %d ", VitalityNum);
 	printf("%s\n", string2);
 	if (DrawHint) {
@@ -496,26 +522,7 @@ void myDisplay() {
 
 	DrawCenterLine();	// 補助線
 	DrawVSValue();		// 面板顯示
-	if (MyHouse.hint) {
-		glPushMatrix();
-			gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-			glColor3f(0.0f, 0.0f, 0.0f);
-			glRasterPos3f(-15.2, 7, 0);
-			drawString("This is my house. You can get 1 blood.");
-		glPopMatrix();
-		printf(" h \r\n");
-		MyHouse.hint = false;
-	}
-	else if (MyTree_A.hint) {
-		printf(" A \r\n");
-		MyTree_A.hint = false;
-	}
-	else if (MyTree_B.hint) {
-		printf(" B \r\n");
-		MyTree_B.hint = false;
-	}
-	else
-		printf(" others \r\n");
+	HintJudge();		// 要做的事情
 
 	/*if (DrawHint) {
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
@@ -631,6 +638,35 @@ void DrawVSValue(void) {
 		drawString(string4);
 	glPopMatrix();
 }
+
+void HintJudge(void) {
+	if (MyHouse.hint) {
+		glPushMatrix();
+		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glRasterPos3f(-15.2, 7, 0);
+		drawString("This is my house. You can get 1 blood.");
+		glPopMatrix();
+		printf(" h \r\n");
+		MyHouse.hint = false;
+	}
+	else if (MyTree_A.hint) {
+		printf(" A \r\n");
+		MyTree_A.hint = false;
+	}
+	else if (MyTree_B.hint) {
+		printf(" B \r\n");
+		MyTree_B.hint = false;
+	}
+	else if (ObjRed_A.hint) {
+		printf(" ObjRed_A \r\n");
+		ObjRed_A.hint = false;
+		ObjRed_A.PreObjLink->NextObjLink = ObjRed_A.NextObjLink;		
+	}
+	else
+		printf(" others \r\n");
+}
+
 /*
 "收集完，指定物品，可以開始建造房子，那會需要30秒"
 After finish collecting indicative items, 
