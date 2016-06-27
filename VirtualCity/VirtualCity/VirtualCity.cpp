@@ -211,14 +211,20 @@ GLfloat D[8][3];
 
 int mid_X, mid_Y;
 POINT MousePos;
-
 int LevelCnt = 0;
+
 float ObjPosMapping[16][3] = {	{ 0,0,0 },{ -40,0,0 },{ 40,0,0 },
 								{ 40,0,-40 },{ 120,0,-40 },{ -40,0,-40 },{ -120,0,-40 },
 								{ 130,0,0 },{ 0,0,-40 },{ 100,0,0 },{ -100,0,0 }, // 11
 								{ 100,0,100 },{ -100,0,100 },{ -70,0,50 },{ -50,0,50 },// 15
 								{ 50,0,50 } // 16
 							 };
+
+float ObjMyPosMapping[3][3] = { { 0,0,0 },{ -40,0,0 },{ 40,0,0 } };
+float ObjObjMapping[4][3] = { { 40,0,-40 },{ 120,0,-40 },{ -40,0,-40 },{ -120,0,-40 } };
+float ObjTreeMapping[4][3] = { { 130,0,0 },{ 130,0,130 },{ 0,0,200 },{ 0,0,200 } };
+float ObjHouseMapping[4][3] = { { 80,0,-100 },{ -80,0,130 },{ 120,0,200 },{ 50,0,200 } };
+
 float ObjTaskPosMapping[7][3] = {	{ 10,0,50 },{ 50,0,50 },{ 100,0,50 },	// R  1  1  1
 									{ -10,0,50 },{ -80,0,50 },				// G 05 05
 									{ 30,0,100 },{ -30,0,100 }					// B  1 05
@@ -411,10 +417,10 @@ void Mouse_Move(int x, int y) {
 int main(int argc, char** argv) {	
 	// set Vitality Call Back Fun Timer : 3 sec
 	#if GameStart == 1
-		SetTimer(NULL, 0, 1000, VitalityTimeCallBack);
+		SetTimer(NULL, 0, 2000, VitalityTimeCallBack);
 		SetTimer(NULL, 0, 1000, SleepTimeCallBack);
-		glutTimerFunc(1000, myTimer, 10);
-		glutTimerFunc(1000, myTimer2, 10);
+		//glutTimerFunc(1000, myTimer, 10);
+		//glutTimerFunc(1000, myTimer2, 10);
 	#endif;
 
 	DrawPosition();

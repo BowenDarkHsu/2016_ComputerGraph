@@ -7,7 +7,7 @@ extern "C" {
 /* __ Data Structure */
 /* End of __ Data Structure */
 #define DisplayInfoAdjWhite 0
-#define GameStart 0
+#define GameStart 1
 /* Original Data Struct */
 typedef struct glLookAt_Parameter {
 	/*float X = 0.1;
@@ -158,6 +158,10 @@ extern char TaskStringR[10];
 extern char TaskStringG[10];
 extern char TaskStringB[10];
 extern char TaskFinish[20];
+extern float ObjMyPosMapping[3][3];
+extern float ObjObjMapping[4][3];
+extern float ObjTreeMapping[4][3];
+extern float ObjHouseMapping[4][3];
 extern float ObjTaskPosMapping[7][3];
 extern float ObjPosMapping[16][3];
 extern int LevelCnt;

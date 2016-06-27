@@ -103,6 +103,15 @@ void myTexture() {
 	ObjGreen_B.texture = LoadBitmap2("texture/green.bmp");
 	ObjBlue_A.texture = LoadBitmap2("texture/blue.bmp");
 	ObjBlue_B.texture = LoadBitmap2("texture/blue.bmp");
+
+	ObjA.texture = LoadBitmap2("texture/red.bmp");
+	ObjB.texture = LoadBitmap2("texture/blue.bmp");
+	ObjC.texture = LoadBitmap2("texture/red.bmp");
+	ObjD.texture = LoadBitmap2("texture/green.bmp");
+	ObjH1.texture = LoadBitmap2("texture/block1.bmp");
+	ObjH2.texture = LoadBitmap2("texture/block1.bmp");
+	ObjH3.texture = LoadBitmap2("texture/block1.bmp");
+	ObjH4.texture = LoadBitmap2("texture/block1.bmp");
 }
 
 void InitObjBoundary(void) {
@@ -162,97 +171,99 @@ void InitObjParameter(void) {
 	.PreObjLink = &;
 	.NextObjLink = &;
 	*/
-	MyHouse.MappingPos = ObjPosMapping[0];
+	MyHouse.MappingPos = ObjMyPosMapping[0];
 	MyHouse.DetectTouch = CheckTouch;
 	MyHouse.DrawObj = DrawObjHouse1;
 	MyHouse.Boundary = &House1_B;
 	MyHouse.NextObjLink = &MyTree_A;
 	MyHouse.Counter = 0;
 
-	MyTree_A.MappingPos = ObjPosMapping[1];
+	MyTree_A.MappingPos = ObjMyPosMapping[1];
 	MyTree_A.DetectTouch = CheckTouch;
 	MyTree_A.DrawObj = DrawObjTree;
 	MyTree_A.Boundary = &Tree1_B;
 	MyTree_A.NextObjLink = &MyTree_B;
 	MyTree_A.Counter = 0;
 
-	MyTree_B.MappingPos = ObjPosMapping[2];
+	MyTree_B.MappingPos = ObjMyPosMapping[2];
 	MyTree_B.DetectTouch = CheckTouch;
 	MyTree_B.DrawObj = DrawObjTree;
 	MyTree_B.Boundary = &Tree1_B;
-	//MyTree_B.NextObjLink = &ObjA;
-	MyTree_B.NextObjLink = &ObjRed_A;
+	MyTree_B.NextObjLink = &ObjA;
+	//MyTree_B.NextObjLink = &ObjRed_A;
 	MyTree_B.Counter = 0;
 
-	//// World Object  Cube 1.0
-	//ObjA.MappingPos = ObjPosMapping[3];
-	//ObjA.DetectTouch = CheckTouch;		
-	//ObjA.DrawObj = DrawObjCube10;	
-	//ObjA.Boundary = &Cube10_B;
-	//ObjA.NextObjLink = &ObjB;
-	//ObjB.MappingPos = ObjPosMapping[4];
-	//ObjB.DetectTouch = CheckTouch;
-	//ObjB.DrawObj = DrawObjCube10;	
-	//ObjB.Boundary = &Cube10_B;
-	//ObjB.NextObjLink = &ObjC;
-	//ObjC.MappingPos = ObjPosMapping[5];
-	//ObjC.DetectTouch = CheckTouch;
-	//ObjC.DrawObj = DrawObjCube10;		
-	//ObjC.Boundary = &Cube10_B;
-	//ObjC.NextObjLink = &ObjD;
-	//ObjD.MappingPos = ObjPosMapping[6];
-	//ObjD.DetectTouch = CheckTouch;
-	//ObjD.DrawObj = DrawObjCube10;		
-	//ObjD.Boundary = &Cube10_B;
-	//ObjD.NextObjLink = &ObjTree_A;
-	////  Tree
-	//ObjTree_A.MappingPos = ObjPosMapping[7];
-	//ObjTree_A.DetectTouch = CheckTouch;
-	//ObjTree_A.DrawObj = DrawObjTree;
-	//ObjTree_A.Boundary = &Tree1_B;
-	//ObjTree_A.NextObjLink = &ObjTree_B;
-	//ObjTree_B.MappingPos = ObjPosMapping[11];
-	//ObjTree_B.DetectTouch = CheckTouch;
-	//ObjTree_B.DrawObj = DrawObjTree;
-	//ObjTree_B.Boundary = &Tree1_B;
-	//ObjTree_B.NextObjLink = &ObjTree_C;
-	//ObjTree_C.MappingPos = ObjPosMapping[12];
-	//ObjTree_C.DetectTouch = CheckTouch;
-	//ObjTree_C.DrawObj = DrawObjTree;
-	//ObjTree_C.Boundary = &Tree1_B;
-	//ObjTree_C.NextObjLink = &ObjTree_D;
-	//ObjTree_D.MappingPos = ObjPosMapping[13];
-	//ObjTree_D.DetectTouch = CheckTouch;
-	//ObjTree_D.DrawObj = DrawObjTree;
-	//ObjTree_D.Boundary = &Tree1_B;
-	//ObjTree_D.NextObjLink = &ObjH1;
-	//// House
-	//ObjH1.MappingPos = ObjPosMapping[9];
-	//ObjH1.DetectTouch = CheckTouch;
-	//ObjH1.DrawObj = DrawObjHouse1;
-	//ObjH1.Boundary = &House1_B;
-	//ObjH1.NextObjLink = &ObjH2;
-	//ObjH2.MappingPos = ObjPosMapping[10];
-	//ObjH2.DetectTouch = CheckTouch;
-	//ObjH2.DrawObj = DrawObjHouse2;
-	//ObjH2.Boundary = &House2_B;
-	//ObjH2.NextObjLink = &ObjH3;
-	//ObjH3.MappingPos = ObjPosMapping[14];
-	//ObjH3.DetectTouch = CheckTouch;
-	//ObjH3.DrawObj = DrawObjHouse1;
-	//ObjH3.Boundary = &House1_B;
-	//ObjH3.NextObjLink = &ObjH4;
-	//ObjH4.MappingPos = ObjPosMapping[15];
-	//ObjH4.DetectTouch = CheckTouch;
-	//ObjH4.DrawObj = DrawObjHouse2;
-	//ObjH4.Boundary = &House2_B;
-	//ObjH4.NextObjLink = &ObjRed_A;
+	// World Object  Cube 1.0
+	ObjA.MappingPos = ObjObjMapping[0];
+	ObjA.DetectTouch = CheckTouch;		
+	ObjA.DrawObj = DrawObjCube10;	
+	ObjA.Boundary = &Cube10_B;
+	ObjA.NextObjLink = &ObjB;
+	ObjB.MappingPos = ObjObjMapping[1];
+	ObjB.DetectTouch = CheckTouch;
+	ObjB.DrawObj = DrawObjCube10;	
+	ObjB.Boundary = &Cube10_B;
+	ObjB.NextObjLink = &ObjC;
+	ObjC.MappingPos = ObjObjMapping[2];
+	ObjC.DetectTouch = CheckTouch;
+	ObjC.DrawObj = DrawObjCube10;		
+	ObjC.Boundary = &Cube10_B;
+	ObjC.NextObjLink = &ObjD;
+	ObjD.MappingPos = ObjObjMapping[3];
+	ObjD.DetectTouch = CheckTouch;
+	ObjD.DrawObj = DrawObjCube10;		
+	ObjD.Boundary = &Cube10_B;
+	ObjD.NextObjLink = &ObjTree_A;
+	//  Tree
+	ObjTree_A.MappingPos = ObjTreeMapping[0];
+	ObjTree_A.DetectTouch = CheckTouch;
+	ObjTree_A.DrawObj = DrawObjTree;
+	ObjTree_A.Boundary = &Tree1_B;
+	ObjTree_A.NextObjLink = &ObjTree_B;
+	ObjTree_B.MappingPos = ObjTreeMapping[1];
+	ObjTree_B.DetectTouch = CheckTouch;
+	ObjTree_B.DrawObj = DrawObjTree;
+	ObjTree_B.Boundary = &Tree1_B;
+	ObjTree_B.NextObjLink = &ObjTree_C;
+	ObjTree_C.MappingPos = ObjTreeMapping[2];
+	ObjTree_C.DetectTouch = CheckTouch;
+	ObjTree_C.DrawObj = DrawObjTree;
+	ObjTree_C.Boundary = &Tree1_B;
+	ObjTree_C.NextObjLink = &ObjTree_D;
+	ObjTree_D.MappingPos = ObjTreeMapping[3];
+	ObjTree_D.DetectTouch = CheckTouch;
+	ObjTree_D.DrawObj = DrawObjTree;
+	ObjTree_D.Boundary = &Tree1_B;
+	ObjTree_D.NextObjLink = &ObjH1;
+	// House
+	ObjH1.MappingPos = ObjHouseMapping[0];
+	ObjH1.DetectTouch = CheckTouch;
+	ObjH1.DrawObj = DrawObjHouse1;
+	ObjH1.Boundary = &House1_B;
+	ObjH1.NextObjLink = &ObjH2;
+	ObjH2.MappingPos = ObjHouseMapping[1];
+	ObjH2.DetectTouch = CheckTouch;
+	ObjH2.DrawObj = DrawObjHouse2;
+	ObjH2.Boundary = &House2_B;
+	ObjH2.NextObjLink = &ObjH3;
+	ObjH3.MappingPos = ObjHouseMapping[2];
+	ObjH3.DetectTouch = CheckTouch;
+	ObjH3.DrawObj = DrawObjHouse1;
+	ObjH3.Boundary = &House1_B;
+	ObjH3.NextObjLink = &ObjH4;
+	ObjH4.MappingPos = ObjHouseMapping[3];
+	ObjH4.DetectTouch = CheckTouch;
+	ObjH4.DrawObj = DrawObjHouse2;
+	ObjH4.Boundary = &House2_B;
+	ObjH4.NextObjLink = &ObjRed_A;
+
 	// Task R G B Object
 	ObjRed_A.MappingPos = ObjTaskPosMapping[0];
 	ObjRed_A.DetectTouch = CheckTouch;
 	ObjRed_A.DrawObj = DrawObjCube05;
 	ObjRed_A.Boundary = &Cube05_B;
-	ObjRed_A.PreObjLink = &MyTree_B;
+	//ObjRed_A.PreObjLink = &MyTree_B;
+	ObjRed_A.PreObjLink = &ObjH4;
 	ObjRed_A.NextObjLink = &ObjRed_B;
 
 
