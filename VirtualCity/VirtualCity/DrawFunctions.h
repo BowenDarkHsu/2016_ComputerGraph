@@ -46,7 +46,8 @@ void DrawObjHouse1(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int textu
 void DrawObjCube05(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
 void DrawObjCube10(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
 void DrawObjTree(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
-
+ObjBox* FindLastNode(ObjBox *obj);
+void DeleteNode(ObjBox *obj);
 bool CheckObjTouchFlow(ObjBox *obj);
 void CheckTouch(ObjBox *obj, ObjectBoundary *obj_B);
 void CheckObjFlagFlow(ObjBox *obj);

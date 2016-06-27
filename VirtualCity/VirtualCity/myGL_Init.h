@@ -24,6 +24,7 @@ void LookAt_Y_MenuFunc(int id);
 void LookAt_Z_MenuFunc(int id);
 void InitObjBoundary(void);
 void InitObjParameter(void);
+void InitInfo(void);
 extern void myDisplay();
 extern int tempX1;
 extern int tempX2;

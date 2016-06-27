@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "DrawFunctions.h"
 #include "glFunctions.h"
 #include "texture.h"
@@ -600,7 +602,7 @@ void DrawVitality(void) {
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 0.0f);
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		MovePosition(-308, 181, 0);
+		MovePosition(-308, -231, 0);
 		glBindTexture(GL_TEXTURE_2D, id_texture2);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0);glVertex3f(0, 0, 0); //--
@@ -613,7 +615,7 @@ void DrawVitality(void) {
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 0.0f);
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		MovePosition(-208, 181, 0);
+		MovePosition(-208, -231, 0);
 		glBindTexture(GL_TEXTURE_2D, id_texture4);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0);glVertex3f(0, 0, 0); //--
@@ -844,6 +846,27 @@ void checkTouch3(ObjBox *obj, float m0U, float m0D , float m1U, float m1D, float
 	printf(" Boundm2 = %d \r\n", Boundm2);
 }
 
+ObjBox* FindLastNode(ObjBox *obj) {
+	if (obj->NextObjLink == NULL) return obj;
+	if (obj->NextObjLink != NULL)
+		return FindLastNode(obj->NextObjLink);
+}
+
+void DeleteNode(ObjBox *obj) {
+	if (obj == NULL) return;
+	if ((obj->PreObjLink != NULL) && (obj->NextObjLink != NULL)) {
+		obj->PreObjLink->NextObjLink = obj->NextObjLink;
+		obj->NextObjLink->PreObjLink = obj->PreObjLink;
+		obj->hint = false;
+		/*obj->PreObjLink = FindLastNode(obj);
+		obj->PreObjLink->NextObjLink = obj;		
+		obj->NextObjLink = NULL;
+		obj->Pos[0] = rand()%500;
+		obj->Pos[1] = 0;
+		obj->Pos[2] = rand()%(rand() % (500+1)+1);
+		obj->MappingPos = NULL;*/
+	}
+}
 
 void CheckTouch(ObjBox *obj, ObjectBoundary *obj_B) {
 	float m0 = 0.0;

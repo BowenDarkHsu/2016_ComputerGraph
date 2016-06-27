@@ -58,7 +58,7 @@ void myInit() {
 	//InitLight_Ambient(mySource_1);
 	InitObjParameter();
 	InitObjBoundary();
-
+	InitInfo();
 	#if OpenTexture == 1
 		myTexture();
 		glEnable(GL_TEXTURE_2D);
@@ -83,6 +83,7 @@ void myTexture() {
 	id_texture2 = LoadBitmap2("texture/heart.bmp");
 	id_texture3 = LoadBitmap2("texture/teapot.bmp");
 	id_texture4 = LoadBitmap2("texture/sleep.bmp");
+
 }
 
 void InitObjBoundary(void) {
@@ -138,6 +139,7 @@ void InitObjParameter(void) {
 	.DetectTouch = CheckTouch;
 	.DrawObj = ;
 	.Boundary = &;
+	.PreObjLink = &;
 	.NextObjLink = &;
 	*/
 	MyHouse.MappingPos = ObjPosMapping[0];
@@ -145,12 +147,14 @@ void InitObjParameter(void) {
 	MyHouse.DrawObj = DrawObjHouse1;
 	MyHouse.Boundary = &House1_B;
 	MyHouse.NextObjLink = &MyTree_A;
+	MyHouse.Counter = 0;
 
 	MyTree_A.MappingPos = ObjPosMapping[1];
 	MyTree_A.DetectTouch = CheckTouch;
 	MyTree_A.DrawObj = DrawObjTree;
 	MyTree_A.Boundary = &Tree1_B;
 	MyTree_A.NextObjLink = &MyTree_B;
+	MyTree_A.Counter = 0;
 
 	MyTree_B.MappingPos = ObjPosMapping[2];
 	MyTree_B.DetectTouch = CheckTouch;
@@ -158,6 +162,8 @@ void InitObjParameter(void) {
 	MyTree_B.Boundary = &Tree1_B;
 	//MyTree_B.NextObjLink = &ObjA;
 	MyTree_B.NextObjLink = &ObjRed_A;
+	MyTree_B.Counter = 0;
+
 	//// World Object  Cube 1.0
 	//ObjA.MappingPos = ObjPosMapping[3];
 	//ObjA.DetectTouch = CheckTouch;		
@@ -229,39 +235,66 @@ void InitObjParameter(void) {
 	ObjRed_A.PreObjLink = &MyTree_B;
 	ObjRed_A.NextObjLink = &ObjRed_B;
 
+
 	ObjRed_B.MappingPos = ObjTaskPosMapping[1];
 	ObjRed_B.DetectTouch = CheckTouch;
 	ObjRed_B.DrawObj = DrawObjCube05;
 	ObjRed_B.Boundary = &Cube05_B;
+	ObjRed_B.PreObjLink = &ObjRed_A;
 	ObjRed_B.NextObjLink = &ObjRed_C;
+
 	ObjRed_C.MappingPos = ObjTaskPosMapping[2];
 	ObjRed_C.DetectTouch = CheckTouch;
 	ObjRed_C.DrawObj = DrawObjCube05;
 	ObjRed_C.Boundary = &Cube05_B;
+	ObjRed_C.PreObjLink = &ObjRed_B;
 	ObjRed_C.NextObjLink = &ObjGreen_A;
 
 	ObjGreen_A.MappingPos = ObjTaskPosMapping[3];
 	ObjGreen_A.DetectTouch = CheckTouch;
 	ObjGreen_A.DrawObj = DrawObjCube10;
 	ObjGreen_A.Boundary = &Cube10_B;
+	ObjGreen_A.PreObjLink = &ObjRed_C;
 	ObjGreen_A.NextObjLink = &ObjGreen_B;
+
 	ObjGreen_B.MappingPos = ObjTaskPosMapping[4];
 	ObjGreen_B.DetectTouch = CheckTouch;
 	ObjGreen_B.DrawObj = DrawObjCube10;
 	ObjGreen_B.Boundary = &Cube10_B;
+	ObjGreen_B.PreObjLink = &ObjGreen_A;
 	ObjGreen_B.NextObjLink = &ObjBlue_A;
 
 	ObjBlue_A.MappingPos = ObjTaskPosMapping[5];
 	ObjBlue_A.DetectTouch = CheckTouch;
 	ObjBlue_A.DrawObj = DrawObjCube10;
 	ObjBlue_A.Boundary = &Cube10_B;
+	ObjBlue_A.PreObjLink = &ObjGreen_B;
 	ObjBlue_A.NextObjLink = &ObjBlue_B;
+
 	ObjBlue_B.MappingPos = ObjTaskPosMapping[6];
 	ObjBlue_B.DetectTouch = CheckTouch;
 	ObjBlue_B.DrawObj = DrawObjCube05;
 	ObjBlue_B.Boundary = &Cube05_B;
-	ObjBlue_B.NextObjLink = NULL;
+	ObjBlue_B.PreObjLink = &ObjBlue_A;
+	ObjBlue_B.NextObjLink = &ObjLast;
 
+	ObjLast.Pos[0] = 0;
+	ObjLast.Pos[1] = 100;
+	ObjLast.Pos[2] = 0;
+	ObjLast.DetectTouch = CheckTouch;
+	ObjLast.DrawObj = DrawObjCube10;
+	ObjLast.Boundary = &Cube10_B;
+	ObjLast.PreObjLink = &ObjBlue_B;
+	ObjLast.NextObjLink = NULL;
+}
+
+void InitInfo(void) {
+	sprintf(TaskStringB, " %d / %d ", TaskBNum, TaskBMax);
+	printf("%s\n", TaskStringB);
+	sprintf(TaskStringR, " %d / %d ", TaskRNum, TaskRMax);
+	printf("%s\n", TaskStringR);
+	sprintf(TaskStringG, " %d / %d ", TaskGNum, TaskGMax);
+	printf("%s\n", TaskStringG);
 }
 
 void myMenuInit() {
@@ -418,7 +451,9 @@ void myKeyboard(unsigned char key, int x, int y) {
 			CameraBackward();
 			CameraBackward();
 			DrawHint = true;
-			CheckObjFlagFlow(&MyHouse);			
+			WorldCollFalg = false;
+			CheckObjFlagFlow(&MyHouse);	
+			
 		}
 		else {
 			/*My_LookAt.X = My_LookAt.X + PosXUnit;
@@ -437,6 +472,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 			CameraForward();
 			CameraForward();
 			DrawHint = true;
+			WorldCollFalg = false;
 			CheckObjFlagFlow(&MyHouse);
 		}
 		else {
@@ -456,6 +492,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 			CameraRightward();
 			CameraRightward();
 			DrawHint = true;
+			WorldCollFalg = false;
 			CheckObjFlagFlow(&MyHouse);
 		}
 		else {
@@ -475,6 +512,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 			CameraLeftward();
 			CameraLeftward();
 			DrawHint = true;
+			WorldCollFalg = false;
 			CheckObjFlagFlow(&MyHouse);
 		}
 		else {
@@ -488,32 +526,57 @@ void myKeyboard(unsigned char key, int x, int y) {
 		}
 		glutPostRedisplay();
 		break;
-	case '1':
+	case 'z':
 		TempMoveX = TempMoveX + 1;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
-	case '2':
+	case 'x':
 		TempMoveX = TempMoveX - 1 ;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
 	
-	case '4':
+	case 'c':
 		TempMoveY = TempMoveY + 1 ;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
-	case '5':
+	case 'v':
 		TempMoveY = TempMoveY - 1;
 		printf(" TempMoveX = %f  \r\n", TempMoveX);
 		printf(" TempMoveY = %f  \r\n", TempMoveY);
 		glutPostRedisplay();
 		break;
-	
+	case 'Z':
+		TempMoveX = TempMoveX + 0.1;
+		printf(" TempMoveX = %f  \r\n", TempMoveX);
+		printf(" TempMoveY = %f  \r\n", TempMoveY);
+		glutPostRedisplay();
+		break;
+	case 'X':
+		TempMoveX = TempMoveX - 0.1;
+		printf(" TempMoveX = %f  \r\n", TempMoveX);
+		printf(" TempMoveY = %f  \r\n", TempMoveY);
+		glutPostRedisplay();
+		break;
+
+	case 'C':
+		TempMoveY = TempMoveY + 0.1;
+		printf(" TempMoveX = %f  \r\n", TempMoveX);
+		printf(" TempMoveY = %f  \r\n", TempMoveY);
+		glutPostRedisplay();
+		break;
+	case 'V':
+		TempMoveY = TempMoveY - 0.1;
+		printf(" TempMoveX = %f  \r\n", TempMoveX);
+		printf(" TempMoveY = %f  \r\n", TempMoveY);
+		glutPostRedisplay();
+		break;
+
 	case '6': // §CÀY
 		LookAt_Y_MenuFunc(1);
 		My_LookAt.Watch_Y = My_LookAt.Watch_Y - 0.1;
@@ -544,7 +607,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 		printf(" My_LookAt.Watch_Z = %f  \r\n", My_LookAt.Watch_Z);
 		glutPostRedisplay();
 		break;
-	case 'z':
+	/*case 'z':
 		LookAt_X_MenuFunc(1);
 		break;
 	case 'x':
@@ -555,7 +618,7 @@ void myKeyboard(unsigned char key, int x, int y) {
 		break;
 	case 'v':
 		LookAt_Y_MenuFunc(2);
-		break;
+		break;*/
 	case 'b':
 		LookAt_Z_MenuFunc(1);
 		break;

@@ -56,6 +56,7 @@ ObjBox ObjGreen_A;
 ObjBox ObjGreen_B;
 ObjBox ObjBlue_A;
 ObjBox ObjBlue_B;
+ObjBox ObjLast;
 
 ObjBox MyHouse;
 ObjBox MyTree_A;
@@ -68,15 +69,25 @@ float v0[3], v1[3];
 float mo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float mo2[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float ORGmo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
+
+char HintString[100];
+char VitalityHintString[100];
+char VitalityString[10];
+char SleepHintString[100];
+char SleepString[10];
 int VitalityNum = 100;
 int SleepNum = 200;
 
+char TaskStringR[10];
 int TaskRNum = 0;
 int TaskRMax = 3;
+char TaskStringG[10];
 int TaskGNum = 0;
 int TaskGMax = 2;
+char TaskStringB[10];
 int TaskBNum = 0;
 int TaskBMax = 2;
+char TaskFinish[20];
 
 char string1[10] = "breath : ";
 char string2[10];
@@ -190,15 +201,18 @@ float ObjPosMapping[16][3] = {	{ 0,0,0 },{ -40,0,0 },{ 40,0,0 },
 								{ 130,0,0 },{ 0,0,-40 },{ 100,0,0 },{ -100,0,0 }, // 11
 								{ 100,0,100 },{ -100,0,100 },{ -70,0,50 },{ -50,0,50 },// 15
 								{ 50,0,50 } // 16
-							 };
-float ObjTaskPosMapping[7][3] = {	{ 10,0,50 },{ 50,0,50 },{ 100,0,50 },	// R  1  1  1
+							 };float ObjTaskPosMapping[7][3] = {	{ 10,0,50 },{ 50,0,50 },{ 100,0,50 },	// R  1  1  1
 									{ -10,0,50 },{ -80,0,50 },				// G 05 05
 									{ 30,0,100 },{ -30,0,100 }					// B  1 05
 								};
-//float TempMoveX = -308.0;
-//float TempMoveY = 121.0;
-float TempMoveX = 100;
-float TempMoveY = 0;
+#if DisplayInfoAdjWhite == 1
+	float TempMoveX = -308.0;
+	float TempMoveY = 121.0;
+#else
+	 float TempMoveX = -15;
+	 float TempMoveY = 5;
+#endif
+
 
 int LevelCnt = 0;
 
@@ -272,36 +286,57 @@ void parIdle(void) {
 #endif
 
 void CALLBACK VitalityTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
-	if (MyHouse.hint) {
+	if (MyHouse.Counter >= 5) {
 		if (VitalityNum == 100)
 			VitalityNum = 100;
 		else
 			VitalityNum = VitalityNum + 1;
+		MyHouse.Counter--;
+		sprintf(VitalityHintString, "This is my house. You can get 1 blood. Time: %d Sec", MyHouse.Counter-4);
+		printf("%s\r\n", VitalityHintString);
 	}
 	else {
 		if (VitalityNum == 0)
 			exit(0);
 		else
 			VitalityNum = VitalityNum - 1;
+		MyHouse.Counter = 0;
+		sprintf(VitalityHintString, "");
+		printf("%s\r\n", VitalityHintString);
 	}
-		
-	sprintf(string2, " %d ", VitalityNum);
-	printf("%s\n", string2);
-	if (DrawHint) {
-		TaskGNum = TaskGNum + 1;
-		sprintf(string4, " %d / %d ", TaskGNum, TaskGMax);
-		printf("%s\n", string4);
-	}
-
+	sprintf(VitalityString, " %d ", VitalityNum);
+	printf("%s\n", VitalityString);
 	glutPostRedisplay();
 }
 void CALLBACK SleepTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
-	if(MyTree_A.flag || MyTree_B.flag)
-		SleepNum = SleepNum + 1;
-	else
-		SleepNum = SleepNum - 1;
-	sprintf(string3, " %d ", SleepNum);
-	printf("%s\n", string3);
+	if ((MyTree_A.Counter >= 5)|| (MyTree_B.Counter >= 5)){
+		if (SleepNum == 200)
+			SleepNum = 200;
+		else
+			SleepNum = SleepNum + 1;
+		if (MyTree_A.Counter >= 5) {
+			MyTree_A.Counter--;
+			sprintf(SleepHintString, "This is my Tree. You can get 1 Sleep. Time: %d Sec", MyTree_A.Counter - 4);
+			printf("%s\r\n", SleepHintString);
+		}
+		else if (MyTree_B.Counter >= 5) {
+			MyTree_B.Counter--;
+			sprintf(SleepHintString, "This is my Tree. You can get 1 Sleep. Time: %d Sec", MyTree_B.Counter - 4);
+			printf("%s\r\n", SleepHintString);
+		}
+	}
+	else {
+		if (SleepNum == 0)
+			exit(0);
+		else
+			SleepNum = SleepNum - 1;		
+		MyTree_A.Counter = 0;
+		MyTree_B.Counter = 0;
+		sprintf(SleepHintString, "");
+		printf("%s\r\n", SleepHintString);
+	}
+	sprintf(SleepString, " %d ", SleepNum);
+	printf("%s\n", SleepString);
 	glutPostRedisplay();
 }
 
@@ -312,8 +347,8 @@ void CALLBACK AttackTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD ti
 }
 int main(int argc, char** argv) {	
 	// set Vitality Call Back Fun Timer : 3 sec
-		//SetTimer(NULL, 0, 1000, VitalityTimeCallBack);
-		//SetTimer(NULL, 0, 5000, SleepTimeCallBack);
+		SetTimer(NULL, 0, 1000, VitalityTimeCallBack);
+		SetTimer(NULL, 0, 1000, SleepTimeCallBack);
 	//KillTimer(NULL, 1);
 	DrawPosition();
 	OpenGL_Init(argc, argv);
@@ -365,6 +400,7 @@ void BuildNormalCity(void) {
 }
 
 void myDisplay() {
+
 	GLint viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	/* clear the display */
@@ -545,7 +581,7 @@ void DrawVSValue(void) {
 		glColor3f(1.0f, 1.0f, 1.0f);
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		//MovePosition(TempMoveX, TempMoveY, 0);
-		MovePosition(-258, 181, 0);
+		MovePosition(-258, -231, 0);
 		glBegin(GL_QUADS);
 			glVertex3f(0, 0, 0); //--
 			glVertex3f(2.5, 0, 0); //+-
@@ -557,9 +593,10 @@ void DrawVSValue(void) {
 	glPushMatrix();
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glRasterPos3f(-12, 10, 0);
+		glRasterPos3f(-12, -10.5, 0);
 		//glRasterPos3f(TempMoveX, TempMoveY, 0);
-		drawString(string2);
+		//drawString("12");
+		drawString(VitalityString);
 	glPopMatrix();
 
 	// Sleep 的白底框 string3
@@ -567,7 +604,7 @@ void DrawVSValue(void) {
 		glColor3f(1.0f, 1.0f, 1.0f);
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		//MovePosition(TempMoveX, TempMoveY, 0);
-		MovePosition(-158, 181, 0);
+		MovePosition(-158, -231, 0);
 		glBegin(GL_QUADS);
 			glVertex3f(0, 0, 0); //--
 			glVertex3f(2.5, 0, 0); //+-
@@ -579,36 +616,44 @@ void DrawVSValue(void) {
 	glPushMatrix();
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glRasterPos3f(-7, 10, 0);
+		glRasterPos3f(-7, -10.5, 0);
 		//glRasterPos3f(TempMoveX, TempMoveY, 0);
-		drawString(string3);
+		drawString(SleepString);
+		//drawString("34");
 	glPopMatrix();
-
 	// 提示字 的白底框
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 1.0f);
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		MovePosition(-308, 121, 0);
+		MovePosition(-90, -231, 0);
+		//MovePosition(TempMoveX, TempMoveY, 0);
 		glBegin(GL_QUADS);
 			glVertex3f(0, 0, 0); //--
-			glVertex3f(8, 0, 0); //+-
-			glVertex3f(8, 3, 0); //++ 
+			glVertex3f(12, 0, 0); //+-
+			glVertex3f(12, 3, 0); //++ 
 			glVertex3f(0, 3, 0); //-+ 
 		glEnd();
 	glPopMatrix();
-
+	// 提示字 的文字訊息
 	glPushMatrix();
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glRasterPos3f(-15, 7.8, 0);
+		glRasterPos3f(-4.1, -9.6, 0);
 		drawString(" Hint Font : ");
+		//glRasterPos3f(-3.7, -10.6, 0);
+		glRasterPos3f(-4.1 + 0.4, -9.6 - 1, 0);
+		//glRasterPos3f(TempMoveX, TempMoveY, 0);
+		//drawString(" hello my name is NPC 1");
+		drawString(HintString);
+		drawString(SleepHintString);
+		drawString(VitalityHintString);
 	glPopMatrix();
 
 	// 任務字 的白底框
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 1.0f);
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		MovePosition(-308, 1, 0);
+		MovePosition(-308, 111, 0);
 		//MovePosition(TempMoveX, TempMoveY, 0);
 		glBegin(GL_QUADS);
 			glVertex3f(0, 0, 0); //--
@@ -622,49 +667,136 @@ void DrawVSValue(void) {
 	glPushMatrix();
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glRasterPos3f(-15, 5, 0);
-		//glRasterPos3f(TempMoveX, TempMoveY, 0);
+		glRasterPos3f(-15.2, 11, 0);		
 		drawString(" Task : ");
+			glRasterPos3f(-15.2 + 0.5, 11 - 0.7, 0);
+			drawString(" Red Object : ");
+				glRasterPos3f(-15.2 + 4, 11 - 0.7, 0);
+				drawString(TaskStringR);
+			glRasterPos3f(-15.2 + 0.5, 11 - 0.7*2, 0);
+			drawString(" Green Object : ");
+				glRasterPos3f(-15.2 + 4, 11 - 0.7*2, 0);
+				drawString(TaskStringG);
+			glRasterPos3f(-15.2 + 0.5, 11 - 0.7 * 3, 0);
+			drawString(" Blue Object : ");
+				glRasterPos3f(-15.2 + 4, 11 - 0.7 * 3, 0);
+				drawString(TaskStringB);
+			glRasterPos3f(-15.2 + 0.5, 11 - 0.7 * 4, 0);
+				drawString(TaskFinish);
 	glPopMatrix();
 
-	// 任務字 
-	glPushMatrix();
-		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		glColor3f(0.0f, 0.0f, 0.0f);
-		glRasterPos3f(-14.5, 4.3, 0);
-		//glRasterPos3f(TempMoveX, TempMoveY, 0);
-		drawString(" Green Object : ");
-		glRasterPos3f(-11, 4.3, 0);
-		drawString(string4);
-	glPopMatrix();
 }
 
 void HintJudge(void) {
 	if (MyHouse.hint) {
-		glPushMatrix();
-		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-		glColor3f(0.0f, 0.0f, 0.0f);
-		glRasterPos3f(-15.2, 7, 0);
-		drawString("This is my house. You can get 1 blood.");
-		glPopMatrix();
-		printf(" h \r\n");
-		MyHouse.hint = false;
+		MyHouse.Counter = 10 + 5;
+		sprintf(VitalityHintString,"This is my house. You can get 1 blood.");
+		printf("%s\r\n", VitalityHintString);
+		printf(" MyHouse.hint = %d \r\n", MyHouse.hint);
+		MyHouse.hint = false;	
+		glutPostRedisplay();
 	}
 	else if (MyTree_A.hint) {
-		printf(" A \r\n");
+		MyTree_A.Counter = 10 + 5;
+		sprintf(SleepHintString, "This is my Tree. You can get 1 Sleep.");
+		printf("%s\r\n", SleepHintString);
+		printf(" MyTree_A.hint = %d \r\n", MyTree_A.hint);
 		MyTree_A.hint = false;
+		glutPostRedisplay();
 	}
 	else if (MyTree_B.hint) {
-		printf(" B \r\n");
+		MyTree_B.Counter = 10 + 5;
+		sprintf(SleepHintString, "This is my Tree. You can get 1 Sleep.");
+		printf("%s\r\n", SleepHintString);
+		printf(" MyTree_B.hint = %d \r\n", MyTree_B.hint);
 		MyTree_B.hint = false;
+		glutPostRedisplay();
 	}
 	else if (ObjRed_A.hint) {
-		printf(" ObjRed_A \r\n");
-		ObjRed_A.hint = false;
-		ObjRed_A.PreObjLink->NextObjLink = ObjRed_A.NextObjLink;		
+		DeleteNode(&ObjRed_A);
+		// Object ++
+		TaskRNum = TaskRNum + 1;
+		sprintf(TaskStringR, " %d / %d ", TaskRNum, TaskRMax);
+		printf("%s\n", TaskStringR);
+
+		sprintf(HintString, " You get a Red Object ");
+		printf("%s\n", HintString);
+
+		glutPostRedisplay();
 	}
-	else
+	else if (ObjRed_B.hint) {
+		DeleteNode(&ObjRed_B);
+		// Object ++
+		TaskRNum = TaskRNum + 1;
+		sprintf(TaskStringR, " %d / %d ", TaskRNum, TaskRMax);
+		printf("%s\n", TaskStringR);
+		sprintf(HintString, " You get a Red Object ");
+		printf("%s\n", HintString);
+		glutPostRedisplay();
+	}
+	else if (ObjRed_C.hint) {
+		DeleteNode(&ObjRed_C);
+		//printf(" ObjRed_C.hint = %d \r\n", ObjRed_C.hint);
+		// Object ++
+		TaskRNum = TaskRNum + 1;
+		sprintf(TaskStringR, " %d / %d ", TaskRNum, TaskRMax);
+		printf("%s\n", TaskStringR);
+		sprintf(HintString, " You get a Red Object ");
+		printf("%s\n", HintString);
+		glutPostRedisplay();
+	}
+	else if (ObjGreen_A.hint) {
+		DeleteNode(&ObjGreen_A);
+		//printf(" ObjGreen_A.hint = %d \r\n", ObjGreen_A.hint);
+		// Object ++
+		TaskGNum = TaskGNum + 1;
+		sprintf(TaskStringG, " %d / %d ", TaskGNum, TaskGMax);
+		printf("%s\n", TaskStringG);
+		sprintf(HintString, " You get a Green Object ");
+		printf("%s\n", HintString);
+		glutPostRedisplay();
+	}
+	else if (ObjGreen_B.hint) {
+		DeleteNode(&ObjGreen_B);
+		printf(" ObjGreen_B.hint = %d \r\n", ObjGreen_B.hint);
+		TaskGNum = TaskGNum + 1;
+		sprintf(TaskStringG, " %d / %d ", TaskGNum, TaskGMax);
+		printf("%s\n", TaskStringG);
+		sprintf(HintString, " You get a Green Object ");
+		printf("%s\n", HintString);
+		glutPostRedisplay();
+	}
+	else if (ObjBlue_A.hint) {
+		DeleteNode(&ObjBlue_A);
+		printf(" ObjBlue_A.hint = %d \r\n", ObjBlue_A.hint);
+		TaskBNum = TaskBNum + 1;
+		sprintf(TaskStringB, " %d / %d ", TaskBNum, TaskBMax);
+		printf("%s\n", TaskStringB);
+		sprintf(HintString, " You get a Blue Object ");
+		printf("%s\n", HintString);
+		glutPostRedisplay();
+	}
+	else if (ObjBlue_B.hint) {
+		DeleteNode(&ObjBlue_B);
+		printf(" ObjBlue_B.hint = %d \r\n", ObjBlue_B.hint);
+		TaskBNum = TaskBNum + 1;
+		sprintf(TaskStringB, " %d / %d ", TaskBNum, TaskBMax);
+		printf("%s\n", TaskStringB);
+		sprintf(HintString, " You get a Blue Object ");
+		printf("%s\n", HintString);
+		glutPostRedisplay();
+	}
+	else {
+		sprintf(HintString, "");
+		printf("%s\n", HintString);
 		printf(" others \r\n");
+	}
+	if ((TaskRNum == TaskRMax) && (TaskGNum == TaskGMax) && (TaskBNum == TaskBMax)) {
+		TaskRNum = TaskGNum = TaskBNum = 0;
+		sprintf(TaskFinish, "you can start building house !");
+		printf("%s\n", TaskFinish);
+		glutPostRedisplay();
+	}
 }
 
 /*

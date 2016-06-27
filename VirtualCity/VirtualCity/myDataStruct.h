@@ -6,6 +6,7 @@ extern "C" {
 #include "glut.h"
 /* __ Data Structure */
 /* End of __ Data Structure */
+#define DisplayInfoAdjWhite 0
 
 /* Original Data Struct */
 typedef struct glLookAt_Parameter {
@@ -130,13 +131,23 @@ typedef struct ObjBox {
 	bool flag = false;
 	bool hint = false;
 	int texture = 0;
-	int EventID = 0;
+	int Counter = 0;
 	void(*DetectTouch)(ObjBox *obj, ObjectBoundary *obj_B);
 	void(*DrawObj)(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture);
 	ObjBox* PreObjLink;
 	ObjBox* NextObjLink;
 	ObjectBoundary *Boundary;
 }ObjBox;
+extern int TaskRNum;
+extern int TaskRMax;
+extern int TaskGNum;
+extern int TaskGMax;
+extern int TaskBNum;
+extern int TaskBMax;
+extern char TaskStringR[10];
+extern char TaskStringG[10];
+extern char TaskStringB[10];
+extern char TaskFinish[20];
 extern float ObjTaskPosMapping[7][3];
 extern float ObjPosMapping[16][3];
 extern int LevelCnt;
@@ -167,6 +178,7 @@ extern ObjBox ObjH1;
 extern ObjBox ObjH2;
 extern ObjBox ObjH3;
 extern ObjBox ObjH4;
+extern ObjBox ObjLast;
 extern float MoveX;
 extern float MoveY;
 extern float MoveZ;
