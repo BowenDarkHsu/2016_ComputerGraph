@@ -859,6 +859,13 @@ void HintJudge(void) {
 		printf("%s\n", HintString);
 		glutPostRedisplay();
 	}
+	else if (ObjA.hint || ObjB.hint || ObjC.hint || ObjD.hint || ObjH1.hint || ObjH2.hint || ObjH3.hint || ObjH4.hint || ObjTree_A.hint || ObjTree_B.hint || ObjTree_C.hint || ObjTree_D.hint) {
+		sprintf(HintString, " I am not indicative item.");
+		printf("%s\n", HintString);
+		ObjA.hint = false;ObjB.hint = false;ObjC.hint = false;ObjD.hint = false;
+		ObjH1.hint = false;ObjH2.hint = false;ObjH3.hint = false;ObjH4.hint = false;
+		ObjTree_A.hint = false;ObjTree_B.hint = false;ObjTree_C.hint = false;ObjTree_D.hint = false;
+	}
 	else {
 		sprintf(HintString, "");
 		printf("%s\n", HintString);
