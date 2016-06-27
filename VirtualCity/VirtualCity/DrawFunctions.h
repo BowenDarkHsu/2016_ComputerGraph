@@ -22,9 +22,9 @@ void DrawRUL(void);
 /* End of Modeling Function */
 void DrawCubeI(float L, float H, float W);
 void DrawCubeF(float Length, float Height, float Width);
-void DrawRoof(float Length, float Height, float Width);
-void DrawDoor(float Length, float Height, float Width, float door_L, float door_H);
-void DrawWindows(float Length, float Height, float Width, float door_L, float door_H, float W_L, float W_H);
+void DrawRoof(float Length, float Height, float Width, int texture);
+void DrawDoor(float Length, float Height, float Width, float door_L, float door_H, int texture);
+void DrawWindows(float Length, float Height, float Width, float door_L, float door_H, float W_L, float W_H, int texture);
 void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H);
 void DrawFixWindows(void);
 void DrawFixPlane(void);

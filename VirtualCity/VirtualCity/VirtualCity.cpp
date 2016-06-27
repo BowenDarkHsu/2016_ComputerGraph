@@ -61,7 +61,16 @@ ObjBox ObjLast;
 ObjBox MyHouse;
 ObjBox MyTree_A;
 ObjBox MyTree_B;
-
+int TextureGround = 0;
+int TextureFront = 0;
+int TextureBack = 0;
+int TextureLeft = 0;
+int TextureRight = 0;
+int TextureTreeLeaf = 0;
+int TextureTreeBody = 0;
+int TextureRoof = 0;
+int TextureDoor = 0;
+int TextureWindows = 0;
 float MoveX = 0.0;
 float MoveY = 0.0;
 float MoveZ = 0.0;

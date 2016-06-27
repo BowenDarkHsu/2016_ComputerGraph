@@ -81,9 +81,27 @@ void myTexture() {
 	//glBindTexture(GL_TEXTURE_2D, texName[0]);
 	id_texture = LoadBitmap2("texture/front.bmp");
 	id_texture2 = LoadBitmap2("texture/heart.bmp");
-	id_texture3 = LoadBitmap2("texture/teapot.bmp");
 	id_texture4 = LoadBitmap2("texture/sleep.bmp");
+	id_texture3 = LoadBitmap2("texture/teapot.bmp");
+	TextureGround = LoadBitmap2("texture/block1.bmp");
+	TextureFront = LoadBitmap2("texture/front.bmp");
+	TextureBack = LoadBitmap2("texture/teapot.bmp");
+	TextureLeft = LoadBitmap2("texture/teapot.bmp");
+	TextureRight = LoadBitmap2("texture/teapot.bmp");
 
+	MyHouse.texture = LoadBitmap2("texture/block1.bmp");
+	TextureWindows = LoadBitmap2("texture/windows.bmp");
+	TextureDoor = LoadBitmap2("texture/door.bmp");
+	TextureRoof = LoadBitmap2("texture/red.bmp");	
+	TextureTreeBody = LoadBitmap2("texture/tree_body.bmp");
+	TextureTreeLeaf = LoadBitmap2("texture/leaf.bmp");
+	ObjRed_A.texture = LoadBitmap2("texture/red.bmp");
+	ObjRed_B.texture = LoadBitmap2("texture/red.bmp");
+	ObjRed_C.texture = LoadBitmap2("texture/red.bmp");
+	ObjGreen_A.texture = LoadBitmap2("texture/green.bmp");
+	ObjGreen_B.texture = LoadBitmap2("texture/green.bmp");
+	ObjBlue_A.texture = LoadBitmap2("texture/blue.bmp");
+	ObjBlue_B.texture = LoadBitmap2("texture/blue.bmp");
 }
 
 void InitObjBoundary(void) {

@@ -285,13 +285,15 @@ void DrawTriangleTexture(float L, float H, float W, int texture) {
 	GLfloat Draw_D[3] = { Length , 0 , -Width };
 	GLfloat Draw_M[3] = { ((-Length) / 4 / My_Ortho.X2) , Height , ((-Width) / 2 / My_Ortho.Z2) };
 
+	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glBegin(GL_POLYGON);
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		DrawPoint[0] = DrawRange[i][0];
 		DrawPoint[1] = DrawRange[i][1];
 		DrawPoint[2] = DrawRange[i][2];
 		glNormal3fv(DrawPoint);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
 		glVertex3fv(DrawPoint);
 	}
 	glEnd();
@@ -311,17 +313,19 @@ void DrawTriangleTexture(float L, float H, float W, int texture) {
 }
 
 void DrawHouse(float Length, float Height, float Width, float door_L, float door_H, float Windows_L, float Windows_H) {
-	DrawCubeF(Length, Height, Width);
-
-	DrawDoor(Length, Height, Width, door_L, door_H);
-
-	DrawWindows(Length, Height, Width, door_L, door_H, Windows_L, Windows_H);
-
-	MovePosition(0, Height, 0);
-	DrawRoof(Length, Height, Width);
+//	DrawCubeF(Length, Height, Width);
+//
+//	DrawDoor(Length, Height, Width, door_L, door_H);
+//
+//	DrawWindows(Length, Height, Width, door_L, door_H, Windows_L, Windows_H);
+//
+//	MovePosition(0, Height, 0);
+////	DrawRoof(Length, Height, Width);
 }
-void DrawRoof (float Length, float Height, float Width) {
+void DrawRoof (float Length, float Height, float Width , int texture) {
 	//glBegin(GL_LINE_LOOP);
+	GLfloat Testure2D[4][2] = { { 0,0 },{ 1,0 },{ 1,1 },{ 0,1 } };
+
 	GLfloat DrawRange[5][3] = {
 		{ Length,0,Width },{ -Length,0,Width },{ -Length,0,-Width },{ Length,0,-Width },{ Length,0,Width }	// 5
 	};
@@ -340,14 +344,16 @@ void DrawRoof (float Length, float Height, float Width) {
 	GLfloat Draw_C[3] = { -Length , 0 , -Width };
 	GLfloat Draw_D[3] = { Length , 0 , -Width };
 	GLfloat Draw_M[3] = { ((-Length)/4 / My_Ortho.X2) , Height , ((-Width)/2/ My_Ortho.Z2) };
-
-
+		
+	
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glBegin(GL_POLYGON);
-	for (int i = 0; i < 5; i++) {	
+	for (int i = 0; i < 4; i++) {	
 		DrawPoint[0] = DrawRange[i][0];
 		DrawPoint[1] = DrawRange[i][1];
 		DrawPoint[2] = DrawRange[i][2];
 		glNormal3fv(DrawPoint);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
 		glVertex3fv(DrawPoint);
 	}
 	glEnd();
@@ -412,7 +418,7 @@ void DrawCubeF(float Length, float Height, float Width) {
 	}
 	glEnd();
 }
-void DrawDoor(float Length, float Height, float Width, float door_L , float door_H) {
+void DrawDoor(float Length, float Height, float Width, float door_L , float door_H , int texture) {
 	//glBegin(GL_LINE_LOOP);
 	//float Point_A[3] = { ((-Length) / My_Ortho.Value + door_L / My_Ortho.Value),0,Width };										// A
 	//float Point_B[3] = { ((-Length) / My_Ortho.Value + door_L / My_Ortho.Value), ((-Height) / My_Ortho.Value + door_H / My_Ortho.Value) ,Width };		// B
@@ -423,6 +429,7 @@ void DrawDoor(float Length, float Height, float Width, float door_L , float door
 	float Point_B[3] = { -Length + (Length - door_L / 2),(-Height + Height) - door_H / 3  ,Width };		// B
 	float Point_C[3] = { -Length + (Length + door_L / 2),(-Height + Height) - door_H / 3 ,Width };		// C
 	float Point_D[3] = { -Length + (Length  + door_L / 2),-Height  ,Width };		// D
+	GLfloat Testure2D[4][2] = { { 1,0 },{ 1,1 },{ 0,1 },{ 0,0 } };
 
 	GLfloat DrawRange[5][3] = {
 		{ Point_A[0],Point_A[1],Point_A[2] },										// A
@@ -444,17 +451,19 @@ void DrawDoor(float Length, float Height, float Width, float door_L , float door
 	printf(" B = %f %f %f \r\n ", Point_B[0], Point_B[1], Point_B[2]);
 	printf(" C = %f %f %f \r\n ", Point_C[0], Point_C[1], Point_C[2]);
 	printf(" D = %f %f %f \r\n ", Point_D[0], Point_D[1], Point_D[2]);*/
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glBegin(GL_POLYGON);
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		DrawPoint[0] = DrawRange[i][0];
 		DrawPoint[1] = DrawRange[i][1];
 		DrawPoint[2] = DrawRange[i][2];
 		glNormal3fv(DrawPoint);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
 		glVertex3fv(DrawPoint);
 	}
 	glEnd();
 }
-void DrawWindows(float Length, float Height, float Width, float door_L, float door_H , float W_L , float W_H) {
+void DrawWindows(float Length, float Height, float Width, float door_L, float door_H , float W_L , float W_H, int texture) {
 
 	float Point_A[3] = { -Length + (Length - door_L / 2),-Height ,Width };								// A
 	float Point_B[3] = { -Length + (Length - door_L / 2),(-Height + Height) - door_H / 3  ,Width };		// B
@@ -476,21 +485,25 @@ void DrawWindows(float Length, float Height, float Width, float door_L, float do
 		{ Point_B[0],Point_B[1] + door_H,Point_B[2] }										
 	};
 	GLfloat DrawPoint[3] = { 0.0,0.0,0.0 };
+	GLfloat Testure2D[4][2] = { { 0,0 },{ 1,0 },{ 1,1 },{ 0,1 } };
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glBegin(GL_POLYGON);
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		DrawPoint[0] = DrawRange0[i][0];
 		DrawPoint[1] = DrawRange0[i][1];
 		DrawPoint[2] = DrawRange0[i][2];
 		glNormal3fv(DrawPoint);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
 		glVertex3fv(DrawPoint);
 	}
 	glEnd();
 	glBegin(GL_POLYGON);
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		DrawPoint[0] = DrawRange1[i][0];
 		DrawPoint[1] = DrawRange1[i][1];
 		DrawPoint[2] = DrawRange1[i][2];
 		glNormal3fv(DrawPoint);
+		glTexCoord2f(Testure2D[i % 4][0], Testure2D[i % 4][1]);
 		glVertex3fv(DrawPoint);
 	}
 	glEnd();
@@ -513,6 +526,7 @@ void DrawFixWindows(void) {
 	}
 	glEnd();
 }
+
 void DrawFixPlane(void) {
 	glPushMatrix();
 		gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
@@ -520,7 +534,7 @@ void DrawFixPlane(void) {
 		glColor3f(0.4, 0.4, 0.4);
 		
 		//glBegin(GL_POLYGON);			
-		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBindTexture(GL_TEXTURE_2D, TextureGround);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1); //--
 			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X2, 0, My_Ortho.Z1); //+-
@@ -534,7 +548,7 @@ void DrawFixPlane(void) {
 		//glMultMatrixf(mo);
 		glColor3f(0.3, 0.3, 0.4);
 		//glBegin(GL_POLYGON);			
-		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBindTexture(GL_TEXTURE_2D, TextureBack);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X2, 0,My_Ortho.Z2); // 右下
 			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z2); // 左下
@@ -548,7 +562,7 @@ void DrawFixPlane(void) {
 		//glMultMatrixf(mo);
 		glColor3f(0.5, 0.5, 0.4);
 		//glBegin(GL_POLYGON);			
-		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBindTexture(GL_TEXTURE_2D, TextureFront);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X2, 0,My_Ortho.Z1); // 右下
 			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1); // 左下
@@ -562,7 +576,7 @@ void DrawFixPlane(void) {
 		//glMultMatrixf(mo);
 		glColor3f(0.5, 0.7, 0.4);
 		//glBegin(GL_POLYGON);			
-		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBindTexture(GL_TEXTURE_2D, TextureLeft);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X1, 0,My_Ortho.Z2); // 右下
 			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X1, 0, My_Ortho.Z1); // 左下
@@ -576,7 +590,7 @@ void DrawFixPlane(void) {
 		//glMultMatrixf(mo);
 		glColor3f(0.8, 0.7, 0.4);
 		//glBegin(GL_POLYGON);			
-		glBindTexture(GL_TEXTURE_2D, id_texture);
+		glBindTexture(GL_TEXTURE_2D, TextureRight);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0);glVertex3f(My_Ortho.X2, 0,My_Ortho.Z1); // 右下
 			glTexCoord2f(1.0, 0.0);glVertex3f(My_Ortho.X2, 0, My_Ortho.Z2); // 左下
@@ -647,66 +661,66 @@ void DrawSide_0(void) {
 }
 
 void DrawFixObj(void) {
-		glPushMatrix();
-			glColor3f(0.0f, 1.0f, 0.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(0, 0, 0);
-			glGetFloatv(GL_MODELVIEW_MATRIX, ObjA.org_m);
-			ObjA.m[0] = ObjA.org_m[12];
-			ObjA.m[1] = ObjA.org_m[13];
-			ObjA.m[2] = ObjA.org_m[14];
-			//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n" , ObjA.m[0], ObjA.m[1], ObjA.m[2]);
-			DrawCubeTexture(1,1,1,id_texture3);
-		glPopMatrix();
+		//glPushMatrix();
+		//	glColor3f(0.0f, 1.0f, 0.0f);
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	MovePosition(0, 0, 0);
+		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjA.org_m);
+		//	ObjA.m[0] = ObjA.org_m[12];
+		//	ObjA.m[1] = ObjA.org_m[13];
+		//	ObjA.m[2] = ObjA.org_m[14];
+		//	//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n" , ObjA.m[0], ObjA.m[1], ObjA.m[2]);
+		//	DrawCubeTexture(1,1,1,id_texture3);
+		//glPopMatrix();
 
-		glPushMatrix();
-			glColor3f(1.0f, 0.0f, 0.0f);
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			MovePosition(-100, 0, -50);
-			glGetFloatv(GL_MODELVIEW_MATRIX, ObjB.org_m);
-			ObjB.m[0] = ObjB.org_m[12];
-			ObjB.m[1] = ObjB.org_m[13];
-			ObjB.m[2] = ObjB.org_m[14];
-			//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjB.m[0], ObjB.m[1], ObjB.m[2]);
-			DrawCubeTexture(1,1,1,id_texture3);
-		glPopMatrix();
+		//glPushMatrix();
+		//	glColor3f(1.0f, 0.0f, 0.0f);
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	MovePosition(-100, 0, -50);
+		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjB.org_m);
+		//	ObjB.m[0] = ObjB.org_m[12];
+		//	ObjB.m[1] = ObjB.org_m[13];
+		//	ObjB.m[2] = ObjB.org_m[14];
+		//	//printf(" m[0] = %f , m[1] = %f , m[2] = %f \r\n", ObjB.m[0], ObjB.m[1], ObjB.m[2]);
+		//	DrawCubeTexture(1,1,1,id_texture3);
+		//glPopMatrix();
 
-		// 畫房子 1
-		glPushMatrix();
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			glColor3f(1.0, 0.0, 0.0);
-			MovePosition(80, 0, 0);
-			glGetFloatv(GL_MODELVIEW_MATRIX, ObjH1.org_m);
-			ObjH1.m[0] = ObjH1.org_m[12];
-			ObjH1.m[1] = ObjH1.org_m[13];
-			ObjH1.m[2] = ObjH1.org_m[14];
-			//printf(" m1[0] = %f , m1[1] = %f , m1[2] = %f \r\n", ObjH1.m[0], ObjH1.m[1], ObjH1.m[2]);			
-			DrawCubeTexture(1.0, 1.0, 1.0, id_texture3);
-			MovePosition(0, 10, 0);
-			DrawRoof(0.5, 0.5, 0.5);
-			MovePosition(0, -10, 0);
-			DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
-			MovePosition(0, -5, 0);
-			DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
-		glPopMatrix();
-		// 畫房子 2
-		glPushMatrix();
-			gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
-			glColor3f(0.0, 0.0, 1.0);
-			MovePosition(120, 10, 0);
-			glGetFloatv(GL_MODELVIEW_MATRIX, ObjH2.org_m);
-			ObjH2.m[0] = ObjH2.org_m[12];
-			ObjH2.m[1] = ObjH2.org_m[13];
-			ObjH2.m[2] = ObjH2.org_m[14];
-			//printf(" m1[0] = %f , m1[1] = %f , m1[2] = %f \r\n", ObjH2.m[0], ObjH2.m[1], ObjH2.m[2]);			
-			DrawCubeTexture(1.0, 2.0, 1.0, id_texture3);
-			MovePosition(0, 20, 0);
-			DrawRoof(0.5, 0.5, 0.5);
-			MovePosition(0, -30, 0);
-			DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
-			MovePosition(0, -5, 0);
-			DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
-		glPopMatrix();
+		//// 畫房子 1
+		//glPushMatrix();
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	glColor3f(1.0, 0.0, 0.0);
+		//	MovePosition(80, 0, 0);
+		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjH1.org_m);
+		//	ObjH1.m[0] = ObjH1.org_m[12];
+		//	ObjH1.m[1] = ObjH1.org_m[13];
+		//	ObjH1.m[2] = ObjH1.org_m[14];
+		//	//printf(" m1[0] = %f , m1[1] = %f , m1[2] = %f \r\n", ObjH1.m[0], ObjH1.m[1], ObjH1.m[2]);			
+		//	DrawCubeTexture(1.0, 1.0, 1.0, id_texture3);
+		//	MovePosition(0, 10, 0);
+		//	DrawRoof(0.5, 0.5, 0.5);
+		//	MovePosition(0, -10, 0);
+		//	DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+		//	MovePosition(0, -5, 0);
+		//	DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+		//glPopMatrix();
+		//// 畫房子 2
+		//glPushMatrix();
+		//	gluLookAt(My_LookAt.X, My_LookAt.Y, My_LookAt.Z, My_LookAt.Watch_X, My_LookAt.Watch_Y, My_LookAt.Watch_Z, My_LookAt.Forward_X, My_LookAt.Forward_Y, My_LookAt.Forward_Z);
+		//	glColor3f(0.0, 0.0, 1.0);
+		//	MovePosition(120, 10, 0);
+		//	glGetFloatv(GL_MODELVIEW_MATRIX, ObjH2.org_m);
+		//	ObjH2.m[0] = ObjH2.org_m[12];
+		//	ObjH2.m[1] = ObjH2.org_m[13];
+		//	ObjH2.m[2] = ObjH2.org_m[14];
+		//	//printf(" m1[0] = %f , m1[1] = %f , m1[2] = %f \r\n", ObjH2.m[0], ObjH2.m[1], ObjH2.m[2]);			
+		//	DrawCubeTexture(1.0, 2.0, 1.0, id_texture3);
+		//	MovePosition(0, 20, 0);
+		//	DrawRoof(0.5, 0.5, 0.5);
+		//	MovePosition(0, -30, 0);
+		//	DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+		//	MovePosition(0, -5, 0);
+		//	DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+		//glPopMatrix();
 }
 
 void DrawObjHouse1(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture) {
@@ -719,11 +733,11 @@ void DrawObjHouse1(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int textu
 		//printf("H1 m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);			
 		DrawCubeTexture(1.0, 1.0, 1.0, texture);
 			MovePosition(0, MoveY + 10, 0);
-			DrawRoof(0.5, 0.5, 0.5);
+			DrawRoof(0.5, 0.5, 0.5, TextureRoof);
 				MovePosition(0, MoveY - 10, 0);
-				DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+				DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3, TextureDoor);
 					MovePosition(0, MoveY - 5, 0);
-					DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+					DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3, TextureWindows);
 	glPopMatrix();
 }
 void DrawObjHouse2(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture) {
@@ -737,11 +751,11 @@ void DrawObjHouse2(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int textu
 		DrawCubeTexture(1.0, 2.0, 1.0, texture);
 			
 			MovePosition(0, MoveY + 20, 0);
-			DrawRoof(0.5, 0.5, 0.5);
+			DrawRoof(0.5, 0.5, 0.5, TextureRoof);
 				MovePosition(0, MoveY - 30, 0);
-				DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3);
+				DrawDoor(0.5, 0.5, 0.5, 0.2, 0.3, TextureDoor);
 					MovePosition(0, MoveY - 5, 0);
-					DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3);
+					DrawWindows(0.5, 0.5, 0.5, 0.2, 0.3, 0.3, 0.3, TextureWindows);
 	glPopMatrix();
 }
 void DrawObjCube05(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture) {
@@ -773,9 +787,9 @@ void DrawObjTree(ObjBox* obj, float MoveX, float MoveY, float MoveZ, int texture
 		MovePosition(MoveX, MoveY +20, MoveZ);
 		glGetFloatv(GL_MODELVIEW_MATRIX, obj->org_m);
 		//printf(" m[12] = %f , m[13] = %f , m[14] = %f \r\n" , obj->org_m[12], obj->org_m[13], obj->org_m[14]);
-		DrawCubeTexture(0.5,2.5,0.5,id_texture3);
+		DrawCubeTexture(0.5,2.5,0.5, TextureTreeBody);
 		MovePosition(0, MoveY + 10, 0);
-		DrawTriangleTexture(2,3,2, id_texture3);
+		DrawTriangleTexture(2,3,2, TextureTreeLeaf);
 	glPopMatrix();
 }
 

@@ -138,6 +138,16 @@ typedef struct ObjBox {
 	ObjBox* NextObjLink;
 	ObjectBoundary *Boundary;
 }ObjBox;
+extern int TextureGround;
+extern int TextureFront;
+extern int TextureBack;
+extern int TextureLeft;
+extern int TextureRight;
+extern int TextureWindows;
+extern int TextureDoor;
+extern int TextureRoof;
+extern int TextureTreeBody;
+extern int TextureTreeLeaf;
 extern int TaskRNum;
 extern int TaskRMax;
 extern int TaskGNum;
