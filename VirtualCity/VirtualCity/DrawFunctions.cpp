@@ -866,6 +866,22 @@ ObjBox* FindLastNode(ObjBox *obj) {
 		return FindLastNode(obj->NextObjLink);
 }
 
+ObjBox* CreateObjNode(ObjBox *obj) {
+	obj = (ObjBox *)malloc(sizeof(ObjBox));
+	printf("sizeof(ObjBox *) = %d byte \r\n",sizeof(ObjBox *));
+	printf("sizeof(ObjBox) = %d byte \r\n", sizeof(ObjBox));
+	obj->Pos[0] = 200;obj->Pos[1] = 0;obj->Pos[2] = -100;
+	obj->MappingPos = NULL;
+	obj->DetectTouch = CheckTouch;
+	obj->DrawObj = DrawObjHouse1;
+	obj->Boundary = &House1_B;
+	obj->PreObjLink = FindLastNode(&MyHouse);
+	obj->PreObjLink->NextObjLink = obj;
+	obj->NextObjLink = NULL;
+	obj->texture = 0;;
+	return obj;
+}
+
 void DeleteNode(ObjBox *obj) {
 	if (obj == NULL) return;
 	if ((obj->PreObjLink != NULL) && (obj->NextObjLink != NULL)) {
@@ -896,12 +912,12 @@ void CheckTouch(ObjBox *obj, ObjectBoundary *obj_B) {
 	Boundm1 = (m1 < obj_B->m1_U) && (obj_B->m1_D < m1);
 	Boundm2 = (m2 < obj_B->m2_U) && (obj_B->m2_D < m2);
 	obj->flag = Boundm1 && Boundm0 && Boundm2;
-	printf(" 2m0 = %f , ", m0);
+	/*printf(" 2m0 = %f , ", m0);
 	printf(" 2m1 = %f , ", m1);
 	printf(" 2m2 = %f \r\n", m2);
 	printf(" Boundm0 = %d , ", Boundm0);
 	printf(" Boundm1 = %d , ", Boundm1);
-	printf(" Boundm2 = %d \r\n", Boundm2);
+	printf(" Boundm2 = %d \r\n", Boundm2);*/
 }
 
 

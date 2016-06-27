@@ -50,7 +50,7 @@ void myInit() {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	// OpenGL -  establishes what color to use for drawing objects.
 	glColor3f(1.0, 1.0, 1.0);
-
+	
 	myMenuInit();
 	glOrtho(My_Ortho.X1 , My_Ortho.X2  , My_Ortho.Y1, My_Ortho.Y2, My_Ortho.Z1, My_Ortho.Z2);
 
@@ -59,6 +59,7 @@ void myInit() {
 	InitObjParameter();
 	InitObjBoundary();
 	InitInfo();
+	//glutPassiveMotionFunc(Mouse_Move);
 	#if OpenTexture == 1
 		myTexture();
 		glEnable(GL_TEXTURE_2D);
@@ -83,11 +84,11 @@ void myTexture() {
 	id_texture2 = LoadBitmap2("texture/heart.bmp");
 	id_texture4 = LoadBitmap2("texture/sleep.bmp");
 	id_texture3 = LoadBitmap2("texture/teapot.bmp");
-	TextureGround = LoadBitmap2("texture/block1.bmp");
+	TextureGround = LoadBitmap2("texture/plane.bmp");
 	TextureFront = LoadBitmap2("texture/front.bmp");
-	TextureBack = LoadBitmap2("texture/teapot.bmp");
-	TextureLeft = LoadBitmap2("texture/teapot.bmp");
-	TextureRight = LoadBitmap2("texture/teapot.bmp");
+	TextureBack = LoadBitmap2("texture/front.bmp");
+	TextureLeft = LoadBitmap2("texture/left.bmp");
+	TextureRight = LoadBitmap2("texture/right.bmp");
 
 	MyHouse.texture = LoadBitmap2("texture/block1.bmp");
 	TextureWindows = LoadBitmap2("texture/windows.bmp");
@@ -153,6 +154,7 @@ void InitObjBoundary(void) {
 
 void InitObjParameter(void) {
 	/*
+	.Pos[0]=;.Pos[1]=;.Pos[2]=;
 	.MappingPos = ObjPosMapping[];
 	.DetectTouch = CheckTouch;
 	.DrawObj = ;
@@ -296,9 +298,9 @@ void InitObjParameter(void) {
 	ObjBlue_B.PreObjLink = &ObjBlue_A;
 	ObjBlue_B.NextObjLink = &ObjLast;
 
-	ObjLast.Pos[0] = 0;
+	ObjLast.Pos[0] = 10;
 	ObjLast.Pos[1] = 100;
-	ObjLast.Pos[2] = 0;
+	ObjLast.Pos[2] = 10;
 	ObjLast.DetectTouch = CheckTouch;
 	ObjLast.DrawObj = DrawObjCube10;
 	ObjLast.Boundary = &Cube10_B;
@@ -439,6 +441,10 @@ void myKeyboard(unsigned char key, int x, int y) {
 #endif
 
 	switch (key) {
+	case 'B':
+		if(ObjRed_A.Counter == 30)
+			glutTimerFunc(1000, BuildCrateCallBack, 10);
+		break;
 	case 'q': // ¥ª±ÛÂà
 		if (RotateAngle < 360)
 			RotateAngle = RotateAngle + 1;

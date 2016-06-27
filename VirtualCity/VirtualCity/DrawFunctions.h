@@ -53,6 +53,7 @@ void CheckTouch(ObjBox *obj, ObjectBoundary *obj_B);
 void CheckObjFlagFlow(ObjBox *obj);
 void DrawObjFlow(ObjBox *obj);
 void DrawCenterLine(void);
+ObjBox* CreateObjNode(ObjBox *obj);
 
 void checkTouch3(ObjBox *obj, float m0U, float m0D, float m1U, float m1D, float m2U, float m2D);
 void checkTouch2(ObjBox *obj, float xU, float yU, float zU, float xD, float yD, float zD);

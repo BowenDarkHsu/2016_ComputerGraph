@@ -61,6 +61,9 @@ ObjBox ObjLast;
 ObjBox MyHouse;
 ObjBox MyTree_A;
 ObjBox MyTree_B;
+ObjBox *BuildHouse;
+ObjBox *BuildObj;
+
 int TextureGround = 0;
 int TextureFront = 0;
 int TextureBack = 0;
@@ -80,6 +83,7 @@ float mo2[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float ORGmo[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
 char HintString[100];
+char BuildHintString[100];
 char VitalityHintString[100];
 char VitalityString[10];
 char SleepHintString[100];
@@ -205,12 +209,17 @@ float objBox1[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
 GLfloat D[8][3];
 
+int mid_X, mid_Y;
+POINT MousePos;
+
+int LevelCnt = 0;
 float ObjPosMapping[16][3] = {	{ 0,0,0 },{ -40,0,0 },{ 40,0,0 },
 								{ 40,0,-40 },{ 120,0,-40 },{ -40,0,-40 },{ -120,0,-40 },
 								{ 130,0,0 },{ 0,0,-40 },{ 100,0,0 },{ -100,0,0 }, // 11
 								{ 100,0,100 },{ -100,0,100 },{ -70,0,50 },{ -50,0,50 },// 15
 								{ 50,0,50 } // 16
-							 };float ObjTaskPosMapping[7][3] = {	{ 10,0,50 },{ 50,0,50 },{ 100,0,50 },	// R  1  1  1
+							 };
+float ObjTaskPosMapping[7][3] = {	{ 10,0,50 },{ 50,0,50 },{ 100,0,50 },	// R  1  1  1
 									{ -10,0,50 },{ -80,0,50 },				// G 05 05
 									{ 30,0,100 },{ -30,0,100 }					// B  1 05
 								};
@@ -222,8 +231,6 @@ float ObjPosMapping[16][3] = {	{ 0,0,0 },{ -40,0,0 },{ 40,0,0 },
 	 float TempMoveY = 5;
 #endif
 
-
-int LevelCnt = 0;
 
 #if DisplayMode == 2
 GLfloat colors[8][3] = { {0,0,0},{1,0,0},{0,1,0},{0,0,1},{0,1,1},{1,0,1},{1,1,0},{1,1,1} };
@@ -348,17 +355,68 @@ void CALLBACK SleepTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD tim
 	printf("%s\n", SleepString);
 	glutPostRedisplay();
 }
-
-void CALLBACK AttackTimeCallBack(HWND hwnd, UINT message, UINT timerID, DWORD time) {
-	MoveZ1 = MoveZ1 - 0.1;
-	printf("%s\n", string2);
+void BuildCrateCallBack(int value) {
+	if (ObjRed_A.Counter > 0) {
+		if (ObjRed_A.Counter == 30) {
+			BuildObj = CreateObjNode(BuildObj);
+			BuildObj->DrawObj = DrawObjCube05;
+			BuildObj->Boundary = &Cube05_B;
+			BuildObj->texture = ObjRed_A.texture;
+		}
+		else if (ObjRed_A.Counter == 20) {
+			BuildObj->DrawObj = DrawObjCube05;
+			BuildObj->Boundary = &Cube05_B;
+			BuildObj->texture = ObjGreen_A.texture;
+		}
+		else if (ObjRed_A.Counter == 10) {
+			BuildObj->DrawObj = DrawObjCube10;
+			BuildObj->Boundary = &Cube10_B;
+			BuildObj->texture = ObjBlue_A.texture;
+		}
+		ObjRed_A.Counter--;
+		sprintf(BuildHintString, "House is building , Time: %d Sec", ObjRed_A.Counter);
+		printf("%s\r\n", BuildHintString);
+		glutTimerFunc(1000, BuildCrateCallBack, 10);
+	}	
+	else {
+		ObjRed_A.Counter = -1;
+		DeleteNode(BuildObj);
+		BuildHouse = CreateObjNode(BuildHouse);
+		BuildHouse->texture = ObjBlue_A.texture;
+		sprintf(BuildHintString, "House is builded at tree right back.");
+		printf("%s\n", BuildHintString);
+	}
+	printf("myTimer1 \r\n");
 	glutPostRedisplay();
+}
+void myTimer2(int value) {
+	printf("myTimer2 \r\n");
+	glutTimerFunc(1000, myTimer2, 10);
+}
+void Mouse_Move(int x, int y) {
+	
+	printf("MousePos x = %d , y = %d \r\n", MousePos.x, MousePos.y);
+	printf(" x = %d , y = %d \r\n",x,y);
+
+	mid_X = 1920 >> 1;
+	mid_Y = 1080 >> 1;
+	GetCursorPos(&MousePos);	// Get the 2D mouse cursor (x,y) position					
+
+	if ((MousePos.x == mid_X) && (MousePos.y == mid_Y)) return;
+
+	SetCursorPos(mid_X, mid_Y);	// Set the mouse cursor in the middle of the window						
+
+
 }
 int main(int argc, char** argv) {	
 	// set Vitality Call Back Fun Timer : 3 sec
+	#if GameStart == 1
 		SetTimer(NULL, 0, 1000, VitalityTimeCallBack);
 		SetTimer(NULL, 0, 1000, SleepTimeCallBack);
-	//KillTimer(NULL, 1);
+		glutTimerFunc(1000, myTimer, 10);
+		glutTimerFunc(1000, myTimer2, 10);
+	#endif;
+
 	DrawPosition();
 	OpenGL_Init(argc, argv);
 	return 0;
@@ -413,7 +471,6 @@ void myDisplay() {
 	GLint viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	/* clear the display */
-	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Draw Horizontal
@@ -656,6 +713,7 @@ void DrawVSValue(void) {
 		drawString(HintString);
 		drawString(SleepHintString);
 		drawString(VitalityHintString);
+		drawString(BuildHintString);
 	glPopMatrix();
 
 	// 任務字 的白底框
@@ -690,7 +748,7 @@ void DrawVSValue(void) {
 			drawString(" Blue Object : ");
 				glRasterPos3f(-15.2 + 4, 11 - 0.7 * 3, 0);
 				drawString(TaskStringB);
-			glRasterPos3f(-15.2 + 0.5, 11 - 0.7 * 4, 0);
+			glRasterPos3f(-15.3 , 11 - 0.7 * 4, 0);
 				drawString(TaskFinish);
 	glPopMatrix();
 
@@ -802,8 +860,10 @@ void HintJudge(void) {
 	}
 	if ((TaskRNum == TaskRMax) && (TaskGNum == TaskGMax) && (TaskBNum == TaskBMax)) {
 		TaskRNum = TaskGNum = TaskBNum = 0;
-		sprintf(TaskFinish, "you can start building house !");
+		sprintf(TaskFinish, "You can start building house ! press 'B' ");
 		printf("%s\n", TaskFinish);
+		ObjRed_A.Counter = 30;
+		
 		glutPostRedisplay();
 	}
 }

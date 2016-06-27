@@ -6,7 +6,7 @@ extern "C" {
 #include "glut.h"
 #define DisplayMode 0
 #define OpenTexture 1
-#define ShowDirValue 0
+#define ShowDirValue 1
 	void initParticle(void);
 	void parDisplay(void);
 	float forces(int i, int j);
@@ -25,6 +25,8 @@ void LookAt_Z_MenuFunc(int id);
 void InitObjBoundary(void);
 void InitObjParameter(void);
 void InitInfo(void);
+extern void BuildCrateCallBack(int value);
+extern void Mouse_Move(int x, int y);
 extern void myDisplay();
 extern int tempX1;
 extern int tempX2;

@@ -7,7 +7,7 @@ extern "C" {
 /* __ Data Structure */
 /* End of __ Data Structure */
 #define DisplayInfoAdjWhite 0
-
+#define GameStart 0
 /* Original Data Struct */
 typedef struct glLookAt_Parameter {
 	/*float X = 0.1;
