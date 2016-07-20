@@ -317,6 +317,7 @@ void InitObjParameter(void) {
 	ObjLast.Boundary = &Cube10_B;
 	ObjLast.PreObjLink = &ObjBlue_B;
 	ObjLast.NextObjLink = NULL;
+
 }
 
 void InitInfo(void) {
@@ -452,6 +453,9 @@ void myKeyboard(unsigned char key, int x, int y) {
 #endif
 
 	switch (key) {
+	case 'Q':
+		QmenuFlag = !QmenuFlag;
+		break;
 	case 'B':
 		if(ObjRed_A.Counter == 30)
 			glutTimerFunc(1000, BuildCrateCallBack, 10);

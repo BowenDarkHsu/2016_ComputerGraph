@@ -63,7 +63,7 @@ ObjBox MyTree_A;
 ObjBox MyTree_B;
 ObjBox *BuildHouse;
 ObjBox *BuildObj;
-
+bool QmenuFlag = false;
 int TextureGround = 0;
 int TextureFront = 0;
 int TextureBack = 0;
@@ -721,8 +721,8 @@ void DrawVSValue(void) {
 		drawString(VitalityHintString);
 		drawString(BuildHintString);
 	glPopMatrix();
-
-	// 任務字 的白底框
+	if (QmenuFlag) {
+// 任務字 的白底框
 	glPushMatrix();
 		glColor3f(1.0f, 1.0f, 1.0f);
 		gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
@@ -757,7 +757,7 @@ void DrawVSValue(void) {
 			glRasterPos3f(-15.3 , 11 - 0.7 * 4, 0);
 				drawString(TaskFinish);
 	glPopMatrix();
-
+	}
 }
 
 void HintJudge(void) {

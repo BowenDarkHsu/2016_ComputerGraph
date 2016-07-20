@@ -127,7 +127,6 @@ typedef struct ObjBox {
 	float *MappingPos = NULL;	
 	float Pos[3];
 	float m[3];
-	
 	bool flag = false;
 	bool hint = false;
 	int texture = 0;
@@ -193,6 +192,7 @@ extern ObjBox ObjH2;
 extern ObjBox ObjH3;
 extern ObjBox ObjH4;
 extern ObjBox ObjLast;
+extern bool QmenuFlag;
 extern float MoveX;
 extern float MoveY;
 extern float MoveZ;

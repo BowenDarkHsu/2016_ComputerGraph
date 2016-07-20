@@ -1016,7 +1016,6 @@ void CalculateARC(float theta) {
 	float k = My_LookAt.Z;	// 3.5
 	float h1 = My_LookAt.X;	// 0
 	float k1 = My_LookAt.Z - 1;	// 3.5
-
 	float p = 1;
 	float r = 3.5;
 	float tempX = 0.0;
